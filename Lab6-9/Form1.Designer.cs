@@ -116,6 +116,7 @@
             this.button1.TabIndex = 3;
             this.button1.Text = "Смещение";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // radioButton1
             // 
@@ -128,6 +129,7 @@
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Перспектива";
             this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // radioButton2
             // 
@@ -139,6 +141,7 @@
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Аксонометрия";
             this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // textBox1
             // 
@@ -196,6 +199,7 @@
             this.button2.TabIndex = 12;
             this.button2.Text = "Поворот";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // radioButton3
             // 
@@ -265,6 +269,7 @@
             this.button3.TabIndex = 19;
             this.button3.Text = "Масштаб";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBox5
             // 
@@ -322,6 +327,7 @@
             this.button4.TabIndex = 26;
             this.button4.Text = "Отражение";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // panel2
             // 
@@ -373,6 +379,7 @@
             this.button5.TabIndex = 28;
             this.button5.Text = "Масштаб (центр)";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // textBox8
             // 
@@ -430,6 +437,7 @@
             this.button6.TabIndex = 35;
             this.button6.Text = "Вращение";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // textBox11
             // 
@@ -497,6 +505,7 @@
             this.button7.TabIndex = 39;
             this.button7.Text = "Поворот (прямая)";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // textBox12
             // 
