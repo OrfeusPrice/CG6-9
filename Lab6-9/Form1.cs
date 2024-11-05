@@ -102,8 +102,8 @@ namespace Lab6_9
 
         public Point3D Axonometric(Point3D p)
         {
-            float phi = (float)((40 / 180D) * Math.PI); ;
-            float ksi = (float)((90 / 180D) * Math.PI); ;
+            float phi = (float)((35 / 180D) * Math.PI); ;
+            float ksi = (float)((45 / 180D) * Math.PI); ;
 
             float[][] AxonometricMatrix = new float[4][]
             {
