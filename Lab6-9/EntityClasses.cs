@@ -50,20 +50,4 @@ namespace Lab6_9
             Faces = new List<Face>();
         }
     }
-
-    public class Camera
-    {
-        public Point3D U { get; set; }
-        public Point3D V { get; set; }
-        public Point3D N { get; set; }
-        public Point3D Location { get; set; }
-
-        public Camera()
-        {
-            U = new Point3D(1, 0, 0);
-            V = new Point3D(0, 1, 0);
-            N = new Point3D(0, 0, 1);
-            Location = new Point3D(0, 0, 0);
-        }
-    }
 }

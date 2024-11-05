@@ -16,7 +16,6 @@ namespace Lab6_9
     {
         Bitmap _bm;
         Graphics _g;
-        Camera _cam;
 
         Object3D _obj;
 
@@ -33,8 +32,6 @@ namespace Lab6_9
             _g.TranslateTransform(pictureBox.ClientSize.Width / 2, pictureBox.ClientSize.Height / 2);
             _g.ScaleTransform(1, -1);
 
-            _cam = new Camera();
-
             Tetrahedron(ref _obj, 100);
 
             _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
@@ -44,8 +41,6 @@ namespace Lab6_9
         public void DrawObject(Object3D _obj)
         {
             List<Point3D> vertexes = _obj.Vertexes;
-
-            vertexes = vertexes.Select(p => View(p, _cam)).ToList();
 
             if (_isPerspective) vertexes = vertexes.Select(p => Perspective(p)).ToList();
             else vertexes = vertexes.Select(p => Axonometric(p)).ToList();
@@ -69,18 +64,6 @@ namespace Lab6_9
 
                 }
             }
-        }
-
-        public Point3D View(Point3D p, Camera cam)
-        {
-            float[][] ViewMatrix = new float[4][]
-            {
-                    new float[4] { cam.U.X,                                cam.V.X,                               cam.N.X,                              0 },
-                    new float[4] { cam.U.Y,                                cam.V.Y,                               cam.N.Y,                              0 },
-                    new float[4] { cam.U.Z,                                cam.V.Z,                               cam.N.Z,                              0 },
-                    new float[4] { -(cam.U * cam.Location),   -(cam.V * cam.Location),  -(cam.N * cam.Location), 1 }
-            };
-            return MultiplyMatrix(ViewMatrix, p);
         }
 
         public Point3D Perspective(Point3D p)
