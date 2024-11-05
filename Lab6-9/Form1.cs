@@ -35,15 +35,9 @@ namespace Lab6_9
 
             _cam = new Camera();
 
-
-            //Icosahedron(ref _obj, 50);
-            //Dodecahedron(ref _obj, 50);
             Tetrahedron(ref _obj, 100);
 
-           
-
             _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
-
             DrawObject(_obj);
         }
 
@@ -100,8 +94,8 @@ namespace Lab6_9
                     new float[4] { 0, 0, 0, -1/c },
                     new float[4] { 0, 0, 0, 1 }
             };
-            _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0);
-            _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0);
+            _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
+            _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
             Point3D temp = MultiplyMatrix(PerspectiveMatrix, p);
             return new Point3D(p.X / temp.W, p.Y / temp.W, 0, p.W);
         }
@@ -118,13 +112,13 @@ namespace Lab6_9
                     new float[4] { (float)Math.Sin(ksi), -(float)(Math.Sin(phi) * Math.Cos(ksi)), 0, 0 },
                     new float[4] { 0, 0, 0, 1 }
             };
-            _g.DrawLine(new Pen(Color.Red, 2), 0, 0, 500, -300);
-            _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0);
-            _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, -500, -300);
+            _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); //Y
+            _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Z
+            _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, -500, -300); //X
             return MultiplyMatrix(AxonometricMatrix, p);
         }
 
-        
+
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -231,5 +225,34 @@ namespace Lab6_9
                 pictureBox.Refresh();
             }
         }
+
+        private void B_Create_Click(object sender, EventArgs e)
+        {
+            switch (comboBox1.SelectedIndex)
+            {
+                case 0:
+                    Tetrahedron(ref _obj, 100);
+                    break;
+                case 1:
+                    Hexahedron(ref _obj, 100);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    Icosahedron(ref _obj, 100);
+                    break;
+                case 4:
+                    Dodecahedron(ref _obj, 100);
+                    break;
+                default:
+                    break;
+            }
+
+            _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            _g.Clear(Color.White);
+            DrawObject(_obj);
+            pictureBox.Refresh();
+        }
     }
 }
+
