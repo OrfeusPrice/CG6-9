@@ -112,9 +112,12 @@ namespace Lab6_9
                     new float[4] { (float)Math.Sin(ksi), -(float)(Math.Sin(phi) * Math.Cos(ksi)), 0, 0 },
                     new float[4] { 0, 0, 0, 1 }
             };
-            _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); //Y
-            _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Z
-            _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, -500, -300); //X
+            _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
+            _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
+            _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
+            //_g.DrawLine(new Pen(Color.LightGreen, 1), 0, 0, -500, 300); // Z
+            //_g.DrawLine(new Pen(Color.Pink, 1), 0, -1000, 0, 0); // Y
+            //_g.DrawLine(new Pen(Color.AliceBlue, 1), 0, 0, -500, -300); //X
             return MultiplyMatrix(AxonometricMatrix, p);
         }
 
