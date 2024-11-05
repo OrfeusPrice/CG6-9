@@ -133,5 +133,27 @@ namespace Lab6_9
                 obj.Faces.Add(new Face(0, 1, 3));
                 obj.Faces.Add(new Face(1, 2, 3));
             }
+        public static void Octahedron(ref Object3D obj, float a)
+        {
+            obj = new Object3D();
+
+            obj.Vertexes.Add(new Point3D(a, 0, 0)); 
+            obj.Vertexes.Add(new Point3D(-a, 0, 0)); 
+            obj.Vertexes.Add(new Point3D(0, a, 0)); 
+            obj.Vertexes.Add(new Point3D(0, -a, 0)); 
+            obj.Vertexes.Add(new Point3D(0, 0, a)); 
+            obj.Vertexes.Add(new Point3D(0, 0, -a)); 
+
+            obj.Faces.Add(new Face(0, 2, 4)); 
+            obj.Faces.Add(new Face(0, 4, 3)); 
+            obj.Faces.Add(new Face(0, 3, 5));
+            obj.Faces.Add(new Face(0, 5, 2)); 
+
+            obj.Faces.Add(new Face(1, 4, 2)); 
+            obj.Faces.Add(new Face(1, 3, 4)); 
+            obj.Faces.Add(new Face(1, 5, 3)); 
+            obj.Faces.Add(new Face(1, 2, 5)); 
         }
+
+    }
     }

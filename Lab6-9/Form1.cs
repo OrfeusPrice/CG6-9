@@ -237,6 +237,7 @@ namespace Lab6_9
                     Hexahedron(ref _obj, 100);
                     break;
                 case 2:
+                    Octahedron(ref _obj, 100);
                     break;
                 case 3:
                     Icosahedron(ref _obj, 100);
