@@ -106,11 +106,26 @@
             this.Y_FigRotRB = new System.Windows.Forms.RadioButton();
             this.Create_FigRotB = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.Funcy1 = new System.Windows.Forms.TextBox();
+            this.Funcx1 = new System.Windows.Forms.TextBox();
+            this.Funcy0 = new System.Windows.Forms.TextBox();
+            this.Funcx0 = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.FuncStep = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.FuncCreate = new System.Windows.Forms.Button();
+            this.FuncComboBox = new System.Windows.Forms.ComboBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.LoadTB = new System.Windows.Forms.TextBox();
             this.SaveTB = new System.Windows.Forms.TextBox();
             this.BLoad = new System.Windows.Forms.Button();
             this.BSave = new System.Windows.Forms.Button();
+            this.label28 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -125,6 +140,7 @@
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.FigRotPanel.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1008,6 +1024,21 @@
             // tabPage6
             // 
             this.tabPage6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.tabPage6.Controls.Add(this.label28);
+            this.tabPage6.Controls.Add(this.Funcy1);
+            this.tabPage6.Controls.Add(this.Funcx1);
+            this.tabPage6.Controls.Add(this.Funcy0);
+            this.tabPage6.Controls.Add(this.Funcx0);
+            this.tabPage6.Controls.Add(this.label27);
+            this.tabPage6.Controls.Add(this.label26);
+            this.tabPage6.Controls.Add(this.label25);
+            this.tabPage6.Controls.Add(this.label24);
+            this.tabPage6.Controls.Add(this.FuncStep);
+            this.tabPage6.Controls.Add(this.label23);
+            this.tabPage6.Controls.Add(this.label22);
+            this.tabPage6.Controls.Add(this.label21);
+            this.tabPage6.Controls.Add(this.FuncCreate);
+            this.tabPage6.Controls.Add(this.FuncComboBox);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage6.Name = "tabPage6";
@@ -1015,6 +1046,151 @@
             this.tabPage6.Size = new System.Drawing.Size(342, 113);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "График";
+            // 
+            // Funcy1
+            // 
+            this.Funcy1.Location = new System.Drawing.Point(243, 84);
+            this.Funcy1.Margin = new System.Windows.Forms.Padding(2);
+            this.Funcy1.Name = "Funcy1";
+            this.Funcy1.Size = new System.Drawing.Size(45, 20);
+            this.Funcy1.TabIndex = 75;
+            this.Funcy1.Text = "1";
+            // 
+            // Funcx1
+            // 
+            this.Funcx1.Location = new System.Drawing.Point(171, 84);
+            this.Funcx1.Margin = new System.Windows.Forms.Padding(2);
+            this.Funcx1.Name = "Funcx1";
+            this.Funcx1.Size = new System.Drawing.Size(45, 20);
+            this.Funcx1.TabIndex = 74;
+            this.Funcx1.Text = "1";
+            // 
+            // Funcy0
+            // 
+            this.Funcy0.Location = new System.Drawing.Point(98, 84);
+            this.Funcy0.Margin = new System.Windows.Forms.Padding(2);
+            this.Funcy0.Name = "Funcy0";
+            this.Funcy0.Size = new System.Drawing.Size(45, 20);
+            this.Funcy0.TabIndex = 73;
+            this.Funcy0.Text = "-1";
+            // 
+            // Funcx0
+            // 
+            this.Funcx0.Location = new System.Drawing.Point(28, 84);
+            this.Funcx0.Margin = new System.Windows.Forms.Padding(2);
+            this.Funcx0.Name = "Funcx0";
+            this.Funcx0.Size = new System.Drawing.Size(45, 20);
+            this.Funcx0.TabIndex = 72;
+            this.Funcx0.Text = "-1";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label27.Location = new System.Drawing.Point(220, 84);
+            this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(19, 15);
+            this.label27.TabIndex = 71;
+            this.label27.Text = "y1";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label26.Location = new System.Drawing.Point(147, 85);
+            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(20, 15);
+            this.label26.TabIndex = 70;
+            this.label26.Text = "x1";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label25.Location = new System.Drawing.Point(77, 85);
+            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(19, 15);
+            this.label25.TabIndex = 69;
+            this.label25.Text = "y0";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label24.Location = new System.Drawing.Point(4, 85);
+            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(20, 15);
+            this.label24.TabIndex = 68;
+            this.label24.Text = "x0";
+            // 
+            // FuncStep
+            // 
+            this.FuncStep.Location = new System.Drawing.Point(66, 32);
+            this.FuncStep.Margin = new System.Windows.Forms.Padding(2);
+            this.FuncStep.Name = "FuncStep";
+            this.FuncStep.Size = new System.Drawing.Size(59, 20);
+            this.FuncStep.TabIndex = 67;
+            this.FuncStep.Text = "20";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label23.Location = new System.Drawing.Point(4, 30);
+            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(30, 15);
+            this.label23.TabIndex = 66;
+            this.label23.Text = "Шаг";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label22.Location = new System.Drawing.Point(4, 58);
+            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(128, 15);
+            this.label22.TabIndex = 65;
+            this.label22.Text = "Диапазон отсечения";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label21.Location = new System.Drawing.Point(4, 6);
+            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(57, 15);
+            this.label21.TabIndex = 64;
+            this.label21.Text = "Функция";
+            // 
+            // FuncCreate
+            // 
+            this.FuncCreate.Location = new System.Drawing.Point(255, 49);
+            this.FuncCreate.Margin = new System.Windows.Forms.Padding(2);
+            this.FuncCreate.Name = "FuncCreate";
+            this.FuncCreate.Size = new System.Drawing.Size(83, 24);
+            this.FuncCreate.TabIndex = 56;
+            this.FuncCreate.Text = "Создать";
+            this.FuncCreate.UseVisualStyleBackColor = true;
+            this.FuncCreate.Click += new System.EventHandler(this.FuncCreate_Click);
+            // 
+            // FuncComboBox
+            // 
+            this.FuncComboBox.FormattingEnabled = true;
+            this.FuncComboBox.Items.AddRange(new object[] {
+            "x * x + y * y",
+            "x ^ 3 + y ^ 3",
+            "sin(x) * cos(y)"});
+            this.FuncComboBox.Location = new System.Drawing.Point(66, 6);
+            this.FuncComboBox.Name = "FuncComboBox";
+            this.FuncComboBox.Size = new System.Drawing.Size(121, 21);
+            this.FuncComboBox.TabIndex = 0;
             // 
             // tabPage7
             // 
@@ -1069,6 +1245,15 @@
             this.BSave.UseVisualStyleBackColor = true;
             this.BSave.Click += new System.EventHandler(this.BSave_Click);
             // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(198, 8);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(41, 13);
+            this.label28.TabIndex = 76;
+            this.label28.Text = "label28";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1108,6 +1293,8 @@
             this.tabPage5.PerformLayout();
             this.FigRotPanel.ResumeLayout(false);
             this.FigRotPanel.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
             this.ResumeLayout(false);
@@ -1199,6 +1386,21 @@
         private System.Windows.Forms.Button BLoad;
         private System.Windows.Forms.Button BSave;
         private System.Windows.Forms.TextBox Fragmentation_FigRotTB;
+        private System.Windows.Forms.Button FuncCreate;
+        private System.Windows.Forms.ComboBox FuncComboBox;
+        private System.Windows.Forms.TextBox Funcx0;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox FuncStep;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox Funcy1;
+        private System.Windows.Forms.TextBox Funcx1;
+        private System.Windows.Forms.TextBox Funcy0;
+        private System.Windows.Forms.Label label28;
     }
 }
 

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using static Lab6_9.Polyhedron;
 using static Lab6_9.GeometryAndMatrix;
 using static Lab6_9.SaveLoad;
+using System.Runtime.InteropServices;
 
 namespace Lab6_9
 {
@@ -367,6 +368,37 @@ namespace Lab6_9
                 }
                 pictureBox.Refresh();
             }
+        }
+
+        private void FuncCreate_Click(object sender, EventArgs e)
+        {
+            Func<float, float, float> f = (x, y) => { return (x * x + y * y); };
+            int minx = int.Parse(Funcx0.Text);
+            int miny = int.Parse(Funcy0.Text);
+            int maxx = int.Parse(Funcx1.Text);
+            int maxy = int.Parse(Funcy1.Text);
+            int splits = int.Parse(FuncStep.Text);
+
+            switch (FuncComboBox.SelectedIndex)
+            {
+                case 0:
+                    f = (x, y) => { return (x * x + y * y); };
+                    break;
+                case 1:
+                    //f = (x, y) => { float r = x * x + y * y; return (float)(100 - (3 / Math.Sqrt(r)) + Math.Sin(Math.Sqrt(r)) + Math.Sqrt​(200 - r + (10 * Math.Sin​(x)) + 10 * Math.Sin​(y)) / 1000); };
+                    f = (x, y) => { float r = x * x * x + y * y * y; return r; };
+                    break;
+                case 2:
+                    f = f = (x, y) => { return (float)Math.Sin(x) * (float)Math.Cos(y); };
+                    break;
+            }
+
+            label28.Text = FuncComboBox.SelectedIndex.ToString();
+            Graph(ref _obj, f, minx, maxx, miny, maxy, splits);
+
+            _g.Clear(Color.White);
+            DrawObject(_obj);
+            pictureBox.Refresh();
         }
     }
 }
