@@ -12,13 +12,13 @@ namespace Lab6_9
         public static void Scale(ref Object3D obj, float mx, float my, float mz)
         {
             Point3D center = new Point3D(0, 0, 0);
-            foreach (Point3D p in obj.Vertexes)
+            foreach (Point3D p in obj.Vertices)
                 center += p;
-            center /= obj.Vertexes.Count;
+            center /= obj.Vertices.Count;
 
-            obj.Vertexes = obj.Vertexes.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
-            obj.Vertexes = obj.Vertexes.Select(p => ScalePoint(p, mx, my, mz)).ToList();
-            obj.Vertexes = obj.Vertexes.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => ScalePoint(p, mx, my, mz)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
         }
 
         public static void Rotate(ref Object3D obj, Point3D a, Point3D b, float angle)
@@ -43,47 +43,47 @@ namespace Lab6_9
             };
 
             Point3D center = new Point3D(0, 0, 0);
-            foreach (Point3D p in obj.Vertexes)
+            foreach (Point3D p in obj.Vertices)
                 center += p;
-            center /= obj.Vertexes.Count;
+            center /= obj.Vertices.Count;
 
-            obj.Vertexes = obj.Vertexes.Select(p => MultiplyMatrix(RotateMatrix, p)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => MultiplyMatrix(RotateMatrix, p)).ToList();
         }
 
         public static void XRotate(ref Object3D obj, float angle)
         {
             Point3D center = new Point3D(0, 0, 0);
-            foreach (Point3D p in obj.Vertexes)
+            foreach (Point3D p in obj.Vertices)
                 center += p;
-            center /= obj.Vertexes.Count;
+            center /= obj.Vertices.Count;
 
-            obj.Vertexes = obj.Vertexes.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
-            obj.Vertexes = obj.Vertexes.Select(p => XRotatePoint(p, angle)).ToList();
-            obj.Vertexes = obj.Vertexes.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => XRotatePoint(p, angle)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
         }
 
         public static void YRotate(ref Object3D obj, float angle)
         {
             Point3D center = new Point3D(0, 0, 0);
-            foreach (Point3D p in obj.Vertexes)
+            foreach (Point3D p in obj.Vertices)
                 center += p;
-            center /= obj.Vertexes.Count;
+            center /= obj.Vertices.Count;
 
-            obj.Vertexes = obj.Vertexes.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
-            obj.Vertexes = obj.Vertexes.Select(p => YRotatePoint(p, angle)).ToList();
-            obj.Vertexes = obj.Vertexes.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => YRotatePoint(p, angle)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
         }
 
         public static void ZRotate(ref Object3D obj, float angle)
         {
             Point3D center = new Point3D(0, 0, 0);
-            foreach (Point3D p in obj.Vertexes)
+            foreach (Point3D p in obj.Vertices)
                 center += p;
-            center /= obj.Vertexes.Count;
+            center /= obj.Vertices.Count;
 
-            obj.Vertexes = obj.Vertexes.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
-            obj.Vertexes = obj.Vertexes.Select(p => ZRotatePoint(p, angle)).ToList();
-            obj.Vertexes = obj.Vertexes.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => ZRotatePoint(p, angle)).ToList();
+            obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
         }
 
         public static Point3D XYMirrorPoint(Point3D p)

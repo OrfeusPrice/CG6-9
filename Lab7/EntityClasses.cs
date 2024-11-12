@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,25 +30,71 @@ namespace Lab6_9
 
     public class Face
     {
-        public List<int> VertexIndexes;
+        public List<FaceIndices> FaceIndices;
+
+        public Face()
+        {
+            FaceIndices = new List<FaceIndices>();
+        }
 
         public Face(params int[] indexes)
         {
-            VertexIndexes = new List<int>();
+            FaceIndices = new List<FaceIndices>();
             foreach (int i in indexes)
-                VertexIndexes.Add(i);
+                FaceIndices.Add(new FaceIndices(i));
+        }
+    }
+
+    public class FaceIndices
+    {
+        public int VertexIndex { get; set; }
+        public int TextureCoordinateIndex { get; set; }
+        public int NormalIndex { get; set; }
+
+        public FaceIndices(int v)
+        {
+            VertexIndex = v;
+            TextureCoordinateIndex = v;
+            NormalIndex = v;
+        }
+
+        public FaceIndices(int v, int vt, int vn)
+        {
+            VertexIndex = v;
+            TextureCoordinateIndex = vt;
+            NormalIndex = vn;
+        }
+    }
+
+    public class Coordinates
+    {
+        public float U { get; set; }
+        public float V { get; set; }
+        public float W { get; set; }
+
+        public Coordinates(float u, float v = 0, float w = 0)
+        {
+            U = u;
+            V = v;
+            W = w;
         }
     }
 
     public class Object3D
     {
-        public List<Point3D> Vertexes;
+        public List<Point3D> Vertices;
         public List<Face> Faces;
+        public List<Point3D> Normals;
+        public List<Coordinates> TextureCoordinates;
+        public List<Coordinates> ParameterSpaceVertices;
 
         public Object3D()
         {
-            Vertexes = new List<Point3D>();
+            Vertices = new List<Point3D>();
             Faces = new List<Face>();
+            Normals = new List<Point3D>();
+            TextureCoordinates = new List<Coordinates>();
+            ParameterSpaceVertices = new List<Coordinates>();
         }
     }
 }

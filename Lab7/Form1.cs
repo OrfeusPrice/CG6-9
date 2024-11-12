@@ -9,14 +9,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Lab6_9.Polyhedron;
 using static Lab6_9.GeometryAndMatrix;
+using static Lab6_9.SaveLoad;
 
 namespace Lab6_9
 {
     public partial class Form1 : Form
     {
+        public enum Axis
+        {
+            X, Y, Z
+        }
+
         Bitmap _bm;
         Graphics _g;
 
+        List<Point3D> _points;
         Object3D _obj;
         public static float[][] MChanges;
 
@@ -40,8 +47,14 @@ namespace Lab6_9
             InitMChanges();
 
             Tetrahedron(ref _obj, 100);
+            //Icosahedron(ref _obj, 100);
+            //Dodecahedron(ref _obj, 100);
 
-            _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            _points = new List<Point3D>() {new Point3D(0,0,0), new Point3D(100, 0, 0), new Point3D(0, 100, 0), };
+            //RotationFigure(ref _obj, points, Axis.Y, 1);
+
+
+            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             DrawObject(_obj);
         }
 
@@ -58,7 +71,7 @@ namespace Lab6_9
 
         public void DrawObject(Object3D _obj)
         {
-            List<Point3D> vertexes = _obj.Vertexes;
+            List<Point3D> vertexes = _obj.Vertices;
 
             if (_isNewObj)
             {
@@ -76,10 +89,10 @@ namespace Lab6_9
 
             foreach (Face face in _obj.Faces)
             {
-                for (int i = 0; i < face.VertexIndexes.Count; i++)
+                for (int i = 0; i < face.FaceIndices.Count; i++)
                 {
-                    Point3D p1 = vertexes[face.VertexIndexes[i]];
-                    Point3D p2 = vertexes[face.VertexIndexes[(i + 1) % face.VertexIndexes.Count]];
+                    Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex - 1];
+                    Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex - 1];
                     _g.DrawLine(new Pen(Color.Black),
                         p1.X,
                         p1.Y,
@@ -133,7 +146,7 @@ namespace Lab6_9
             return MultiplyMatrix(AxonometricMatrix, p);
         }
 
-
+        
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -151,7 +164,7 @@ namespace Lab6_9
             if (float.TryParse(textBox1.Text, out dx) && float.TryParse(textBox2.Text, out dy) && float.TryParse(textBox3.Text, out dz))
             {
                 _tCount = 0;
-                _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, dx, dy, dz)).ToList();
+                _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, dx, dy, dz)).ToList();
 
                 _g.Clear(Color.White);
                 DrawObject(_obj);
@@ -165,9 +178,9 @@ namespace Lab6_9
             if (float.TryParse(textBox4.Text, out angle))
             {
                 _tCount = 0;
-                if (radioButton3.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => XRotatePoint(p, angle)).ToList();
-                if (radioButton4.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => YRotatePoint(p, angle)).ToList();
-                if (radioButton5.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => ZRotatePoint(p, angle)).ToList();
+                if (radioButton3.Checked) _obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, angle)).ToList();
+                if (radioButton4.Checked) _obj.Vertices = _obj.Vertices.Select(p => YRotatePoint(p, angle)).ToList();
+                if (radioButton5.Checked) _obj.Vertices = _obj.Vertices.Select(p => ZRotatePoint(p, angle)).ToList();
 
                 _g.Clear(Color.White);
                 DrawObject(_obj);
@@ -182,7 +195,7 @@ namespace Lab6_9
             if (float.TryParse(textBox5.Text, out mx) && float.TryParse(textBox6.Text, out my) && float.TryParse(textBox7.Text, out mz))
             {
                 _tCount = 0;
-                _obj.Vertexes = _obj.Vertexes.Select(p => ScalePoint(p, mx, my, mz)).ToList();
+                _obj.Vertices = _obj.Vertices.Select(p => ScalePoint(p, mx, my, mz)).ToList();
 
                 _g.Clear(Color.White);
                 DrawObject(_obj);
@@ -193,9 +206,9 @@ namespace Lab6_9
         private void button4_Click(object sender, EventArgs e)
         {
             _tCount = 0;
-            if (radioButton6.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => XYMirrorPoint(p)).ToList();
-            if (radioButton7.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => XZMirrorPoint(p)).ToList();
-            if (radioButton8.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => YZMirrorPoint(p)).ToList();
+            if (radioButton6.Checked) _obj.Vertices = _obj.Vertices.Select(p => XYMirrorPoint(p)).ToList();
+            if (radioButton7.Checked) _obj.Vertices = _obj.Vertices.Select(p => XZMirrorPoint(p)).ToList();
+            if (radioButton8.Checked) _obj.Vertices = _obj.Vertices.Select(p => YZMirrorPoint(p)).ToList();
 
             _g.Clear(Color.White);
             DrawObject(_obj);
@@ -273,7 +286,40 @@ namespace Lab6_9
             InitMChanges();
 
             _isNewObj = true;
-            _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            _g.Clear(Color.White);
+            DrawObject(_obj);
+            pictureBox.Refresh();
+        }
+
+        private void BSave_Click(object sender, EventArgs e)
+        {
+            SaveObj(_obj, SaveTB.Text);
+        }
+
+        private void BLoad_Click(object sender, EventArgs e)
+        {
+            _obj = new Object3D();
+            _obj = LoadObj(LoadTB.Text + ".obj");
+
+            InitMChanges();
+            _isNewObj = true;
+            _g.Clear(Color.White);
+            DrawObject(_obj);
+            pictureBox.Refresh();
+        }
+
+        private void Create_FigRotB_Click(object sender, EventArgs e)
+        {
+            Axis selectedAxis = Axis.Y;
+            if (X_FigRotRB.Checked) selectedAxis = Axis.X;
+            if (Y_FigRotRB.Checked) selectedAxis = Axis.Y;
+            if (Z_FigRotRB.Checked) selectedAxis = Axis.Z;
+            RotationFigure(ref _obj, _points, selectedAxis, int.Parse(Fragmentation_FigRotTB.Text));
+
+            InitMChanges();
+            _isNewObj = true;
+            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             _g.Clear(Color.White);
             DrawObject(_obj);
             pictureBox.Refresh();
