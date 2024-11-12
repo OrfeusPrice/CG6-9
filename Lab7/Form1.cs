@@ -83,7 +83,7 @@ namespace Lab6_9
             if (_isPerspective)
             {
                 _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
-                _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
+                _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
             }
             else
             {
@@ -336,7 +336,7 @@ namespace Lab6_9
                 if (_isPerspective)
                 {
                     _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
-                    _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
+                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
                 }
                 else
                 {
@@ -357,7 +357,7 @@ namespace Lab6_9
                 if (_isPerspective)
                 {
                     _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
-                    _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
+                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
                 }
                 else
                 {
