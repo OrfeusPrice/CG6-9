@@ -50,7 +50,8 @@ namespace Lab6_9
             //Icosahedron(ref _obj, 100);
             //Dodecahedron(ref _obj, 100);
 
-            _points = new List<Point3D>() {new Point3D(0,0,0), new Point3D(100, 0, 0), new Point3D(0, 100, 0), };
+            _points = new List<Point3D>();
+            //_points = new List<Point3D>() {new Point3D(0,0,0), new Point3D(100, 0, 0), new Point3D(0, 100, 0), };
             //RotationFigure(ref _obj, points, Axis.Y, 1);
 
 
@@ -77,6 +78,18 @@ namespace Lab6_9
             {
                 vertexes = vertexes.Select(p => MultiplyMatrix(MChanges, p)).ToList();
                 _isNewObj = false;
+            }
+
+            if (_isPerspective)
+            {
+                _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
+                _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
+            }
+            else
+            {
+                _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
+                _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
+                _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
             }
 
             if (_isPerspective) vertexes = vertexes.Select(p => Perspective(p)).ToList();
@@ -115,10 +128,6 @@ namespace Lab6_9
                     new float[4] { 0, 0, 0, 1 }
             };
 
-            _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
-            _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
-
-
             Point3D temp = MultiplyMatrix(PerspectiveMatrix, p);
             return new Point3D(p.X / temp.W, p.Y / temp.W, 0, p.W);
         }
@@ -136,17 +145,10 @@ namespace Lab6_9
                     new float[4] { 0, 0, 0, 1 }
             };
 
-            _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
-            _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
-            _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
-            //_g.DrawLine(new Pen(Color.LightGreen, 1), 0, 0, -500, 300); // Z
-            //_g.DrawLine(new Pen(Color.Pink, 1), 0, -1000, 0, 0); // Y
-            //_g.DrawLine(new Pen(Color.AliceBlue, 1), 0, 0, -500, -300); //X
-
             return MultiplyMatrix(AxonometricMatrix, p);
         }
 
-        
+
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -323,6 +325,48 @@ namespace Lab6_9
             _g.Clear(Color.White);
             DrawObject(_obj);
             pictureBox.Refresh();
+        }
+
+        private void pictureBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (MouseButtons.Right == e.Button) 
+            { 
+                _points.Clear();
+                _g.Clear(Color.White);
+                if (_isPerspective)
+                {
+                    _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
+                    _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
+                }
+                else
+                {
+                    _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
+                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
+                    _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
+                }
+                pictureBox.Refresh();
+            }
+            else
+            {
+                _points.Add(new Point3D(e.X - pictureBox.Width / 2, -e.Y + pictureBox.Height / 2, 0));
+                _g.Clear(Color.White);
+                foreach (Point3D p in _points)
+                {
+                    _g.FillEllipse(Brushes.Red, p.X - 2, p.Y - 2, 4, 4);
+                }
+                if (_isPerspective)
+                {
+                    _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
+                    _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
+                }
+                else
+                {
+                    _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
+                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
+                    _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
+                }
+                pictureBox.Refresh();
+            }
         }
     }
 }
