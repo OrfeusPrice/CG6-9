@@ -87,10 +87,10 @@
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.B_Create = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.B_Create = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -161,6 +161,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(35, 22);
             this.textBox1.TabIndex = 6;
+            this.textBox1.Text = "5";
             // 
             // label1
             // 
@@ -195,6 +196,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(35, 22);
             this.textBox2.TabIndex = 10;
+            this.textBox2.Text = "0";
             // 
             // textBox3
             // 
@@ -202,6 +204,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(35, 22);
             this.textBox3.TabIndex = 11;
+            this.textBox3.Text = "0";
             // 
             // button2
             // 
@@ -272,6 +275,7 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(35, 22);
             this.textBox4.TabIndex = 18;
+            this.textBox4.Text = "5";
             // 
             // button3
             // 
@@ -289,6 +293,7 @@
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(35, 22);
             this.textBox5.TabIndex = 25;
+            this.textBox5.Text = "2";
             // 
             // textBox6
             // 
@@ -296,6 +301,7 @@
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(35, 22);
             this.textBox6.TabIndex = 24;
+            this.textBox6.Text = "2";
             // 
             // label5
             // 
@@ -330,6 +336,7 @@
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(35, 22);
             this.textBox7.TabIndex = 20;
+            this.textBox7.Text = "2";
             // 
             // button4
             // 
@@ -399,6 +406,7 @@
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(35, 22);
             this.textBox8.TabIndex = 34;
+            this.textBox8.Text = "2";
             // 
             // textBox9
             // 
@@ -406,6 +414,7 @@
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(35, 22);
             this.textBox9.TabIndex = 33;
+            this.textBox9.Text = "1";
             // 
             // label8
             // 
@@ -440,6 +449,7 @@
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(35, 22);
             this.textBox10.TabIndex = 29;
+            this.textBox10.Text = "1";
             // 
             // button6
             // 
@@ -457,6 +467,7 @@
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(35, 22);
             this.textBox11.TabIndex = 38;
+            this.textBox11.Text = "5";
             // 
             // label11
             // 
@@ -525,6 +536,7 @@
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(35, 22);
             this.textBox12.TabIndex = 45;
+            this.textBox12.Text = "1";
             // 
             // textBox13
             // 
@@ -532,6 +544,7 @@
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(35, 22);
             this.textBox13.TabIndex = 44;
+            this.textBox13.Text = "1";
             // 
             // label12
             // 
@@ -566,6 +579,7 @@
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(35, 22);
             this.textBox14.TabIndex = 40;
+            this.textBox14.Text = "1";
             // 
             // textBox15
             // 
@@ -573,6 +587,7 @@
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(35, 22);
             this.textBox15.TabIndex = 51;
+            this.textBox15.Text = "2";
             // 
             // textBox16
             // 
@@ -580,6 +595,7 @@
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(35, 22);
             this.textBox16.TabIndex = 50;
+            this.textBox16.Text = "2";
             // 
             // label15
             // 
@@ -614,6 +630,7 @@
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(35, 22);
             this.textBox17.TabIndex = 46;
+            this.textBox17.Text = "2";
             // 
             // textBox18
             // 
@@ -621,6 +638,7 @@
             this.textBox18.Name = "textBox18";
             this.textBox18.Size = new System.Drawing.Size(35, 22);
             this.textBox18.TabIndex = 53;
+            this.textBox18.Text = "15";
             // 
             // label18
             // 
@@ -641,30 +659,6 @@
             this.groupBox1.TabIndex = 54;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Lab6";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Тетраэдр",
-            "Гексаэдр",
-            "Октаэдр",
-            "Икосаэдр",
-            "Додекаэдр"});
-            this.comboBox1.Location = new System.Drawing.Point(130, 6);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 24);
-            this.comboBox1.TabIndex = 54;
-            // 
-            // B_Create
-            // 
-            this.B_Create.Location = new System.Drawing.Point(3, 6);
-            this.B_Create.Name = "B_Create";
-            this.B_Create.Size = new System.Drawing.Size(111, 23);
-            this.B_Create.TabIndex = 55;
-            this.B_Create.Text = "Создать";
-            this.B_Create.UseVisualStyleBackColor = true;
-            this.B_Create.Click += new System.EventHandler(this.B_Create_Click);
             // 
             // tabControl1
             // 
@@ -691,6 +685,31 @@
             this.tabPage1.Size = new System.Drawing.Size(458, 119);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Объект и проекция";
+            // 
+            // B_Create
+            // 
+            this.B_Create.Location = new System.Drawing.Point(3, 6);
+            this.B_Create.Name = "B_Create";
+            this.B_Create.Size = new System.Drawing.Size(111, 23);
+            this.B_Create.TabIndex = 55;
+            this.B_Create.Text = "Создать";
+            this.B_Create.UseVisualStyleBackColor = true;
+            this.B_Create.Click += new System.EventHandler(this.B_Create_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Тетраэдр",
+            "Гексаэдр",
+            "Октаэдр",
+            "Икосаэдр",
+            "Додекаэдр"});
+            this.comboBox1.Location = new System.Drawing.Point(130, 6);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 24);
+            this.comboBox1.TabIndex = 54;
+            this.comboBox1.Text = "Тетраэдр";
             // 
             // tabPage2
             // 

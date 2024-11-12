@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Lab6_9.Form1;
 
 namespace Lab6_9
 {
@@ -198,7 +199,38 @@ namespace Lab6_9
                 for (int j = 0; j < 4; j++)
                     resultVector[i] += matrix[j][i] * tempVector[j];
             }
+
+            if (!_isNewObj && _tCount == 0)
+            {
+                _tCount++;
+                MChanges = MultiplyM(MChanges, matrix);
+            }
+
             return new Point3D(resultVector[0], resultVector[1], resultVector[2], resultVector[3]);
+        }
+
+        public static float[][] MultiplyM(float[][] matrixA, float[][] matrixB)
+        {
+            float[][] result = new float[4][]
+            {
+                new float[4] { 0, 0, 0, 0 },
+                new float[4] { 0, 0, 0, 0 },
+                new float[4] { 0, 0, 0, 0 },
+                new float[4] { 0, 0, 0, 0 },
+            };
+
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    for (int k = 0; k < 4; k++)
+                    {
+                        result[i][j] += matrixA[i][k] * matrixB[k][j];
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

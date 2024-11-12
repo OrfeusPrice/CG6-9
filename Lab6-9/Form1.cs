@@ -18,8 +18,11 @@ namespace Lab6_9
         Graphics _g;
 
         Object3D _obj;
+        public static float[][] MChanges;
 
         bool _isPerspective = true;
+        public static bool _isNewObj = false;
+        public static int _tCount;
 
         public Form1()
         {
@@ -32,15 +35,36 @@ namespace Lab6_9
             _g.TranslateTransform(pictureBox.ClientSize.Width / 2, pictureBox.ClientSize.Height / 2);
             _g.ScaleTransform(1, -1);
 
+            _isNewObj = false;
+            _tCount = 0;
+            InitMChanges();
+
             Tetrahedron(ref _obj, 100);
 
             _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             DrawObject(_obj);
         }
 
+        public void InitMChanges()
+        {
+            MChanges = new float[4][]
+            {
+                new float[4] { 1, 0, 0, 0 },
+                new float[4] { 0, 1, 0, 0 },
+                new float[4] { 0, 0, 1, 0 },
+                new float[4] { 0, 0, 0, 1 },
+            };
+        }
+
         public void DrawObject(Object3D _obj)
         {
             List<Point3D> vertexes = _obj.Vertexes;
+
+            if (_isNewObj)
+            {
+                vertexes = vertexes.Select(p => MultiplyMatrix(MChanges, p)).ToList();
+                _isNewObj = false;
+            }
 
             if (_isPerspective) vertexes = vertexes.Select(p => Perspective(p)).ToList();
             else vertexes = vertexes.Select(p => Axonometric(p)).ToList();
@@ -68,7 +92,7 @@ namespace Lab6_9
 
         public Point3D Perspective(Point3D p)
         {
-            float c = -pictureBox.Width * 0.8f;
+            float c = -pictureBox.Width;
 
             float[][] PerspectiveMatrix = new float[4][]
             {
@@ -77,30 +101,35 @@ namespace Lab6_9
                     new float[4] { 0, 0, 0, -1/c },
                     new float[4] { 0, 0, 0, 1 }
             };
+
             _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
             _g.DrawLine(new Pen(Color.Green, 2), 0, 1000, 0, 0); //Y
+
+
             Point3D temp = MultiplyMatrix(PerspectiveMatrix, p);
             return new Point3D(p.X / temp.W, p.Y / temp.W, 0, p.W);
         }
 
         public Point3D Axonometric(Point3D p)
         {
-            float phi = (float)((35 / 180D) * Math.PI); ;
-            float ksi = (float)((45 / 180D) * Math.PI); ;
+            float phi = (float)((35.26 / 180D) * Math.PI); ;
+            float psi = (float)((45 / 180D) * Math.PI); ;
 
             float[][] AxonometricMatrix = new float[4][]
             {
-                    new float[4] { (float)Math.Cos(ksi), (float)(Math.Sin(phi) * Math.Sin(ksi)), 0, 0},
+                    new float[4] { (float)Math.Cos(psi), (float)(Math.Sin(phi) * Math.Sin(psi)), 0, 0},
                     new float[4] { 0, (float)Math.Cos(phi), 0, 0 },
-                    new float[4] { (float)Math.Sin(ksi), -(float)(Math.Sin(phi) * Math.Cos(ksi)), 0, 0 },
+                    new float[4] { (float)Math.Sin(psi), -(float)(Math.Sin(phi) * Math.Cos(psi)), 0, 0 },
                     new float[4] { 0, 0, 0, 1 }
             };
+
             _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
             _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
             _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
             //_g.DrawLine(new Pen(Color.LightGreen, 1), 0, 0, -500, 300); // Z
             //_g.DrawLine(new Pen(Color.Pink, 1), 0, -1000, 0, 0); // Y
             //_g.DrawLine(new Pen(Color.AliceBlue, 1), 0, 0, -500, -300); //X
+
             return MultiplyMatrix(AxonometricMatrix, p);
         }
 
@@ -121,6 +150,7 @@ namespace Lab6_9
             float dx, dy, dz;
             if (float.TryParse(textBox1.Text, out dx) && float.TryParse(textBox2.Text, out dy) && float.TryParse(textBox3.Text, out dz))
             {
+                _tCount = 0;
                 _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, dx, dy, dz)).ToList();
 
                 _g.Clear(Color.White);
@@ -134,6 +164,7 @@ namespace Lab6_9
             float angle;
             if (float.TryParse(textBox4.Text, out angle))
             {
+                _tCount = 0;
                 if (radioButton3.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => XRotatePoint(p, angle)).ToList();
                 if (radioButton4.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => YRotatePoint(p, angle)).ToList();
                 if (radioButton5.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => ZRotatePoint(p, angle)).ToList();
@@ -150,6 +181,7 @@ namespace Lab6_9
             float mx, my, mz;
             if (float.TryParse(textBox5.Text, out mx) && float.TryParse(textBox6.Text, out my) && float.TryParse(textBox7.Text, out mz))
             {
+                _tCount = 0;
                 _obj.Vertexes = _obj.Vertexes.Select(p => ScalePoint(p, mx, my, mz)).ToList();
 
                 _g.Clear(Color.White);
@@ -160,6 +192,7 @@ namespace Lab6_9
 
         private void button4_Click(object sender, EventArgs e)
         {
+            _tCount = 0;
             if (radioButton6.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => XYMirrorPoint(p)).ToList();
             if (radioButton7.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => XZMirrorPoint(p)).ToList();
             if (radioButton8.Checked) _obj.Vertexes = _obj.Vertexes.Select(p => YZMirrorPoint(p)).ToList();
@@ -174,6 +207,7 @@ namespace Lab6_9
             float mx, my, mz;
             if (float.TryParse(textBox8.Text, out mx) && float.TryParse(textBox9.Text, out my) && float.TryParse(textBox10.Text, out mz))
             {
+                _tCount = 0;
                 GeometryAndMatrix.Scale(ref _obj, mx, my, mz);
 
                 _g.Clear(Color.White);
@@ -187,6 +221,7 @@ namespace Lab6_9
             float angle;
             if (float.TryParse(textBox11.Text, out angle))
             {
+                _tCount = 0;
                 if (radioButton9.Checked) XRotate(ref _obj, angle);
                 if (radioButton10.Checked) YRotate(ref _obj, angle);
                 if (radioButton11.Checked) ZRotate(ref _obj, angle);
@@ -204,6 +239,7 @@ namespace Lab6_9
                 float.TryParse(textBox15.Text, out x2) && float.TryParse(textBox16.Text, out y2) && float.TryParse(textBox17.Text, out z2) &&
                 float.TryParse(textBox18.Text, out angle))
             {
+                _tCount = 0;
                 Rotate(ref _obj, new Point3D(x1, y1, z1), new Point3D(x2, y2, z2), angle);
 
                 _g.Clear(Color.White);
@@ -234,7 +270,9 @@ namespace Lab6_9
                 default:
                     break;
             }
+            InitMChanges();
 
+            _isNewObj = true;
             _obj.Vertexes = _obj.Vertexes.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             _g.Clear(Color.White);
             DrawObject(_obj);
