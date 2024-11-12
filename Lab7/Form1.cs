@@ -48,13 +48,7 @@ namespace Lab6_9
             InitMChanges();
 
             Tetrahedron(ref _obj, 100);
-            //Icosahedron(ref _obj, 100);
-            //Dodecahedron(ref _obj, 100);
-
             _points = new List<Point3D>();
-            //_points = new List<Point3D>() {new Point3D(0,0,0), new Point3D(100, 0, 0), new Point3D(0, 100, 0), };
-            //RotationFigure(ref _obj, points, Axis.Y, 1);
-
 
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             DrawObject(_obj);
@@ -98,15 +92,15 @@ namespace Lab6_9
 
             foreach (Point3D p in vertexes)
             {
-                _g.DrawRectangle(new Pen(Color.Red), p.X - 1, p.Y - 1, 2, 2);
+                //_g.DrawRectangle(new Pen(Color.Red), p.X - 1, p.Y - 1, 2, 2);
             }
 
             foreach (Face face in _obj.Faces)
             {
                 for (int i = 0; i < face.FaceIndices.Count; i++)
                 {
-                    Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex - 1];
-                    Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex - 1];
+                    Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex-1];
+                    Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex-1];
                     _g.DrawLine(new Pen(Color.Black),
                         p1.X,
                         p1.Y,
