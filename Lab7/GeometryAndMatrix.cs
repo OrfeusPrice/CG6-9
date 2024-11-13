@@ -42,11 +42,6 @@ namespace Lab6_9
                     new float[4] { 0, 0, 0, 1 }
             };
 
-            Point3D center = new Point3D(0, 0, 0);
-            foreach (Point3D p in obj.Vertices)
-                center += p;
-            center /= obj.Vertices.Count;
-
             obj.Vertices = obj.Vertices.Select(p => MultiplyMatrix(RotateMatrix, p)).ToList();
         }
 

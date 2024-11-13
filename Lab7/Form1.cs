@@ -328,6 +328,7 @@ namespace Lab6_9
             { 
                 _points.Clear();
                 _g.Clear(Color.White);
+                _obj = new Object3D();
                 if (_isPerspective)
                 {
                     _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
