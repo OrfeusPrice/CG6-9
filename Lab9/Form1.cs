@@ -32,8 +32,12 @@ namespace Lab6_9
         Bitmap _bm;
         Graphics _g;
 
+        Camera _camera;
+
         List<Point3D> _points;
         Object3D _obj;
+        List<Object3D> _objects = new List<Object3D>();
+        int _countOfObjs;
         public static float[][] MChanges;
 
         bool _isPerspective = true;
@@ -58,8 +62,14 @@ namespace Lab6_9
             Tetrahedron(ref _obj, 100);
             _points = new List<Point3D>();
 
+            _camera = new Camera();
+
+            _countOfObjs = 0;
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
-            DrawObject(_obj);
+            _obj.name = "obj" + _countOfObjs.ToString();
+            _objects.Add(_obj);
+            OBJS_CB.Items.Add(_obj.name);
+            DrawObject(_objects);
         }
 
         public void InitMChanges()
@@ -73,48 +83,51 @@ namespace Lab6_9
             };
         }
 
-        public void DrawObject(Object3D _obj)
+        public void DrawObject(List<Object3D> objects)
         {
-            List<Point3D> vertexes = _obj.Vertices;
-
-            if (_isNewObj)
+            foreach (Object3D _obj in objects)
             {
-                vertexes = vertexes.Select(p => MultiplyMatrix(MChanges, p)).ToList();
-                _isNewObj = false;
-            }
+                List<Point3D> vertexes = _obj.Vertices;
 
-            if (_isPerspective)
-            {
-                _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
-                _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
-            }
-            else
-            {
-                _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
-                _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
-                _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
-            }
-
-            if (_isPerspective) vertexes = vertexes.Select(p => Perspective(p)).ToList();
-            else vertexes = vertexes.Select(p => Axonometric(p)).ToList();
-
-            foreach (Point3D p in vertexes)
-            {
-                //_g.DrawRectangle(new Pen(Color.Red), p.X - 1, p.Y - 1, 2, 2);
-            }
-
-            foreach (Face face in _obj.Faces)
-            {
-                for (int i = 0; i < face.FaceIndices.Count; i++)
+                if (_isNewObj)
                 {
-                    Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex - 1];
-                    Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex - 1];
-                    _g.DrawLine(new Pen(Color.Black),
-                        p1.X,
-                        p1.Y,
-                        p2.X,
-                        p2.Y);
+                    vertexes = vertexes.Select(p => MultiplyMatrix(MChanges, p)).ToList();
+                    _isNewObj = false;
+                }
 
+                if (_isPerspective)
+                {
+                    _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
+                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
+                }
+                else
+                {
+                    _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
+                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
+                    _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
+                }
+
+                if (_isPerspective) vertexes = vertexes.Select(p => Perspective(p)).ToList();
+                else vertexes = vertexes.Select(p => Axonometric(p)).ToList();
+
+                foreach (Point3D p in vertexes)
+                {
+                    //_g.DrawRectangle(new Pen(Color.Red), p.X - 1, p.Y - 1, 2, 2);
+                }
+
+                foreach (Face face in _obj.Faces)
+                {
+                    for (int i = 0; i < face.FaceIndices.Count; i++)
+                    {
+                        Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex - 1];
+                        Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex - 1];
+                        _g.DrawLine(new Pen(Color.Black),
+                            p1.X,
+                            p1.Y,
+                            p2.X,
+                            p2.Y);
+
+                    }
                 }
             }
         }
@@ -159,7 +172,7 @@ namespace Lab6_9
             if (radioButton2.Checked) _isPerspective = false;
 
             _g.Clear(Color.White);
-            DrawObject(_obj);
+            DrawObject(_objects);
             pictureBox.Refresh();
         }
 
@@ -172,7 +185,7 @@ namespace Lab6_9
                 _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, dx, dy, dz)).ToList();
 
                 _g.Clear(Color.White);
-                DrawObject(_obj);
+                DrawObject(_objects);
                 pictureBox.Refresh();
             }
         }
@@ -188,7 +201,7 @@ namespace Lab6_9
                 if (radioButton5.Checked) _obj.Vertices = _obj.Vertices.Select(p => ZRotatePoint(p, angle)).ToList();
 
                 _g.Clear(Color.White);
-                DrawObject(_obj);
+                DrawObject(_objects);
                 pictureBox.Refresh();
             }
 
@@ -203,7 +216,7 @@ namespace Lab6_9
                 _obj.Vertices = _obj.Vertices.Select(p => ScalePoint(p, mx, my, mz)).ToList();
 
                 _g.Clear(Color.White);
-                DrawObject(_obj);
+                DrawObject(_objects);
                 pictureBox.Refresh();
             }
         }
@@ -216,7 +229,7 @@ namespace Lab6_9
             if (radioButton8.Checked) _obj.Vertices = _obj.Vertices.Select(p => YZMirrorPoint(p)).ToList();
 
             _g.Clear(Color.White);
-            DrawObject(_obj);
+            DrawObject(_objects);
             pictureBox.Refresh();
         }
 
@@ -229,7 +242,7 @@ namespace Lab6_9
                 GeometryAndMatrix.Scale(ref _obj, mx, my, mz);
 
                 _g.Clear(Color.White);
-                DrawObject(_obj);
+                DrawObject(_objects);
                 pictureBox.Refresh();
             }
         }
@@ -245,7 +258,7 @@ namespace Lab6_9
                 if (radioButton11.Checked) ZRotate(ref _obj, angle);
 
                 _g.Clear(Color.White);
-                DrawObject(_obj);
+                DrawObject(_objects);
                 pictureBox.Refresh();
             }
         }
@@ -261,7 +274,7 @@ namespace Lab6_9
                 Rotate(ref _obj, new Point3D(x1, y1, z1), new Point3D(x2, y2, z2), angle);
 
                 _g.Clear(Color.White);
-                DrawObject(_obj);
+                DrawObject(_objects);
                 pictureBox.Refresh();
             }
         }
@@ -291,9 +304,13 @@ namespace Lab6_9
             InitMChanges();
 
             _isNewObj = true;
+            _countOfObjs++;
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            _obj.name = "obj" + _countOfObjs.ToString();
+            _objects.Add(_obj);
+            OBJS_CB.Items.Add(_obj.name);
             _g.Clear(Color.White);
-            DrawObject(_obj);
+            DrawObject(_objects);
             pictureBox.Refresh();
         }
 
@@ -310,7 +327,7 @@ namespace Lab6_9
             InitMChanges();
             _isNewObj = true;
             _g.Clear(Color.White);
-            DrawObject(_obj);
+            DrawObject(_objects);
             pictureBox.Refresh();
         }
 
@@ -324,9 +341,13 @@ namespace Lab6_9
 
             InitMChanges();
             _isNewObj = true;
+            _countOfObjs++;
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            _obj.name = "obj" + _countOfObjs.ToString();
+            _objects.Add(_obj);
+            OBJS_CB.Items.Add(_obj.name);
             _g.Clear(Color.White);
-            DrawObject(_obj);
+            DrawObject(_objects);
             pictureBox.Refresh();
         }
 
@@ -400,7 +421,56 @@ namespace Lab6_9
             Graph(ref _obj, f, minx, maxx, miny, maxy, splits);
 
             _g.Clear(Color.White);
-            DrawObject(_obj);
+            DrawObject(_objects);
+            pictureBox.Refresh();
+        }
+
+        private void OBJS_CB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_objects.Count > 0)
+                foreach (var obj in _objects)
+                {
+                    if (OBJS_CB.SelectedItem.ToString() == obj.ToString())
+                    {
+                        _obj = obj;
+                        break;
+                    }
+                }
+        }
+
+        private void DELOBJ_B_Click(object sender, EventArgs e)
+        {
+            if (_objects.Count > 0)
+            {
+                Object3D temp = _objects[0];
+                foreach (var obj in _objects)
+                {
+                    if (OBJS_CB.SelectedItem.ToString() == obj.ToString())
+                    {
+                        temp = obj;
+                        break;
+                    }
+                }
+                OBJS_CB.Items.Remove(temp.ToString());
+                _objects.Remove(temp);
+
+                _g.Clear(Color.White);
+                DrawObject(_objects);
+                pictureBox.Refresh();
+            }
+        }
+
+        private void CLEAROBJS_B_Click(object sender, EventArgs e)
+        {
+            foreach (var obj in _objects)
+            {
+                OBJS_CB.Items.Remove(obj.ToString());
+            }
+
+            _objects.Clear();
+
+            _g.Clear(Color.White);
+            DrawObject(_objects);
             pictureBox.Refresh();
         }
     }

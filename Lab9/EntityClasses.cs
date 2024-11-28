@@ -92,6 +92,7 @@ namespace Lab6_9
         public List<Coordinates> ParameterSpaceVertices;
         public Color color1;
         public Color color2;
+        public string name;
 
         public Object3D()
         {
@@ -102,6 +103,11 @@ namespace Lab6_9
             ParameterSpaceVertices = new List<Coordinates>();
             color1 = Color.FromArgb(35, 35, 35);
             color2 = Color.FromArgb(220, 220, 220);
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
     }
 
