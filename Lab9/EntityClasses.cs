@@ -141,6 +141,20 @@ namespace Lab6_9
             Projection = Projection.Perspective;
         }
 
+        public Point3D View(Point3D p,  Point3D center)
+        {
+            p = XRotatePoint(p, Rotation.X);
+            p = YRotatePoint(p, Rotation.Y);
+            p = ZRotatePoint(p, -Rotation.Z);
+
+            Point3D temp = Location;
+            temp = XRotatePoint(temp, -Rotation.X);
+            temp = YRotatePoint(temp, -Rotation.Y);
+            temp = ZRotatePoint(temp, -Rotation.Z);
+
+            p = TranslatePoint(p, -temp.X, -temp.Y, -temp.Z);
+            return p;
+        }
     }
 }
 

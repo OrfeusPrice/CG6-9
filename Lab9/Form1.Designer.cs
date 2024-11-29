@@ -1470,8 +1470,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
@@ -1584,6 +1582,7 @@
         private System.Windows.Forms.RadioButton Parallel_RB;
         private System.Windows.Forms.Button CamRotateNZ_B;
         private System.Windows.Forms.Button CamRotateZ_B;
+        public System.Windows.Forms.PictureBox pictureBox;
     }
 }
 

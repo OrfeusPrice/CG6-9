@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using static Lab6_9.Polyhedron;
 using static Lab6_9.GeometryAndMatrix;
 using static Lab6_9.SaveLoad;
+using static Lab6_9.Raster;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
@@ -135,20 +136,7 @@ namespace Lab6_9
             };
         }
 
-        public Point3D View(Point3D p, Camera cam, Point3D center)
-        {
-            p = XRotatePoint(p, cam.Rotation.X);
-            p = YRotatePoint(p, cam.Rotation.Y);
-            p = ZRotatePoint(p, -cam.Rotation.Z);
-
-            Point3D temp = cam.Location;
-            temp = XRotatePoint(temp, -cam.Rotation.X);
-            temp = YRotatePoint(temp, -cam.Rotation.Y);
-            temp = ZRotatePoint(temp, -cam.Rotation.Z);
-
-            p = TranslatePoint(p, -temp.X, -temp.Y, -temp.Z);
-            return p;
-        }
+        
 
         public void DrawObjects()
         {
@@ -177,10 +165,10 @@ namespace Lab6_9
                 _isNewObj = false;
             }
 
-            vertexes = vertexes.Select(p => View(p, _camera, center)).ToList();
+            vertexes = vertexes.Select(p => _camera.View(p,  center)).ToList();
 
             int len = 100;
-            List<Point3D> Ox = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(-len, 0, 0) };
+            List<Point3D> Ox = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(len, 0, 0) };
             List<Point3D> Oy = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(0, -len, 0) };
             List<Point3D> Oz = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(0, 0, len) };
             List<Color> colors = new List<Color>() { Color.Red, Color.Green, Color.Blue };
@@ -190,7 +178,7 @@ namespace Lab6_9
                 var axes = axeses[i];
                 for (int j = 0; j < axes.Count; j++)
                 {
-                    axes[j] = View(axes[j], _camera, center);
+                    axes[j] = _camera.View(axes[j], center);
                     switch (_camera.Projection)
                     {
                         case Projection.Perspective: axes[j] = Perspective(axes[j]); break;
@@ -203,7 +191,7 @@ namespace Lab6_9
                 _g.DrawLine(
                                 new Pen(colors[i], 1.5f),
                                 -axes[0].X, axes[0].Y,
-                                -axes[1].X, axes[1].Y
+                                axes[1].X, axes[1].Y
                                 );
             }
 
@@ -241,7 +229,7 @@ namespace Lab6_9
                 if (normal * _camera.ViewVector < 0) continue;
 
                 List<Point3D> points = face.FaceIndices.Select(i => vertexes[i.VertexIndex - 1]).ToList();
-                Rasterization(points, obj.color1, obj.color2, minZ, maxZ); //Закомментировать, чтобы увидеть отсечение нелицевых граней
+                Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ); //Закомментировать, чтобы увидеть отсечение нелицевых граней
 
                 //Закомментировать, чтобы спрятать рёбра, тут начало
                 for (int i = 0; i < face.FaceIndices.Count; i++)
@@ -259,149 +247,7 @@ namespace Lab6_9
             }
         }
 
-        public void Triangulate(ref Object3D obj)
-        {
-            List<Face> faces = new List<Face>();
-            foreach (Face f in obj.Faces)
-            {
-                if (f.FaceIndices.Count == 3)
-                {
-                    faces.Add(f);
-                    continue;
-                }
-
-                for (int i = 2; i < f.FaceIndices.Count; i++)
-                {
-                    Face newf = new Face();
-                    newf.FaceIndices.Add(f.FaceIndices[0]);
-                    newf.FaceIndices.Add(f.FaceIndices[i - 1]);
-                    newf.FaceIndices.Add(f.FaceIndices[i]);
-                    faces.Add(newf);
-                }
-
-            }
-
-            obj.Faces = faces;
-        }
-
-        int Interpolation(float x0, float y0, float x1, float y1, float x)
-        {
-            return (int)Math.Round(y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0));
-        }
-
-        void Rasterization(List<Point3D> points, Color color1, Color color2, float minZ, float maxZ)
-        {
-            points = points.Select(p => new Point3D((float)Math.Round(p.X), (float)Math.Round(p.Y), p.Z, p.W)).ToList();
-            points.Sort((a, b) => a.Y == b.Y ? 0 : (a.Y < b.Y ? -1 : 1));
-
-            List<Color> colors = points.Select(p => Color.FromArgb(Interpolation(minZ, color1.R, maxZ, color2.R, p.Z),
-                                                                    Interpolation(minZ, color1.G, maxZ, color2.G, p.Z),
-                                                                    Interpolation(minZ, color1.B, maxZ, color2.B, p.Z))).ToList();
-
-            float inc12, inc13, inc23;
-
-            if (points[0].Y == points[1].Y)
-                inc12 = 0;
-            else
-                inc12 = (float)(points[1].X - points[0].X) / (points[1].Y - points[0].Y);
-
-            if (points[0].Y == points[2].Y)
-                inc13 = 0;
-            else
-                inc13 = (float)(points[2].X - points[0].X) / (points[2].Y - points[0].Y);
-
-            if (points[1].Y == points[2].Y)
-                inc23 = 0;
-            else
-                inc23 = (float)(points[2].X - points[1].X) / (points[2].Y - points[1].Y);
-
-            float x1 = points[0].X;
-            float x2 = x1;
-
-            float _inc13 = inc13;
-
-            if (inc13 > inc12)
-                (inc13, inc12) = (inc12, inc13);
-
-            int left, right;
-            (left, right) = points[1].X < Interpolation(points[0].Y, points[0].X, points[2].Y, points[2].X, points[1].Y) ? (1, 2) : (2, 1);
-
-            for (int i = (int)(points[0].Y); i < (int)(points[1].Y); i++)
-            {
-                int cLeftR = Interpolation(points[0].Y, colors[0].R, points[left].Y, colors[left].R, i);
-                int cLeftG = Interpolation(points[0].Y, colors[0].G, points[left].Y, colors[left].G, i);
-                int cLeftB = Interpolation(points[0].Y, colors[0].B, points[left].Y, colors[left].B, i);
-
-                int cRightR = Interpolation(points[0].Y, colors[0].R, points[right].Y, colors[right].R, i);
-                int cRightG = Interpolation(points[0].Y, colors[0].G, points[right].Y, colors[right].G, i);
-                int cRightB = Interpolation(points[0].Y, colors[0].B, points[right].Y, colors[right].B, i);
-
-                int zLeft = Interpolation(points[0].Y, points[0].Z, points[left].Y, points[left].Z, i);
-                int zRight = Interpolation(points[0].Y, points[0].Z, points[right].Y, points[right].Z, i);
-
-                for (int j = (int)x1; j < (int)x2; j++)
-                {
-                    int R = Interpolation((int)x1, cLeftR, (int)x2, cRightR, j);
-                    int G = Interpolation((int)x1, cLeftG, (int)x2, cRightG, j);
-                    int B = Interpolation((int)x1, cLeftB, (int)x2, cRightB, j);
-
-                    int z = Interpolation((int)x1, zLeft, (int)x2, zRight, j);
-                    if (pictureBox.Width / 2 + j > pictureBox.Width - 1 || pictureBox.Width / 2 + j < 0 || pictureBox.Height / 2 + i > pictureBox.Height - 1 || pictureBox.Height / 2 + i < 0) continue;
-                    if (_ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
-                    {
-                        _ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        _bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
-                    }
-                }
-                x1 += inc13;
-                x2 += inc12;
-            }
-
-            if (points[0].Y == points[1].Y)
-            {
-                x1 = Math.Min(points[0].X, points[1].X);
-                x2 = Math.Max(points[0].X, points[1].X);
-            }
-
-            if (_inc13 < inc23)
-                (_inc13, inc23) = (inc23, _inc13);
-
-            (left, right) = Interpolation(points[0].Y, points[0].X, points[2].Y, points[2].X, points[1].Y) < points[1].X ? (0, 1) : (1, 0);
-
-            for (int i = (int)(points[1].Y); i < (int)(points[2].Y); i++)
-            {
-                int cLeftR = Interpolation(points[2].Y, colors[2].R, points[left].Y, colors[left].R, i);
-                int cLeftG = Interpolation(points[2].Y, colors[2].G, points[left].Y, colors[left].G, i);
-                int cLeftB = Interpolation(points[2].Y, colors[2].B, points[left].Y, colors[left].B, i);
-
-                int cRightR = Interpolation(points[2].Y, colors[2].R, points[right].Y, colors[right].R, i);
-                int cRightG = Interpolation(points[2].Y, colors[2].G, points[right].Y, colors[right].G, i);
-                int cRightB = Interpolation(points[2].Y, colors[2].B, points[right].Y, colors[right].B, i);
-
-                int zLeft = Interpolation(points[2].Y, points[2].Z, points[left].Y, points[left].Z, i);
-                int zRight = Interpolation(points[2].Y, points[2].Z, points[right].Y, points[right].Z, i);
-
-                for (int j = (int)x1; j < (int)x2; j++)
-                {
-                    int R = Interpolation((int)x1, cLeftR, (int)x2, cRightR, j);
-                    int G = Interpolation((int)x1, cLeftG, (int)x2, cRightG, j);
-                    int B = Interpolation((int)x1, cLeftB, (int)x2, cRightB, j);
-
-                    int z = Interpolation((int)x1, zLeft, (int)x2, zRight, j);
-                    if (pictureBox.Width / 2 + j > pictureBox.Width - 1 || pictureBox.Width / 2 + j < 0 || pictureBox.Height / 2 + i > pictureBox.Height - 1 || pictureBox.Height / 2 + i < 0) continue;
-                    if (_ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
-                    {
-                        _ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        _bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
-                    }
-                }
-                x1 += _inc13;
-                x2 += inc23;
-            }
-
-        }
+        
 
         public Point3D Perspective(Point3D p)
         {
@@ -768,8 +614,6 @@ namespace Lab6_9
         private void CameraRotateY_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.Y += angle;
-            //_camera.Location.Z = (float)Math.Cos((_camera.Rotation.Y / 180D) * Math.PI) * 100;
-            //_camera.Location.X = (float)Math.Sin((_camera.Rotation.Y / 180D) * Math.PI) * 100;
             _g.Clear(Color.White);
             DrawObjects();
             pictureBox.Refresh();
@@ -777,8 +621,6 @@ namespace Lab6_9
         private void CamRotateX_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.X += angle;
-            //_camera.Location.Y = (float)Math.Sin((_camera.Rotation.X / 180D) * Math.PI) * 100;
-            //_camera.Location.Z = (float)Math.Cos((_camera.Rotation.X / 180D) * Math.PI) * 100;
             _g.Clear(Color.White);
             DrawObjects();
             pictureBox.Refresh();
@@ -787,8 +629,6 @@ namespace Lab6_9
         private void CamRotateZ_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.Z += angle;
-            //_camera.Location.Y = (float)Math.Cos((_camera.Rotation.Z / 180D) * Math.PI) * 100;
-            //_camera.Location.X = (float)Math.Sin((_camera.Rotation.Z / 180D) * Math.PI) * 100;
             _g.Clear(Color.White);
             DrawObjects();
             pictureBox.Refresh();
@@ -797,8 +637,6 @@ namespace Lab6_9
         private void CamRotateNY_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.Y -= angle;
-            //_camera.Location.Z = (float)Math.Cos((_camera.Rotation.Y / 180D) * Math.PI) * 100;
-            //_camera.Location.X = (float)Math.Sin((_camera.Rotation.Y / 180D) * Math.PI) * 100;
             _g.Clear(Color.White);
             DrawObjects();
             pictureBox.Refresh();
@@ -807,8 +645,6 @@ namespace Lab6_9
         private void CamRotateNX_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.X -= angle;
-            //_camera.Location.Y = (float)Math.Sin((_camera.Rotation.X / 180D) * Math.PI) * 100;
-            //_camera.Location.Z = (float)Math.Cos((_camera.Rotation.X / 180D) * Math.PI) * 100;
             _g.Clear(Color.White);
             DrawObjects();
             pictureBox.Refresh();
@@ -817,8 +653,6 @@ namespace Lab6_9
         private void CamRotateNZ_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.Z -= angle;
-            //_camera.Location.Y = (float)Math.Cos((_camera.Rotation.Z / 180D) * Math.PI) * 100;
-            //_camera.Location.X = (float)Math.Sin((_camera.Rotation.Z / 180D) * Math.PI) * 100;
             _g.Clear(Color.White);
             DrawObjects();
             pictureBox.Refresh();
