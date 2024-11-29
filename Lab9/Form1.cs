@@ -169,7 +169,7 @@ namespace Lab6_9
 
             int len = 100;
             List<Point3D> Ox = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(len, 0, 0) };
-            List<Point3D> Oy = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(0, -len, 0) };
+            List<Point3D> Oy = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(0, len, 0) };
             List<Point3D> Oz = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(0, 0, len) };
             List<Color> colors = new List<Color>() { Color.Red, Color.Green, Color.Blue };
             var axeses = new List<List<Point3D>>() { Ox, Oy, Oz };
