@@ -190,7 +190,7 @@ namespace Lab6_9
 
                 _g.DrawLine(
                                 new Pen(colors[i], 1.5f),
-                                -axes[0].X, axes[0].Y,
+                                axes[0].X, axes[0].Y,
                                 axes[1].X, axes[1].Y
                                 );
             }
@@ -660,9 +660,70 @@ namespace Lab6_9
 
         private void SetCamStart_B_Click(object sender, EventArgs e)
         {
-            _camera = new Camera();
-            _camera.Location = new Point3D(0, 0, 0);
             _camera.Rotation = new Point3D(0, 0, 0);
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void XMove_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location.X += move;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void NXMove_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location.X -= move;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void YMove_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location.Y += move;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void NYMove_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location.Y -= move;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void ZMove_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location.Z += move;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void NZMove_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location.Z -= move;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void XYZSetStart_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location = new Point3D(0, 0, 0);
 
             _g.Clear(Color.White);
             DrawObjects();

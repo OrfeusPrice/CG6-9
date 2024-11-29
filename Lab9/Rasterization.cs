@@ -103,7 +103,9 @@ namespace Lab6_9
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
                         //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
+                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
+                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
+                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
                     }
                 }
                 x1 += inc13;
@@ -144,7 +146,9 @@ namespace Lab6_9
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
                         //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
+                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
+                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
+                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
                     }
                 }
                 x1 += _inc13;
