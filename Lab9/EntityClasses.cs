@@ -137,15 +137,8 @@ namespace Lab6_9
         {
             Location = new Point3D(0, 0, 0);
             Rotation = new Point3D(0, 0, 0);
-            ViewVector = new Point3D(0, 0, -1);
+            ViewVector = new Point3D(0, 0, -10);
             Projection = Projection.Perspective;
-        }
-
-        public void SetViewPoint(Point3D viewPoint)
-        {
-            Point3D temp = viewPoint - Location;
-            temp /= (float)Math.Sqrt(Math.Pow(temp.X, 2) + Math.Pow(temp.Y, 2) + Math.Pow(temp.Z, 2));
-            ViewVector = temp;
         }
 
     }

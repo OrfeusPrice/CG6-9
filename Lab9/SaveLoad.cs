@@ -39,23 +39,28 @@ namespace Lab6_9
             foreach (string s in file)
             {
                 if (s == "" || s.Substring(0, 1) == "#" || s.Substring(0, 1) == "o" || (s.Length == 1 && s[0] != 'v' && s[0] != 'f')) continue;
-
-                if (s.Substring(0, 2) == "vt") //Текстурные координаты
+                
+                if (s.Substring(0, 2) == "vt")
                 {
                     float[] parsed = s.Substring(3, s.Length - 3).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => float.Parse(x)).ToArray();
                     res.TextureCoordinates.Add(new Coordinates(parsed[0], parsed.Length < 2 ? 0 : parsed[1], parsed.Length < 3 ? 0 : parsed[2]));
                 }
-                else if (s.Substring(0, 2) == "vn") //Нормали
+                else if (s.Substring(0, 2) == "vn")
                 {
                     float[] parsed = s.Substring(3, s.Length - 3).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => float.Parse(x)).ToArray();
                     res.Normals.Add(new Point3D(parsed[0], parsed[1], parsed[2]));
                 }
-                else if (s.Substring(0, 1) == "v") //Список вершин
+                else if (s.Substring(0, 2) == "vp")
+                {
+                    float[] parsed = s.Substring(3, s.Length - 3).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => float.Parse(x)).ToArray();
+                    res.ParameterSpaceVertices.Add(new Coordinates(parsed[0], parsed.Length < 2 ? 0 : parsed[1], parsed.Length < 3 ? 0 : parsed[2]));
+                }
+                else if (s.Substring(0, 2) == "v ")
                 {
                     float[] parsed = s.Substring(2, s.Length - 2).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => float.Parse(x)).ToArray();
                     res.Vertices.Add(new Point3D(parsed[0], parsed[1], parsed[2], parsed.Length == 3 ? 1 : parsed[3]));
                 }
-                else if (s.Substring(0, 1) == "f") //Список поверхности сторон
+                else if (s.Substring(0, 2) == "f ")
                 {
                     string[] parsed = s.Substring(2, s.Length - 2).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
                     Face f = new Face();
@@ -75,14 +80,15 @@ namespace Lab6_9
                     }
                     res.Faces.Add(f);
                 }
-
+                
             }
-            //Point3D center = new Point3D(0, 0, 0);
-            //foreach (Point3D p in res.Vertices)
-            //    center += p;
-            //center /= res.Vertices.Count;
 
-            //res.Vertices = res.Vertices.Select(p => p - center).ToList();
+            Point3D center = new Point3D(0, 0, 0);
+            foreach (Point3D p in res.Vertices)
+                center += p;
+            center /= res.Vertices.Count;
+
+            res.Vertices = res.Vertices.Select(p => p - center).ToList();
 
             return res;
         }
