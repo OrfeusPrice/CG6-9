@@ -92,6 +92,7 @@ namespace Lab6_9
         public List<Coordinates> ParameterSpaceVertices;
         public Color color1;
         public Color color2;
+        public string name;
 
         public Object3D()
         {
@@ -102,6 +103,11 @@ namespace Lab6_9
             ParameterSpaceVertices = new List<Coordinates>();
             color1 = Color.FromArgb(35, 35, 35);
             color2 = Color.FromArgb(220, 220, 220);
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
     }
 
@@ -131,17 +137,24 @@ namespace Lab6_9
         {
             Location = new Point3D(0, 0, 0);
             Rotation = new Point3D(0, 0, 0);
-            ViewVector = new Point3D(0, 0, -1);
+            ViewVector = new Point3D(0, 0, -10);
             Projection = Projection.Perspective;
         }
 
-        public void SetViewPoint(Point3D viewPoint)
+        public Point3D View(Point3D p,  Point3D center)
         {
-            Point3D temp = viewPoint - Location;
-            temp /= (float)Math.Sqrt(Math.Pow(temp.X, 2) + Math.Pow(temp.Y, 2) + Math.Pow(temp.Z, 2));
-            ViewVector = temp;
-        }
+            p = XRotatePoint(p, Rotation.X);
+            p = YRotatePoint(p, Rotation.Y);
+            p = ZRotatePoint(p, -Rotation.Z);
 
+            Point3D temp = Location;
+            temp = XRotatePoint(temp, -Rotation.X);
+            temp = YRotatePoint(temp, -Rotation.Y);
+            temp = ZRotatePoint(temp, -Rotation.Z);
+
+            p = TranslatePoint(p, -temp.X, -temp.Y, -temp.Z);
+            return p;
+        }
     }
 }
 
