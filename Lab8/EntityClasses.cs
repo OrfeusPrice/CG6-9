@@ -137,7 +137,7 @@ namespace Lab6_9
         {
             Location = new Point3D(0, 0, 0);
             Rotation = new Point3D(0, 0, 0);
-            ViewVector = new Point3D(0, 0, -10);
+            ViewVector = new Point3D(0, 0, -1);
             Projection = Projection.Perspective;
         }
 

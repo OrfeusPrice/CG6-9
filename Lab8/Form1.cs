@@ -50,6 +50,9 @@ namespace Lab6_9
         public static bool _isNewObj = false;
         public static int _tCount;
 
+        public bool isDelEdges;
+        public bool isRaster;
+
         public Form1()
         {
             InitializeComponent();
@@ -65,8 +68,11 @@ namespace Lab6_9
             _tCount = 0;
             InitMChanges();
 
-            angle = 5;
-            move = 5;
+            isDelEdges = true;
+            isRaster = true;
+
+            angle = 1;
+            move = 1;
             _camera = new Camera();
             _camera.Location = new Point3D(0, 0, 0);
             _camera.Rotation = new Point3D(0, 0, 0);
@@ -136,7 +142,7 @@ namespace Lab6_9
             };
         }
 
-        
+
 
         public void DrawObjects()
         {
@@ -165,7 +171,7 @@ namespace Lab6_9
                 _isNewObj = false;
             }
 
-            vertexes = vertexes.Select(p => _camera.View(p,  center)).ToList();
+            vertexes = vertexes.Select(p => _camera.View(p, center)).ToList();
 
             int len = 100;
             List<Point3D> Ox = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(len, 0, 0) };
@@ -229,25 +235,24 @@ namespace Lab6_9
                 if (normal * _camera.ViewVector < 0) continue;
 
                 List<Point3D> points = face.FaceIndices.Select(i => vertexes[i.VertexIndex - 1]).ToList();
-                Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ); //Закомментировать, чтобы увидеть отсечение нелицевых граней
+                if (isRaster) Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ);
 
-                //Закомментировать, чтобы спрятать рёбра, тут начало
-                for (int i = 0; i < face.FaceIndices.Count; i++)
-                {
-                    Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex - 1];
-                    Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex - 1];
-                    _g.DrawLine(new Pen(Color.Black),
-                        p1.X,
-                        p1.Y,
-                        p2.X,
-                        p2.Y);
-                }
-                //Вот тут конец
+                if (isDelEdges)
+                    for (int i = 0; i < face.FaceIndices.Count; i++)
+                    {
+                        Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex - 1];
+                        Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex - 1];
+                        _g.DrawLine(new Pen(Color.Black),
+                            p1.X,
+                            p1.Y,
+                            p2.X,
+                            p2.Y);
+                    }
 
             }
         }
 
-        
+
 
         public Point3D Perspective(Point3D p)
         {
@@ -724,6 +729,24 @@ namespace Lab6_9
         private void XYZSetStart_B_Click(object sender, EventArgs e)
         {
             _camera.Location = new Point3D(0, 0, 0);
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void Edges_B_Click(object sender, EventArgs e)
+        {
+            isDelEdges = !isDelEdges;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void Zbuffer_B_Click(object sender, EventArgs e)
+        {
+            isRaster = !isRaster;
 
             _g.Clear(Color.White);
             DrawObjects();
