@@ -146,6 +146,14 @@ namespace Lab6_9
 
         public void DrawObjects()
         {
+            XCamRot.Text = _camera.Rotation.X.ToString();
+            YCamRot.Text = _camera.Rotation.Y.ToString();
+            ZCamRot.Text = _camera.Rotation.Z.ToString();
+
+            XCamLoc.Text = _camera.Location.X.ToString();
+            YCamLoc.Text = _camera.Location.Y.ToString();
+            ZCamLoc.Text = _camera.Location.Z.ToString();
+
             for (int i = 0; i < pictureBox.Width; i++)
                 for (int j = 0; j < pictureBox.Height; j++)
                     _ZBuffer[i, j] = float.MaxValue;
@@ -752,6 +760,42 @@ namespace Lab6_9
             DrawObjects();
             pictureBox.Refresh();
         }
+
+        private void SetVV_B_Click(object sender, EventArgs e)
+        {
+            _camera.ViewVector = new Point3D(int.Parse(XVV.Text), int.Parse(YVV.Text), int.Parse(ZVV.Text));
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void CamAngle_B_Click(object sender, EventArgs e)
+        {
+            angle = int.Parse(CamAngleNum.Text);
+        }
+
+        private void CamStep_B_Click(object sender, EventArgs e)
+        {
+            move = int.Parse(CamStepNam.Text);
+        }
+
+        private void SetCameraRotation_B_Click(object sender, EventArgs e)
+        {
+            _camera.Rotation = new Point3D(int.Parse(XCamRot.Text), int.Parse(YCamRot.Text), int.Parse(ZCamRot.Text));
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void SetCameraLocation_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location = new Point3D(int.Parse(XCamLoc.Text), int.Parse(YCamLoc.Text), int.Parse(ZCamLoc.Text));
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
     }
 }
-
