@@ -50,6 +50,9 @@ namespace Lab6_9
         public static bool _isNewObj = false;
         public static int _tCount;
 
+        public bool isDelEdges;
+        public bool isRaster;
+
         public Form1()
         {
             InitializeComponent();
@@ -65,8 +68,11 @@ namespace Lab6_9
             _tCount = 0;
             InitMChanges();
 
-            angle = 5;
-            move = 5;
+            isDelEdges = true;
+            isRaster = true;
+
+            angle = 1;
+            move = 1;
             _camera = new Camera();
             _camera.Location = new Point3D(0, 0, 0);
             _camera.Rotation = new Point3D(0, 0, 0);
@@ -76,43 +82,43 @@ namespace Lab6_9
             _countOfObjs = 0;
 
             //Hexahedron(ref _obj, 100);
-            _obj = LoadObj("cube.obj");
-            _points = new List<Point3D>();
-            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 75, 0, 0)).ToList();
-            GeometryAndMatrix.Scale(ref _obj, 30, 30, 30);
-            _obj.color1 = Color.Red;
-            _obj.color2 = Color.Blue;
-            _obj.name = "obj" + _countOfObjs++.ToString();
-            _objects.Add(_obj);
-            Triangulate(ref _obj);
-            OBJS_CB.Items.Add(_obj.name);
+            //_obj = LoadObj("cube.obj");
+            //_points = new List<Point3D>();
+            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 75, 0, 0)).ToList();
+            //GeometryAndMatrix.Scale(ref _obj, 30, 30, 30);
+            //_obj.color1 = Color.Red;
+            //_obj.color2 = Color.Blue;
+            //_obj.name = "obj" + _countOfObjs++.ToString();
+            //_objects.Add(_obj);
+            //Triangulate(ref _obj);
+            //OBJS_CB.Items.Add(_obj.name);
 
-            _obj = LoadObj("cube.obj");
-            _points = new List<Point3D>();
-            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 75)).ToList();
-            GeometryAndMatrix.Scale(ref _obj, 30, 30, 30);
-            _obj.color1 = Color.Pink;
-            _obj.color2 = Color.Violet;
-            _obj.name = "obj" + _countOfObjs++.ToString();
-            _objects.Add(_obj);
-            Triangulate(ref _obj);
-            OBJS_CB.Items.Add(_obj.name);
+            //_obj = LoadObj("cube.obj");
+            //_points = new List<Point3D>();
+            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 75)).ToList();
+            //GeometryAndMatrix.Scale(ref _obj, 30, 30, 30);
+            //_obj.color1 = Color.Pink;
+            //_obj.color2 = Color.Violet;
+            //_obj.name = "obj" + _countOfObjs++.ToString();
+            //_objects.Add(_obj);
+            //Triangulate(ref _obj);
+            //OBJS_CB.Items.Add(_obj.name);
 
-            _obj = LoadObj("sphere.obj");
-            _points = new List<Point3D>();
-            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, -75, 0, 0)).ToList();
-            GeometryAndMatrix.Scale(ref _obj, 30, 30, 30);
-            _obj.color1 = Color.Yellow;
-            _obj.color2 = Color.Green;
-            _obj.name = "obj" + _countOfObjs++.ToString();
-            _objects.Add(_obj);
-            Triangulate(ref _obj);
-            OBJS_CB.Items.Add(_obj.name);
+            //_obj = LoadObj("sphere.obj");
+            //_points = new List<Point3D>();
+            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, -75, 0, 0)).ToList();
+            //GeometryAndMatrix.Scale(ref _obj, 30, 30, 30);
+            //_obj.color1 = Color.Yellow;
+            //_obj.color2 = Color.Green;
+            //_obj.name = "obj" + _countOfObjs++.ToString();
+            //_objects.Add(_obj);
+            //Triangulate(ref _obj);
+            //OBJS_CB.Items.Add(_obj.name);
 
             _obj = LoadObj("teapot.obj");
             _points = new List<Point3D>();
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
-            GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
+            GeometryAndMatrix.Scale(ref _obj, 120, 120, 120);
             _obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, 180)).ToList();
             _obj.color1 = Color.Coral;
             _obj.color2 = Color.LightGoldenrodYellow;
@@ -136,10 +142,18 @@ namespace Lab6_9
             };
         }
 
-        
+
 
         public void DrawObjects()
         {
+            XCamRot.Text = _camera.Rotation.X.ToString();
+            YCamRot.Text = _camera.Rotation.Y.ToString();
+            ZCamRot.Text = _camera.Rotation.Z.ToString();
+
+            XCamLoc.Text = _camera.Location.X.ToString();
+            YCamLoc.Text = _camera.Location.Y.ToString();
+            ZCamLoc.Text = _camera.Location.Z.ToString();
+
             for (int i = 0; i < pictureBox.Width; i++)
                 for (int j = 0; j < pictureBox.Height; j++)
                     _ZBuffer[i, j] = float.MaxValue;
@@ -165,7 +179,7 @@ namespace Lab6_9
                 _isNewObj = false;
             }
 
-            vertexes = vertexes.Select(p => _camera.View(p,  center)).ToList();
+            vertexes = vertexes.Select(p => _camera.View(p, center)).ToList();
 
             int len = 100;
             List<Point3D> Ox = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(len, 0, 0) };
@@ -229,25 +243,24 @@ namespace Lab6_9
                 if (normal * _camera.ViewVector < 0) continue;
 
                 List<Point3D> points = face.FaceIndices.Select(i => vertexes[i.VertexIndex - 1]).ToList();
-                Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ); //Закомментировать, чтобы увидеть отсечение нелицевых граней
+                if (isRaster) Rasterization(points, _ZBuffer, pictureBox, _bm, new LightSource(new Point3D(0,0,-10), Color.LightSalmon, 0.02f));
 
-                //Закомментировать, чтобы спрятать рёбра, тут начало
-                for (int i = 0; i < face.FaceIndices.Count; i++)
-                {
-                    Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex - 1];
-                    Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex - 1];
-                    _g.DrawLine(new Pen(Color.Black),
-                        p1.X,
-                        p1.Y,
-                        p2.X,
-                        p2.Y);
-                }
-                //Вот тут конец
+                if (isDelEdges)
+                    for (int i = 0; i < face.FaceIndices.Count; i++)
+                    {
+                        Point3D p1 = vertexes[face.FaceIndices[i].VertexIndex - 1];
+                        Point3D p2 = vertexes[face.FaceIndices[(i + 1) % face.FaceIndices.Count].VertexIndex - 1];
+                        _g.DrawLine(new Pen(Color.Black),
+                            p1.X,
+                            p1.Y,
+                            p2.X,
+                            p2.Y);
+                    }
 
             }
         }
 
-        
+
 
         public Point3D Perspective(Point3D p)
         {
@@ -729,6 +742,60 @@ namespace Lab6_9
             DrawObjects();
             pictureBox.Refresh();
         }
+
+        private void Edges_B_Click(object sender, EventArgs e)
+        {
+            isDelEdges = !isDelEdges;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void Zbuffer_B_Click(object sender, EventArgs e)
+        {
+            isRaster = !isRaster;
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void SetVV_B_Click(object sender, EventArgs e)
+        {
+            _camera.ViewVector = new Point3D(int.Parse(XVV.Text), int.Parse(YVV.Text), int.Parse(ZVV.Text));
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void CamAngle_B_Click(object sender, EventArgs e)
+        {
+            angle = int.Parse(CamAngleNum.Text);
+        }
+
+        private void CamStep_B_Click(object sender, EventArgs e)
+        {
+            move = int.Parse(CamStepNam.Text);
+        }
+
+        private void SetCameraRotation_B_Click(object sender, EventArgs e)
+        {
+            _camera.Rotation = new Point3D(int.Parse(XCamRot.Text), int.Parse(YCamRot.Text), int.Parse(ZCamRot.Text));
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
+        private void SetCameraLocation_B_Click(object sender, EventArgs e)
+        {
+            _camera.Location = new Point3D(int.Parse(XCamLoc.Text), int.Parse(YCamLoc.Text), int.Parse(ZCamLoc.Text));
+
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
     }
 }
-

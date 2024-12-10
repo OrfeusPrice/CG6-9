@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Lab6_9.Form1;
 
 namespace Lab6_9
 {
     internal class Raster
     {
+        // Треангуляция объекта
         public static void Triangulate(ref Object3D obj)
         {
             List<Face> faces = new List<Face>();
@@ -30,28 +28,31 @@ namespace Lab6_9
                     newf.FaceIndices.Add(f.FaceIndices[i]);
                     faces.Add(newf);
                 }
-
             }
 
             obj.Faces = faces;
         }
 
+        // Интерполяция для целых чисел
         public static int Interpolation(float x0, float y0, float x1, float y1, float x)
         {
             return (int)Math.Round(y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0));
         }
 
-        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, Color color1, Color color2, float minZ, float maxZ)
+        // Метод растеризации с шейдингом Гуро
+        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, LightSource lightSource)
         {
             points = points.Select(p => new Point3D((float)Math.Round(p.X), (float)Math.Round(p.Y), p.Z, p.W)).ToList();
             points.Sort((a, b) => a.Y == b.Y ? 0 : (a.Y < b.Y ? -1 : 1));
 
-            List<Color> colors = points.Select(p => Color.FromArgb(Interpolation(minZ, color1.R, maxZ, color2.R, p.Z),
-                                                                    Interpolation(minZ, color1.G, maxZ, color2.G, p.Z),
-                                                                    Interpolation(minZ, color1.B, maxZ, color2.B, p.Z))).ToList();
+            
+
+            // Вычисление цвета для каждой вершины с использованием модели Ламберта
+            List<Color> colors = points.Select(p => CalculateLambertColor(p, lightSource)).ToList();
 
             float inc12, inc13, inc23;
 
+            // Интерполяция для цветов
             if (points[0].Y == points[1].Y)
                 inc12 = 0;
             else
@@ -102,10 +103,7 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
-                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
-                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
+                        bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
                     }
                 }
                 x1 += inc13;
@@ -145,16 +143,45 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
-                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
-                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
+                        bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
                     }
                 }
                 x1 += _inc13;
                 x2 += inc23;
             }
+        }
 
+        // Функция для расчета цвета по модели Ламберта
+        public static Color CalculateLambertColor(Point3D vertex, LightSource lightSource)
+        {
+            // Вычисление угла между нормалью и направлением на источник света
+            float dotProduct = vertex.X * lightSource.Direction.X +
+                               vertex.Y * lightSource.Direction.Y +
+                               vertex.Z * lightSource.Direction.Z;
+
+            // Ограничиваем результат в диапазоне [0, 1] (чтобы избежать отрицательных значений)
+            float intensity = Math.Max(0, dotProduct);  // Интенсивность диффузного отражения
+
+            // Моделируем диффузное отражение
+            int R = (int)(lightSource.Color.R * lightSource.Intensity * intensity);
+            int G = (int)(lightSource.Color.G * lightSource.Intensity * intensity);
+            int B = (int)(lightSource.Color.B * lightSource.Intensity * intensity);
+
+            // Ограничиваем значения для цвета (в пределах 0-255)
+            R = Math.Min(255, Math.Max(0, R));
+            G = Math.Min(255, Math.Max(0, G));
+            B = Math.Min(255, Math.Max(0, B));
+
+            return Color.FromArgb(R, G, B);
+        }
+
+
+        // Функция для расчета нормали для вершины (для примера, если нормали отсутствуют)
+        public static Point3D CalculateNormalForVertex(Point3D vertex)
+        {
+            // Предположим, что вы вычисляете нормаль, основываясь на смежных вершинах
+            // Это упрощенный пример, нормали лучше заранее вычислять в процессе построения объекта
+            return new Point3D(0, 0, 1);  // Возвращаем простую нормаль по оси Z для примера
         }
     }
 }
