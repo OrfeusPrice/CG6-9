@@ -84,8 +84,8 @@ namespace Lab6_9
             //Hexahedron(ref _obj, 100);
             //_obj = LoadObj("cube.obj");
             //_points = new List<Point3D>();
-            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 75, 0, 0)).ToList();
-            //GeometryAndMatrix.Scale(ref _obj, 30, 30, 30);
+            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            //GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
             //_obj.color1 = Color.Red;
             //_obj.color2 = Color.Blue;
             //_obj.name = "obj" + _countOfObjs++.ToString();
@@ -104,28 +104,28 @@ namespace Lab6_9
             //Triangulate(ref _obj);
             //OBJS_CB.Items.Add(_obj.name);
 
-            //_obj = LoadObj("sphere.obj");
-            //_points = new List<Point3D>();
-            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, -75, 0, 0)).ToList();
-            //GeometryAndMatrix.Scale(ref _obj, 30, 30, 30);
-            //_obj.color1 = Color.Yellow;
-            //_obj.color2 = Color.Green;
-            //_obj.name = "obj" + _countOfObjs++.ToString();
-            //_objects.Add(_obj);
-            //Triangulate(ref _obj);
-            //OBJS_CB.Items.Add(_obj.name);
-
-            _obj = LoadObj("teapot.obj");
+            _obj = LoadObj("sphere.obj");
             _points = new List<Point3D>();
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
-            GeometryAndMatrix.Scale(ref _obj, 120, 120, 120);
-            _obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, 180)).ToList();
-            _obj.color1 = Color.Coral;
-            _obj.color2 = Color.LightGoldenrodYellow;
+            GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
+            _obj.color1 = Color.Yellow;
+            _obj.color2 = Color.Green;
             _obj.name = "obj" + _countOfObjs++.ToString();
             _objects.Add(_obj);
             Triangulate(ref _obj);
             OBJS_CB.Items.Add(_obj.name);
+
+            //_obj = LoadObj("teapot.obj");
+            //_points = new List<Point3D>();
+            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            //GeometryAndMatrix.Scale(ref _obj, 120, 120, 120);
+            //_obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, 180)).ToList();
+            //_obj.color1 = Color.Coral;
+            //_obj.color2 = Color.LightGoldenrodYellow;
+            //_obj.name = "obj" + _countOfObjs++.ToString();
+            //_objects.Add(_obj);
+            //Triangulate(ref _obj);
+            //OBJS_CB.Items.Add(_obj.name);
 
 
             DrawObjects();
@@ -243,8 +243,12 @@ namespace Lab6_9
                 if (normal * _camera.ViewVector < 0) continue;
 
                 List<Point3D> points = face.FaceIndices.Select(i => vertexes[i.VertexIndex - 1]).ToList();
-                if (isRaster) Rasterization(points, _ZBuffer, pictureBox, _bm, new LightSource(new Point3D(0,0,-10), Color.LightSalmon, 0.02f));
-
+                if (isRaster)
+                {
+                    //Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ);
+                    Guro.Rasterization(points, _ZBuffer, pictureBox, _bm, new LightSource(new Point3D(0, 0, -10), Color.LightSkyBlue, 0.02f));
+                                       
+                }
                 if (isDelEdges)
                     for (int i = 0; i < face.FaceIndices.Count; i++)
                     {

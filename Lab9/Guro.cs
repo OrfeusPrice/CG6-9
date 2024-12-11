@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Lab6_9.Form1;
 
 namespace Lab6_9
 {
-    internal class Raster
+    internal class Guro
     {
+        // Треангуляция объекта
         public static void Triangulate(ref Object3D obj)
         {
             List<Face> faces = new List<Face>();
@@ -30,28 +30,68 @@ namespace Lab6_9
                     newf.FaceIndices.Add(f.FaceIndices[i]);
                     faces.Add(newf);
                 }
-
             }
 
             obj.Faces = faces;
         }
 
+        // Интерполяция для целых чисел
         public static int Interpolation(float x0, float y0, float x1, float y1, float x)
         {
             return (int)Math.Round(y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0));
         }
 
-        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, Color color1, Color color2, float minZ, float maxZ)
+        public static int BilinearInterpolation(float x0, float y0, int c00, float x1, float y0_, int c01, float x0_, float y1, int c10, float x1_, float y1_, int c11, float x, float y)
+        {
+            // Интерполяция по X на первой горизонтальной линии
+            float i0 = Interpolation(x0, c00, x1, c01, x);
+            float i1 = Interpolation(x0_, c10, x1_, c11, x);
+
+            // Интерполяция по Y
+            return (int)Interpolation(y0, i0, y1, i1, y);
+        }
+
+        // Функция для расчета цвета по модели Ламберта с использованием нормали
+        public static Color CalculateLambertColor(Point3D vertex, LightSource lightSource, Point3D normal)
+        {
+            lightSource.Direction = lightSource.Direction.Normalize();
+
+            // Вычисление угла между нормалью и направлением на источник света
+            float dotProduct = normal.X * -lightSource.Direction.X +
+                               normal.Y * -lightSource.Direction.Y +
+                               normal.Z * -lightSource.Direction.Z;
+
+            // Ограничиваем результат в диапазоне [0, 1] (чтобы избежать отрицательных значений)
+            float intensity = Math.Max(0, dotProduct);  // Интенсивность диффузного отражения
+
+            // Моделируем диффузное отражение
+            int R = (int)(lightSource.Color.R * lightSource.Intensity * intensity);
+            int G = (int)(lightSource.Color.G * lightSource.Intensity * intensity);
+            int B = (int)(lightSource.Color.B * lightSource.Intensity * intensity);
+
+            // Ограничиваем значения для цвета (в пределах 0-255)
+            R = Math.Min(255, Math.Max(0, R));
+            G = Math.Min(255, Math.Max(0, G));
+            B = Math.Min(255, Math.Max(0, B));
+
+            return Color.FromArgb(R, G, B);
+        }
+
+        // Метод растеризации с шейдингом Гуро
+        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, LightSource lightSource)
         {
             points = points.Select(p => new Point3D((float)Math.Round(p.X), (float)Math.Round(p.Y), p.Z, p.W)).ToList();
             points.Sort((a, b) => a.Y == b.Y ? 0 : (a.Y < b.Y ? -1 : 1));
 
-            List<Color> colors = points.Select(p => Color.FromArgb(Interpolation(minZ, color1.R, maxZ, color2.R, p.Z),
-                                                                    Interpolation(minZ, color1.G, maxZ, color2.G, p.Z),
-                                                                    Interpolation(minZ, color1.B, maxZ, color2.B, p.Z))).ToList();
+            // Предположим, что для каждой вершины у нас есть соответствующая нормаль
+            List<Point3D> normals = points.Select(p => CalculateNormalForVertex(p)).ToList();
+
+            // Вычисление цвета для каждой вершины с использованием модели Ламберта и нормалей
+            List<Color> colors = points.Select((p, i) => CalculateLambertColor(p, lightSource, normals[i])).ToList();
 
             float inc12, inc13, inc23;
 
+            // Интерполяция для цветов
             if (points[0].Y == points[1].Y)
                 inc12 = 0;
             else
@@ -102,20 +142,19 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
-                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
-                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
+                        bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
                     }
                 }
                 x1 += inc13;
                 x2 += inc12;
             }
+
             if (points[0].Y == points[1].Y)
             {
                 x1 = Math.Min(points[0].X, points[1].X);
                 x2 = Math.Max(points[0].X, points[1].X);
             }
+
             if (_inc13 < inc23)
                 (_inc13, inc23) = (inc23, _inc13);
 
@@ -145,16 +184,19 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
-                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
-                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
+                        bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
                     }
                 }
                 x1 += _inc13;
                 x2 += inc23;
             }
+        }
 
+        // Функция для расчета нормали для вершины (для примера, если нормали отсутствуют)
+        public static Point3D CalculateNormalForVertex(Point3D vertex)
+        {
+            // Пример: вычисляем нормаль для 3D объекта (считаем, что нормали заранее известны или могут быть рассчитаны)
+            return vertex;  // Реализация зависит от вашей модели
         }
     }
 }

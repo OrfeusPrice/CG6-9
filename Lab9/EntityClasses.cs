@@ -24,6 +24,13 @@ namespace Lab6_9
             W = w;
         }
 
+        public Point3D Normalize()
+        {
+            float length = (float)Math.Sqrt(X * X + Y * Y + Z * Z);
+            if (length == 0) return this;  // Если длина вектора 0, возвращаем сам вектор
+
+            return new Point3D(X / length, Y / length, Z / length, W);
+        }
 
         public static Point3D operator +(Point3D a, Point3D b) => new Point3D(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         public static Point3D operator -(Point3D a, Point3D b) => new Point3D(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
@@ -44,7 +51,7 @@ namespace Lab6_9
         {
             Position = position;
             Color = color;
-            Direction = new Point3D(0, 0, -1);
+            Direction = new Point3D(5, 10, 10);
             Intensity = intensity;
         }
 
