@@ -40,6 +40,7 @@ namespace Lab6_9
         int move;
 
         float[,] _ZBuffer;
+        LightSource _lightSource;
 
         List<Point3D> _points;
         Object3D _obj;
@@ -78,6 +79,7 @@ namespace Lab6_9
             _camera.Rotation = new Point3D(0, 0, 0);
 
             _ZBuffer = new float[pictureBox.Width, pictureBox.Height];
+            _lightSource = new LightSource(new Point3D(0, 0, -10), Color.LightSkyBlue, 0.02f);
 
             _countOfObjs = 0;
 
@@ -104,28 +106,28 @@ namespace Lab6_9
             //Triangulate(ref _obj);
             //OBJS_CB.Items.Add(_obj.name);
 
-            _obj = LoadObj("sphere.obj");
-            _points = new List<Point3D>();
-            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
-            GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
-            _obj.color1 = Color.Yellow;
-            _obj.color2 = Color.Green;
-            _obj.name = "obj" + _countOfObjs++.ToString();
-            _objects.Add(_obj);
-            Triangulate(ref _obj);
-            OBJS_CB.Items.Add(_obj.name);
-
-            //_obj = LoadObj("teapot.obj");
+            //_obj = LoadObj("sphere.obj");
             //_points = new List<Point3D>();
             //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
-            //GeometryAndMatrix.Scale(ref _obj, 120, 120, 120);
-            //_obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, 180)).ToList();
-            //_obj.color1 = Color.Coral;
-            //_obj.color2 = Color.LightGoldenrodYellow;
+            //GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
+            //_obj.color1 = Color.Yellow;
+            //_obj.color2 = Color.Green;
             //_obj.name = "obj" + _countOfObjs++.ToString();
             //_objects.Add(_obj);
             //Triangulate(ref _obj);
             //OBJS_CB.Items.Add(_obj.name);
+
+            _obj = LoadObj("teapot.obj");
+            _points = new List<Point3D>();
+            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            GeometryAndMatrix.Scale(ref _obj, 120, 120, 120);
+            _obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, 180)).ToList();
+            _obj.color1 = Color.Coral;
+            _obj.color2 = Color.LightGoldenrodYellow;
+            _obj.name = "obj" + _countOfObjs++.ToString();
+            _objects.Add(_obj);
+            Triangulate(ref _obj);
+            OBJS_CB.Items.Add(_obj.name);
 
 
             DrawObjects();
@@ -243,12 +245,7 @@ namespace Lab6_9
                 if (normal * _camera.ViewVector < 0) continue;
 
                 List<Point3D> points = face.FaceIndices.Select(i => vertexes[i.VertexIndex - 1]).ToList();
-                if (isRaster)
-                {
-                    //Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ);
-                    Guro.Rasterization(points, _ZBuffer, pictureBox, _bm, new LightSource(new Point3D(0, 0, -10), Color.LightSkyBlue, 0.02f));
-                                       
-                }
+
                 if (isDelEdges)
                     for (int i = 0; i < face.FaceIndices.Count; i++)
                     {
@@ -260,7 +257,12 @@ namespace Lab6_9
                             p2.X,
                             p2.Y);
                     }
+                if (isRaster)
+                {
+                    //Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ);
+                    Guro.Rasterization(points, _ZBuffer, pictureBox, _bm, _lightSource);
 
+                }
             }
         }
 
@@ -314,15 +316,20 @@ namespace Lab6_9
             return new Point3D(p.X / temp.W, p.Y / temp.W, p.Z, p.W);
         }
 
+        public void Redraw()
+        {
+            _g.Clear(Color.White);
+            DrawObjects();
+            pictureBox.Refresh();
+        }
+
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButton1.Checked) _camera.Projection = Projection.Perspective;
             if (radioButton2.Checked) _camera.Projection = Projection.Axonometric;
             if (Parallel_RB.Checked) _camera.Projection = Projection.Parallel;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -333,9 +340,7 @@ namespace Lab6_9
                 _tCount = 0;
                 _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, dx, dy, dz)).ToList();
 
-                _g.Clear(Color.White);
-                DrawObjects();
-                pictureBox.Refresh();
+                Redraw();
             }
         }
 
@@ -349,9 +354,7 @@ namespace Lab6_9
                 if (radioButton4.Checked) _obj.Vertices = _obj.Vertices.Select(p => YRotatePoint(p, angle)).ToList();
                 if (radioButton5.Checked) _obj.Vertices = _obj.Vertices.Select(p => ZRotatePoint(p, angle)).ToList();
 
-                _g.Clear(Color.White);
-                DrawObjects();
-                pictureBox.Refresh();
+                Redraw();
             }
 
         }
@@ -364,9 +367,7 @@ namespace Lab6_9
                 _tCount = 0;
                 _obj.Vertices = _obj.Vertices.Select(p => ScalePoint(p, mx, my, mz)).ToList();
 
-                _g.Clear(Color.White);
-                DrawObjects();
-                pictureBox.Refresh();
+                Redraw();
             }
         }
 
@@ -377,9 +378,7 @@ namespace Lab6_9
             if (radioButton7.Checked) _obj.Vertices = _obj.Vertices.Select(p => XZMirrorPoint(p)).ToList();
             if (radioButton8.Checked) _obj.Vertices = _obj.Vertices.Select(p => YZMirrorPoint(p)).ToList();
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -390,9 +389,7 @@ namespace Lab6_9
                 _tCount = 0;
                 GeometryAndMatrix.Scale(ref _obj, mx, my, mz);
 
-                _g.Clear(Color.White);
-                DrawObjects();
-                pictureBox.Refresh();
+                Redraw();
             }
         }
 
@@ -406,9 +403,7 @@ namespace Lab6_9
                 if (radioButton10.Checked) YRotate(ref _obj, angle);
                 if (radioButton11.Checked) ZRotate(ref _obj, angle);
 
-                _g.Clear(Color.White);
-                DrawObjects();
-                pictureBox.Refresh();
+                Redraw();
             }
         }
 
@@ -422,9 +417,7 @@ namespace Lab6_9
                 _tCount = 0;
                 Rotate(ref _obj, new Point3D(x1, y1, z1), new Point3D(x2, y2, z2), angle);
 
-                _g.Clear(Color.White);
-                DrawObjects();
-                pictureBox.Refresh();
+                Redraw();
             }
         }
 
@@ -458,9 +451,7 @@ namespace Lab6_9
             _obj.name = "obj" + _countOfObjs.ToString();
             _objects.Add(_obj);
             OBJS_CB.Items.Add(_obj.name);
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void BSave_Click(object sender, EventArgs e)
@@ -481,9 +472,7 @@ namespace Lab6_9
 
             InitMChanges();
             _isNewObj = true;
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void Create_FigRotB_Click(object sender, EventArgs e)
@@ -501,9 +490,7 @@ namespace Lab6_9
             _obj.name = "obj" + _countOfObjs.ToString();
             _objects.Add(_obj);
             OBJS_CB.Items.Add(_obj.name);
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void pictureBox_MouseClick(object sender, MouseEventArgs e)
@@ -575,9 +562,7 @@ namespace Lab6_9
             label28.Text = FuncComboBox.SelectedIndex.ToString();
             Graph(ref _obj, f, minx, maxx, miny, maxy, splits);
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void OBJS_CB_SelectedIndexChanged(object sender, EventArgs e)
@@ -609,9 +594,7 @@ namespace Lab6_9
                 OBJS_CB.Items.Remove(temp.ToString());
                 _objects.Remove(temp);
 
-                _g.Clear(Color.White);
-                DrawObjects();
-                pictureBox.Refresh();
+                Redraw();
             }
         }
 
@@ -624,154 +607,118 @@ namespace Lab6_9
 
             _objects.Clear();
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
         private void CameraRotateY_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.Y += angle;
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
         private void CamRotateX_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.X += angle;
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void CamRotateZ_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.Z += angle;
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void CamRotateNY_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.Y -= angle;
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void CamRotateNX_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.X -= angle;
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void CamRotateNZ_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation.Z -= angle;
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void SetCamStart_B_Click(object sender, EventArgs e)
         {
             _camera.Rotation = new Point3D(0, 0, 0);
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void XMove_B_Click(object sender, EventArgs e)
         {
             _camera.Location.X += move;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void NXMove_B_Click(object sender, EventArgs e)
         {
             _camera.Location.X -= move;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void YMove_B_Click(object sender, EventArgs e)
         {
             _camera.Location.Y += move;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void NYMove_B_Click(object sender, EventArgs e)
         {
             _camera.Location.Y -= move;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void ZMove_B_Click(object sender, EventArgs e)
         {
             _camera.Location.Z += move;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void NZMove_B_Click(object sender, EventArgs e)
         {
             _camera.Location.Z -= move;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void XYZSetStart_B_Click(object sender, EventArgs e)
         {
             _camera.Location = new Point3D(0, 0, 0);
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void Edges_B_Click(object sender, EventArgs e)
         {
             isDelEdges = !isDelEdges;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void Zbuffer_B_Click(object sender, EventArgs e)
         {
             isRaster = !isRaster;
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void SetVV_B_Click(object sender, EventArgs e)
         {
             _camera.ViewVector = new Point3D(int.Parse(XVV.Text), int.Parse(YVV.Text), int.Parse(ZVV.Text));
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void CamAngle_B_Click(object sender, EventArgs e)
@@ -788,18 +735,58 @@ namespace Lab6_9
         {
             _camera.Rotation = new Point3D(int.Parse(XCamRot.Text), int.Parse(YCamRot.Text), int.Parse(ZCamRot.Text));
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
         }
 
         private void SetCameraLocation_B_Click(object sender, EventArgs e)
         {
             _camera.Location = new Point3D(int.Parse(XCamLoc.Text), int.Parse(YCamLoc.Text), int.Parse(ZCamLoc.Text));
 
-            _g.Clear(Color.White);
-            DrawObjects();
-            pictureBox.Refresh();
+            Redraw();
+        }
+
+        private void LightXMove_B_Click(object sender, EventArgs e)
+        {
+            _lightSource.Direction.X++;
+
+            Redraw();
+        }
+
+        private void LightNXMove_B_Click(object sender, EventArgs e)
+        {
+            _lightSource.Direction.X--;
+
+            Redraw();
+        }
+
+        private void LightZMove_B_Click(object sender, EventArgs e)
+        {
+            _lightSource.Direction.Z++;
+            Redraw();
+        }
+
+        private void LightNYMove_B_Click(object sender, EventArgs e)
+        {
+            _lightSource.Direction.Y--;
+            Redraw();
+        }
+
+        private void LightYMove_B_Click(object sender, EventArgs e)
+        {
+            _lightSource.Direction.Y++;
+            Redraw();
+        }
+
+        private void LightNZMove_B_Click(object sender, EventArgs e)
+        {
+            _lightSource.Direction.Z--;
+            Redraw();
+        }
+
+        private void LightSetZero_Click(object sender, EventArgs e)
+        {
+            _lightSource.Direction = new Point3D(0, 0, 0);
+            Redraw();
         }
     }
 }

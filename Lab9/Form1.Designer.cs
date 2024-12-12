@@ -134,6 +134,26 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.SetCameraLocation_B = new System.Windows.Forms.Button();
+            this.ZCamLoc = new System.Windows.Forms.TextBox();
+            this.YCamLoc = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.XCamLoc = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.SetCameraRotation_B = new System.Windows.Forms.Button();
+            this.ZCamRot = new System.Windows.Forms.TextBox();
+            this.YCamRot = new System.Windows.Forms.TextBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.XCamRot = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.CamStep_B = new System.Windows.Forms.Button();
+            this.label33 = new System.Windows.Forms.Label();
+            this.CamStepNam = new System.Windows.Forms.TextBox();
+            this.CamAngle_B = new System.Windows.Forms.Button();
+            this.label32 = new System.Windows.Forms.Label();
+            this.CamAngleNum = new System.Windows.Forms.TextBox();
             this.XYZSetStart_B = new System.Windows.Forms.Button();
             this.ZMove_B = new System.Windows.Forms.Button();
             this.NZMove_B = new System.Windows.Forms.Button();
@@ -148,9 +168,6 @@
             this.CamRotateZ_B = new System.Windows.Forms.Button();
             this.CamRotateX_B = new System.Windows.Forms.Button();
             this.CameraRotateY_B = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.Zbuffer_B = new System.Windows.Forms.Button();
-            this.Edges_B = new System.Windows.Forms.Button();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.SetVV_B = new System.Windows.Forms.Button();
             this.ZVV = new System.Windows.Forms.TextBox();
@@ -159,26 +176,19 @@
             this.XVV = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.CamAngleNum = new System.Windows.Forms.TextBox();
-            this.CamAngle_B = new System.Windows.Forms.Button();
-            this.CamStep_B = new System.Windows.Forms.Button();
-            this.label33 = new System.Windows.Forms.Label();
-            this.CamStepNam = new System.Windows.Forms.TextBox();
-            this.SetCameraRotation_B = new System.Windows.Forms.Button();
-            this.ZCamRot = new System.Windows.Forms.TextBox();
-            this.YCamRot = new System.Windows.Forms.TextBox();
-            this.label34 = new System.Windows.Forms.Label();
-            this.XCamRot = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.SetCameraLocation_B = new System.Windows.Forms.Button();
-            this.ZCamLoc = new System.Windows.Forms.TextBox();
-            this.YCamLoc = new System.Windows.Forms.TextBox();
-            this.label37 = new System.Windows.Forms.Label();
-            this.XCamLoc = new System.Windows.Forms.TextBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.Zbuffer_B = new System.Windows.Forms.Button();
+            this.Edges_B = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tabControl4 = new System.Windows.Forms.TabControl();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.LightSetZero = new System.Windows.Forms.Button();
+            this.LightZMove_B = new System.Windows.Forms.Button();
+            this.LightNZMove_B = new System.Windows.Forms.Button();
+            this.LightYMove_B = new System.Windows.Forms.Button();
+            this.LightNYMove_B = new System.Windows.Forms.Button();
+            this.LightXMove_B = new System.Windows.Forms.Button();
+            this.LightNXMove_B = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -199,8 +209,11 @@
             this.groupBox4.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage8.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.tabPage9.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.tabControl4.SuspendLayout();
+            this.tabPage10.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox
@@ -1413,6 +1426,192 @@
             this.tabPage8.TabIndex = 0;
             this.tabPage8.Text = "Камера";
             // 
+            // SetCameraLocation_B
+            // 
+            this.SetCameraLocation_B.Location = new System.Drawing.Point(424, 204);
+            this.SetCameraLocation_B.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SetCameraLocation_B.Name = "SetCameraLocation_B";
+            this.SetCameraLocation_B.Size = new System.Drawing.Size(205, 43);
+            this.SetCameraLocation_B.TabIndex = 87;
+            this.SetCameraLocation_B.Text = "Установить локацию камеры";
+            this.SetCameraLocation_B.UseVisualStyleBackColor = true;
+            this.SetCameraLocation_B.Click += new System.EventHandler(this.SetCameraLocation_B_Click);
+            // 
+            // ZCamLoc
+            // 
+            this.ZCamLoc.Location = new System.Drawing.Point(582, 171);
+            this.ZCamLoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ZCamLoc.Name = "ZCamLoc";
+            this.ZCamLoc.Size = new System.Drawing.Size(35, 22);
+            this.ZCamLoc.TabIndex = 86;
+            this.ZCamLoc.Text = "0";
+            // 
+            // YCamLoc
+            // 
+            this.YCamLoc.Location = new System.Drawing.Point(514, 171);
+            this.YCamLoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.YCamLoc.Name = "YCamLoc";
+            this.YCamLoc.Size = new System.Drawing.Size(35, 22);
+            this.YCamLoc.TabIndex = 85;
+            this.YCamLoc.Text = "0";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(555, 174);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(13, 16);
+            this.label37.TabIndex = 84;
+            this.label37.Text = "z";
+            // 
+            // XCamLoc
+            // 
+            this.XCamLoc.Location = new System.Drawing.Point(447, 171);
+            this.XCamLoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.XCamLoc.Name = "XCamLoc";
+            this.XCamLoc.Size = new System.Drawing.Size(35, 22);
+            this.XCamLoc.TabIndex = 81;
+            this.XCamLoc.Text = "0";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(490, 174);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(14, 16);
+            this.label38.TabIndex = 83;
+            this.label38.Text = "y";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(421, 174);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(13, 16);
+            this.label39.TabIndex = 82;
+            this.label39.Text = "x";
+            // 
+            // SetCameraRotation_B
+            // 
+            this.SetCameraRotation_B.Location = new System.Drawing.Point(424, 48);
+            this.SetCameraRotation_B.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SetCameraRotation_B.Name = "SetCameraRotation_B";
+            this.SetCameraRotation_B.Size = new System.Drawing.Size(205, 43);
+            this.SetCameraRotation_B.TabIndex = 80;
+            this.SetCameraRotation_B.Text = "Установить поворот камеры";
+            this.SetCameraRotation_B.UseVisualStyleBackColor = true;
+            this.SetCameraRotation_B.Click += new System.EventHandler(this.SetCameraRotation_B_Click);
+            // 
+            // ZCamRot
+            // 
+            this.ZCamRot.Location = new System.Drawing.Point(582, 15);
+            this.ZCamRot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ZCamRot.Name = "ZCamRot";
+            this.ZCamRot.Size = new System.Drawing.Size(35, 22);
+            this.ZCamRot.TabIndex = 79;
+            this.ZCamRot.Text = "0";
+            // 
+            // YCamRot
+            // 
+            this.YCamRot.Location = new System.Drawing.Point(514, 15);
+            this.YCamRot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.YCamRot.Name = "YCamRot";
+            this.YCamRot.Size = new System.Drawing.Size(35, 22);
+            this.YCamRot.TabIndex = 78;
+            this.YCamRot.Text = "0";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(555, 18);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(13, 16);
+            this.label34.TabIndex = 77;
+            this.label34.Text = "z";
+            // 
+            // XCamRot
+            // 
+            this.XCamRot.Location = new System.Drawing.Point(447, 15);
+            this.XCamRot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.XCamRot.Name = "XCamRot";
+            this.XCamRot.Size = new System.Drawing.Size(35, 22);
+            this.XCamRot.TabIndex = 74;
+            this.XCamRot.Text = "0";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(490, 18);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(14, 16);
+            this.label35.TabIndex = 76;
+            this.label35.Text = "y";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(421, 18);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(13, 16);
+            this.label36.TabIndex = 75;
+            this.label36.Text = "x";
+            // 
+            // CamStep_B
+            // 
+            this.CamStep_B.Location = new System.Drawing.Point(94, 253);
+            this.CamStep_B.Name = "CamStep_B";
+            this.CamStep_B.Size = new System.Drawing.Size(174, 40);
+            this.CamStep_B.TabIndex = 31;
+            this.CamStep_B.Text = "Установить шаг";
+            this.CamStep_B.UseVisualStyleBackColor = true;
+            this.CamStep_B.Click += new System.EventHandler(this.CamStep_B_Click);
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(6, 265);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(32, 16);
+            this.label33.TabIndex = 29;
+            this.label33.Text = "Шаг";
+            // 
+            // CamStepNam
+            // 
+            this.CamStepNam.Location = new System.Drawing.Point(53, 262);
+            this.CamStepNam.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CamStepNam.Name = "CamStepNam";
+            this.CamStepNam.Size = new System.Drawing.Size(35, 22);
+            this.CamStepNam.TabIndex = 30;
+            this.CamStepNam.Text = "5";
+            // 
+            // CamAngle_B
+            // 
+            this.CamAngle_B.Location = new System.Drawing.Point(94, 97);
+            this.CamAngle_B.Name = "CamAngle_B";
+            this.CamAngle_B.Size = new System.Drawing.Size(174, 40);
+            this.CamAngle_B.TabIndex = 28;
+            this.CamAngle_B.Text = "Установить угол";
+            this.CamAngle_B.UseVisualStyleBackColor = true;
+            this.CamAngle_B.Click += new System.EventHandler(this.CamAngle_B_Click);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(6, 109);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(38, 16);
+            this.label32.TabIndex = 26;
+            this.label32.Text = "Угол";
+            // 
+            // CamAngleNum
+            // 
+            this.CamAngleNum.Location = new System.Drawing.Point(53, 106);
+            this.CamAngleNum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CamAngleNum.Name = "CamAngleNum";
+            this.CamAngleNum.Size = new System.Drawing.Size(35, 22);
+            this.CamAngleNum.TabIndex = 27;
+            this.CamAngleNum.Text = "5";
+            // 
             // XYZSetStart_B
             // 
             this.XYZSetStart_B.Location = new System.Drawing.Point(275, 253);
@@ -1553,40 +1752,6 @@
             this.CameraRotateY_B.UseVisualStyleBackColor = true;
             this.CameraRotateY_B.Click += new System.EventHandler(this.CameraRotateY_B_Click);
             // 
-            // groupBox5
-            // 
-            this.groupBox5.BackColor = System.Drawing.Color.Honeydew;
-            this.groupBox5.Controls.Add(this.Zbuffer_B);
-            this.groupBox5.Controls.Add(this.Edges_B);
-            this.groupBox5.Location = new System.Drawing.Point(1733, 170);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(168, 135);
-            this.groupBox5.TabIndex = 57;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Отображение";
-            // 
-            // Zbuffer_B
-            // 
-            this.Zbuffer_B.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Zbuffer_B.Location = new System.Drawing.Point(6, 77);
-            this.Zbuffer_B.Name = "Zbuffer_B";
-            this.Zbuffer_B.Size = new System.Drawing.Size(156, 50);
-            this.Zbuffer_B.TabIndex = 2;
-            this.Zbuffer_B.Text = "Z-буффер";
-            this.Zbuffer_B.UseVisualStyleBackColor = false;
-            this.Zbuffer_B.Click += new System.EventHandler(this.Zbuffer_B_Click);
-            // 
-            // Edges_B
-            // 
-            this.Edges_B.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Edges_B.Location = new System.Drawing.Point(6, 21);
-            this.Edges_B.Name = "Edges_B";
-            this.Edges_B.Size = new System.Drawing.Size(156, 50);
-            this.Edges_B.TabIndex = 1;
-            this.Edges_B.Text = "Грани";
-            this.Edges_B.UseVisualStyleBackColor = false;
-            this.Edges_B.Click += new System.EventHandler(this.Edges_B_Click);
-            // 
             // tabPage9
             // 
             this.tabPage9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
@@ -1669,191 +1834,146 @@
             this.label31.TabIndex = 68;
             this.label31.Text = "x";
             // 
-            // label32
+            // groupBox5
             // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(6, 109);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(38, 16);
-            this.label32.TabIndex = 26;
-            this.label32.Text = "Угол";
+            this.groupBox5.BackColor = System.Drawing.Color.Honeydew;
+            this.groupBox5.Controls.Add(this.Zbuffer_B);
+            this.groupBox5.Controls.Add(this.Edges_B);
+            this.groupBox5.Location = new System.Drawing.Point(1733, 170);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(168, 135);
+            this.groupBox5.TabIndex = 57;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Отображение";
             // 
-            // CamAngleNum
+            // Zbuffer_B
             // 
-            this.CamAngleNum.Location = new System.Drawing.Point(53, 106);
-            this.CamAngleNum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.CamAngleNum.Name = "CamAngleNum";
-            this.CamAngleNum.Size = new System.Drawing.Size(35, 22);
-            this.CamAngleNum.TabIndex = 27;
-            this.CamAngleNum.Text = "5";
+            this.Zbuffer_B.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.Zbuffer_B.Location = new System.Drawing.Point(6, 77);
+            this.Zbuffer_B.Name = "Zbuffer_B";
+            this.Zbuffer_B.Size = new System.Drawing.Size(156, 50);
+            this.Zbuffer_B.TabIndex = 2;
+            this.Zbuffer_B.Text = "Z-буффер";
+            this.Zbuffer_B.UseVisualStyleBackColor = false;
+            this.Zbuffer_B.Click += new System.EventHandler(this.Zbuffer_B_Click);
             // 
-            // CamAngle_B
+            // Edges_B
             // 
-            this.CamAngle_B.Location = new System.Drawing.Point(94, 97);
-            this.CamAngle_B.Name = "CamAngle_B";
-            this.CamAngle_B.Size = new System.Drawing.Size(174, 40);
-            this.CamAngle_B.TabIndex = 28;
-            this.CamAngle_B.Text = "Установить угол";
-            this.CamAngle_B.UseVisualStyleBackColor = true;
-            this.CamAngle_B.Click += new System.EventHandler(this.CamAngle_B_Click);
+            this.Edges_B.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.Edges_B.Location = new System.Drawing.Point(6, 21);
+            this.Edges_B.Name = "Edges_B";
+            this.Edges_B.Size = new System.Drawing.Size(156, 50);
+            this.Edges_B.TabIndex = 1;
+            this.Edges_B.Text = "Грани";
+            this.Edges_B.UseVisualStyleBackColor = false;
+            this.Edges_B.Click += new System.EventHandler(this.Edges_B_Click);
             // 
-            // CamStep_B
+            // groupBox6
             // 
-            this.CamStep_B.Location = new System.Drawing.Point(94, 253);
-            this.CamStep_B.Name = "CamStep_B";
-            this.CamStep_B.Size = new System.Drawing.Size(174, 40);
-            this.CamStep_B.TabIndex = 31;
-            this.CamStep_B.Text = "Установить шаг";
-            this.CamStep_B.UseVisualStyleBackColor = true;
-            this.CamStep_B.Click += new System.EventHandler(this.CamStep_B_Click);
+            this.groupBox6.BackColor = System.Drawing.Color.Lavender;
+            this.groupBox6.Controls.Add(this.tabControl4);
+            this.groupBox6.Location = new System.Drawing.Point(1247, 761);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(654, 200);
+            this.groupBox6.TabIndex = 58;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Lab9";
             // 
-            // label33
+            // tabControl4
             // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(6, 265);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(32, 16);
-            this.label33.TabIndex = 29;
-            this.label33.Text = "Шаг";
+            this.tabControl4.Controls.Add(this.tabPage10);
+            this.tabControl4.Location = new System.Drawing.Point(9, 21);
+            this.tabControl4.Name = "tabControl4";
+            this.tabControl4.SelectedIndex = 0;
+            this.tabControl4.Size = new System.Drawing.Size(645, 173);
+            this.tabControl4.TabIndex = 0;
             // 
-            // CamStepNam
+            // tabPage10
             // 
-            this.CamStepNam.Location = new System.Drawing.Point(53, 262);
-            this.CamStepNam.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.CamStepNam.Name = "CamStepNam";
-            this.CamStepNam.Size = new System.Drawing.Size(35, 22);
-            this.CamStepNam.TabIndex = 30;
-            this.CamStepNam.Text = "5";
+            this.tabPage10.BackColor = System.Drawing.Color.GhostWhite;
+            this.tabPage10.Controls.Add(this.LightZMove_B);
+            this.tabPage10.Controls.Add(this.LightNXMove_B);
+            this.tabPage10.Controls.Add(this.LightXMove_B);
+            this.tabPage10.Controls.Add(this.LightNYMove_B);
+            this.tabPage10.Controls.Add(this.LightYMove_B);
+            this.tabPage10.Controls.Add(this.LightNZMove_B);
+            this.tabPage10.Controls.Add(this.LightSetZero);
+            this.tabPage10.Location = new System.Drawing.Point(4, 25);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(637, 144);
+            this.tabPage10.TabIndex = 0;
+            this.tabPage10.Text = "Свет";
             // 
-            // SetCameraRotation_B
+            // LightSetZero
             // 
-            this.SetCameraRotation_B.Location = new System.Drawing.Point(424, 48);
-            this.SetCameraRotation_B.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.SetCameraRotation_B.Name = "SetCameraRotation_B";
-            this.SetCameraRotation_B.Size = new System.Drawing.Size(205, 43);
-            this.SetCameraRotation_B.TabIndex = 80;
-            this.SetCameraRotation_B.Text = "Установить поворот камеры";
-            this.SetCameraRotation_B.UseVisualStyleBackColor = true;
-            this.SetCameraRotation_B.Click += new System.EventHandler(this.SetCameraRotation_B_Click);
+            this.LightSetZero.Location = new System.Drawing.Point(135, 98);
+            this.LightSetZero.Name = "LightSetZero";
+            this.LightSetZero.Size = new System.Drawing.Size(130, 40);
+            this.LightSetZero.TabIndex = 94;
+            this.LightSetZero.Text = "(X,Y,Z) = (0,0,0)";
+            this.LightSetZero.UseVisualStyleBackColor = true;
+            this.LightSetZero.Click += new System.EventHandler(this.LightSetZero_Click);
             // 
-            // ZCamRot
+            // LightZMove_B
             // 
-            this.ZCamRot.Location = new System.Drawing.Point(582, 15);
-            this.ZCamRot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ZCamRot.Name = "ZCamRot";
-            this.ZCamRot.Size = new System.Drawing.Size(35, 22);
-            this.ZCamRot.TabIndex = 79;
-            this.ZCamRot.Text = "0";
+            this.LightZMove_B.Location = new System.Drawing.Point(271, 6);
+            this.LightZMove_B.Name = "LightZMove_B";
+            this.LightZMove_B.Size = new System.Drawing.Size(130, 40);
+            this.LightZMove_B.TabIndex = 93;
+            this.LightZMove_B.Text = "Z";
+            this.LightZMove_B.UseVisualStyleBackColor = true;
+            this.LightZMove_B.Click += new System.EventHandler(this.LightZMove_B_Click);
             // 
-            // YCamRot
+            // LightNZMove_B
             // 
-            this.YCamRot.Location = new System.Drawing.Point(514, 15);
-            this.YCamRot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.YCamRot.Name = "YCamRot";
-            this.YCamRot.Size = new System.Drawing.Size(35, 22);
-            this.YCamRot.TabIndex = 78;
-            this.YCamRot.Text = "0";
+            this.LightNZMove_B.Location = new System.Drawing.Point(271, 52);
+            this.LightNZMove_B.Name = "LightNZMove_B";
+            this.LightNZMove_B.Size = new System.Drawing.Size(130, 40);
+            this.LightNZMove_B.TabIndex = 92;
+            this.LightNZMove_B.Text = "-Z";
+            this.LightNZMove_B.UseVisualStyleBackColor = true;
+            this.LightNZMove_B.Click += new System.EventHandler(this.LightNZMove_B_Click);
             // 
-            // label34
+            // LightYMove_B
             // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(555, 18);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(13, 16);
-            this.label34.TabIndex = 77;
-            this.label34.Text = "z";
+            this.LightYMove_B.Location = new System.Drawing.Point(135, 6);
+            this.LightYMove_B.Name = "LightYMove_B";
+            this.LightYMove_B.Size = new System.Drawing.Size(130, 40);
+            this.LightYMove_B.TabIndex = 91;
+            this.LightYMove_B.Text = "Y";
+            this.LightYMove_B.UseVisualStyleBackColor = true;
+            this.LightYMove_B.Click += new System.EventHandler(this.LightYMove_B_Click);
             // 
-            // XCamRot
+            // LightNYMove_B
             // 
-            this.XCamRot.Location = new System.Drawing.Point(447, 15);
-            this.XCamRot.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.XCamRot.Name = "XCamRot";
-            this.XCamRot.Size = new System.Drawing.Size(35, 22);
-            this.XCamRot.TabIndex = 74;
-            this.XCamRot.Text = "0";
+            this.LightNYMove_B.Location = new System.Drawing.Point(135, 52);
+            this.LightNYMove_B.Name = "LightNYMove_B";
+            this.LightNYMove_B.Size = new System.Drawing.Size(130, 40);
+            this.LightNYMove_B.TabIndex = 90;
+            this.LightNYMove_B.Text = "-Y";
+            this.LightNYMove_B.UseVisualStyleBackColor = true;
+            this.LightNYMove_B.Click += new System.EventHandler(this.LightNYMove_B_Click);
             // 
-            // label35
+            // LightXMove_B
             // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(490, 18);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(14, 16);
-            this.label35.TabIndex = 76;
-            this.label35.Text = "y";
+            this.LightXMove_B.Location = new System.Drawing.Point(2, 6);
+            this.LightXMove_B.Name = "LightXMove_B";
+            this.LightXMove_B.Size = new System.Drawing.Size(130, 40);
+            this.LightXMove_B.TabIndex = 89;
+            this.LightXMove_B.Text = "X";
+            this.LightXMove_B.UseVisualStyleBackColor = true;
+            this.LightXMove_B.Click += new System.EventHandler(this.LightXMove_B_Click);
             // 
-            // label36
+            // LightNXMove_B
             // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(421, 18);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(13, 16);
-            this.label36.TabIndex = 75;
-            this.label36.Text = "x";
-            // 
-            // SetCameraLocation_B
-            // 
-            this.SetCameraLocation_B.Location = new System.Drawing.Point(424, 204);
-            this.SetCameraLocation_B.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.SetCameraLocation_B.Name = "SetCameraLocation_B";
-            this.SetCameraLocation_B.Size = new System.Drawing.Size(205, 43);
-            this.SetCameraLocation_B.TabIndex = 87;
-            this.SetCameraLocation_B.Text = "Установить локацию камеры";
-            this.SetCameraLocation_B.UseVisualStyleBackColor = true;
-            this.SetCameraLocation_B.Click += new System.EventHandler(this.SetCameraLocation_B_Click);
-            // 
-            // ZCamLoc
-            // 
-            this.ZCamLoc.Location = new System.Drawing.Point(582, 171);
-            this.ZCamLoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ZCamLoc.Name = "ZCamLoc";
-            this.ZCamLoc.Size = new System.Drawing.Size(35, 22);
-            this.ZCamLoc.TabIndex = 86;
-            this.ZCamLoc.Text = "0";
-            // 
-            // YCamLoc
-            // 
-            this.YCamLoc.Location = new System.Drawing.Point(514, 171);
-            this.YCamLoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.YCamLoc.Name = "YCamLoc";
-            this.YCamLoc.Size = new System.Drawing.Size(35, 22);
-            this.YCamLoc.TabIndex = 85;
-            this.YCamLoc.Text = "0";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(555, 174);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(13, 16);
-            this.label37.TabIndex = 84;
-            this.label37.Text = "z";
-            // 
-            // XCamLoc
-            // 
-            this.XCamLoc.Location = new System.Drawing.Point(447, 171);
-            this.XCamLoc.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.XCamLoc.Name = "XCamLoc";
-            this.XCamLoc.Size = new System.Drawing.Size(35, 22);
-            this.XCamLoc.TabIndex = 81;
-            this.XCamLoc.Text = "0";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(490, 174);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(14, 16);
-            this.label38.TabIndex = 83;
-            this.label38.Text = "y";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(421, 174);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(13, 16);
-            this.label39.TabIndex = 82;
-            this.label39.Text = "x";
+            this.LightNXMove_B.Location = new System.Drawing.Point(2, 52);
+            this.LightNXMove_B.Name = "LightNXMove_B";
+            this.LightNXMove_B.Size = new System.Drawing.Size(130, 40);
+            this.LightNXMove_B.TabIndex = 88;
+            this.LightNXMove_B.Text = "-X";
+            this.LightNXMove_B.UseVisualStyleBackColor = true;
+            this.LightNXMove_B.Click += new System.EventHandler(this.LightNXMove_B_Click);
             // 
             // Form1
             // 
@@ -1861,6 +1981,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(1906, 973);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -1907,9 +2028,12 @@
             this.tabControl3.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.tabControl4.ResumeLayout(false);
+            this.tabPage10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2066,6 +2190,16 @@
         private System.Windows.Forms.TextBox XCamRot;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.TabControl tabControl4;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.Button LightZMove_B;
+        private System.Windows.Forms.Button LightNXMove_B;
+        private System.Windows.Forms.Button LightXMove_B;
+        private System.Windows.Forms.Button LightNYMove_B;
+        private System.Windows.Forms.Button LightYMove_B;
+        private System.Windows.Forms.Button LightNZMove_B;
+        private System.Windows.Forms.Button LightSetZero;
     }
 }
 
