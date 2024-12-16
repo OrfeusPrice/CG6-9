@@ -11,6 +11,7 @@ using static Lab6_9.Polyhedron;
 using static Lab6_9.GeometryAndMatrix;
 using static Lab6_9.SaveLoad;
 using static Lab6_9.Raster;
+using static Lab6_9.Texturing;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using System.Reflection;
@@ -54,6 +55,7 @@ namespace Lab6_9
 
         public bool isDelEdges;
         public bool isRaster;
+        public bool isTexturing;
 
         public Form1()
         {
@@ -179,6 +181,11 @@ namespace Lab6_9
 
         public void DrawObject(Object3D obj)
         {
+            string filename = "cat.jpg";
+            Bitmap texture = new Bitmap(filename);
+
+            List<Coordinates> textureCoords = new List<Coordinates>();
+
             List<Point3D> vertexes = obj.Vertices;
             List<Point3D> normals = obj.Normals;
 
@@ -258,6 +265,7 @@ namespace Lab6_9
 
                 List<Point3D> points = new List<Point3D>();
 
+<<<<<<< HEAD
                 // LIVSEY
 
                 //List<Coordinates> textureCoords = new List<Coordinates>();
@@ -299,6 +307,13 @@ namespace Lab6_9
                     colors.Add(Color.FromArgb(R, G, B));
                     points.Add(vertexes[fi.VertexIndex - 1]);
                 }
+=======
+                foreach (FaceIndices fi in face.FaceIndices)
+                {
+                    textureCoords.Add(obj.TextureCoordinates[fi.TextureCoordinateIndex - 1]);
+                }
+
+>>>>>>> 1b197d7630428a94d2bf0bd4a8f4373872fe1339
                 if (isDelEdges)
                     for (int i = 0; i < face.FaceIndices.Count; i++)
                     {
@@ -313,10 +328,20 @@ namespace Lab6_9
 
                 if (isRaster)
                 {
+<<<<<<< HEAD
                     Rasterization(points, _ZBuffer, pictureBox, _bm, colors, minZ, maxZ, _g);
 
                     //Guro.Rasterization(points, _ZBuffer, pictureBox, _bm, _lightSource);
 
+=======
+                    //Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ);
+                    Guro.Rasterization(points, _ZBuffer, pictureBox, _bm, _lightSource);
+                    
+                }
+                if (isTexturing)
+                {
+                    Rasterization_Linear_Texture(points, textureCoords, texture, _bm, pictureBox, _ZBuffer);
+>>>>>>> 1b197d7630428a94d2bf0bd4a8f4373872fe1339
                 }
             }
         }
@@ -855,6 +880,13 @@ namespace Lab6_9
         private void LightSetZero_Click(object sender, EventArgs e)
         {
             _lightSource.ViewLocation = new Point3D(0, 0, 0);
+            Redraw();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            isTexturing = !isTexturing;
+
             Redraw();
         }
     }
