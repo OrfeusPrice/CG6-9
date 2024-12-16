@@ -42,6 +42,7 @@ namespace Lab6_9
     {
         public Point3D Location { get; set; }
         public Point3D ViewLocation { get; set; }
+<<<<<<< HEAD
         public float AmbientIntensity { get; set; }
         public float DiffuseIntensity { get; set; }
         public float SpecularIntensity { get; set; }
@@ -56,6 +57,19 @@ namespace Lab6_9
             SpecularIntensity = 0.04f;
             Color = Color.LightYellow;
 
+=======
+        public float Ka { get; set; }
+        public float Kd { get; set; }
+        public float Ks { get; set; }
+
+        public LightSource()
+        {
+            Location = new Point3D(0, 0, 0);
+            ViewLocation = new Point3D(0, 0, 0);
+            Ka = 0.15f;
+            Kd = 0.8f;
+            Ks = 0.4f;
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
         }
     }
 

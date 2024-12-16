@@ -14,6 +14,7 @@ using static Lab6_9.Raster;
 using static Lab6_9.Texturing;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
+using System.Reflection;
 
 namespace Lab6_9
 {
@@ -81,7 +82,11 @@ namespace Lab6_9
             _camera.Rotation = new Point3D(0, 0, 0);
 
             _ZBuffer = new float[pictureBox.Width, pictureBox.Height];
+<<<<<<< HEAD
             _light = new Light();
+=======
+            _lightSource = new LightSource();
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
 
             _countOfObjs = 0;
 
@@ -108,7 +113,17 @@ namespace Lab6_9
             //Triangulate(ref _obj);
             //OBJS_CB.Items.Add(_obj.name);
 
-            //_obj = LoadObj("sphere.obj");
+            _obj = LoadObj("sphere.obj");
+            _points = new List<Point3D>();
+            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
+            _obj.color = Color.Yellow;
+            _obj.name = "obj" + _countOfObjs++.ToString();
+            _objects.Add(_obj);
+            Triangulate(ref _obj);
+            OBJS_CB.Items.Add(_obj.name);
+
+            //_obj = LoadObj("gs.obj");
             //_points = new List<Point3D>();
             //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             //GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
@@ -118,6 +133,7 @@ namespace Lab6_9
             //Triangulate(ref _obj);
             //OBJS_CB.Items.Add(_obj.name);
 
+<<<<<<< HEAD
             _obj = LoadObj("teapot.obj");
             _points = new List<Point3D>();
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
@@ -128,6 +144,19 @@ namespace Lab6_9
             _objects.Add(_obj);
             Triangulate(ref _obj);
             OBJS_CB.Items.Add(_obj.name);
+=======
+            //_obj = LoadObj("teapot.obj");
+            //_points = new List<Point3D>();
+            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            //GeometryAndMatrix.Scale(ref _obj, 120, 120, 120);
+            //_obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, 180)).ToList();
+            //_obj.color1 = Color.Coral;
+            //_obj.color2 = Color.LightGoldenrodYellow;
+            //_obj.name = "obj" + _countOfObjs++.ToString();
+            //_objects.Add(_obj);
+            //Triangulate(ref _obj);
+            //OBJS_CB.Items.Add(_obj.name);
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
 
 
             DrawObjects();
@@ -174,6 +203,7 @@ namespace Lab6_9
             List<Point3D> normals = obj.Normals;
             List<Coordinates> textureCoords = new List<Coordinates>();
             List<Point3D> vertexes = obj.Vertices;
+            List<Point3D> normals = obj.Normals;
 
             Point3D center = new Point3D(0, 0, 0);
             foreach (Point3D p in obj.Vertices)
@@ -186,7 +216,11 @@ namespace Lab6_9
                 _isNewObj = false;
             }
 
+<<<<<<< HEAD
 
+=======
+            normals = normals.Select(p => _camera.View(p, p)).ToList();
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
             vertexes = vertexes.Select(p => _camera.View(p, center)).ToList();
             //_light.ViewLocation = _camera.View(_light.Location, _light.Location);
             normals = normals.Select(p => _camera.View(p, p)).ToList();
@@ -246,8 +280,54 @@ namespace Lab6_9
 
                 List<Point3D> points = new List<Point3D>();
 
+<<<<<<< HEAD
                 // GURO
                 colors = new List<Color>();
+=======
+<<<<<<< HEAD
+                // LIVSEY
+
+                //List<Coordinates> textureCoords = new List<Coordinates>();
+                //foreach (FaceIndices fi in face.FaceIndices)
+                //{
+                //    points.Add(vertexes[fi.VertexIndex - 1]);
+                //    textureCoords.Add(obj.TextureCoordinates[fi.TextureCoordinateIndex - 1]);
+                //}
+                //Rasterization_Linear_Texture(points, textureCoords, texture);
+
+                // ___ TEAM FORTRESS 2 ___
+                //toonShadingColorSteps = 5;
+                //List<Point3D> normals1 = new List<Point3D>();
+                //foreach (FaceIndices fi in face.FaceIndices)
+                //{
+                //    points.Add(vertexes[fi.VertexIndex - 1]);
+                //    normals1.Add(normals[fi.NormalIndex - 1]);
+                //}
+                //Rasterization_TF2(points, normals1, obj.color, _lightSource, toonShadingColorSteps);
+
+                // ___ GAWR GURO ___
+                List<Color> _colors = new List<Color>();
+                foreach (FaceIndices fi in face.FaceIndices)
+                {
+                    Point3D l = _lightSource.ViewLocation - vertexes[fi.VertexIndex - 1]; // Light to point
+                    l.Normalize();
+
+                    Point3D n = normals[fi.NormalIndex - 1];
+                    n.Normalize();
+
+                    float nl = n * l;
+
+                    float D = Clamp(Math.Max(0.0f, _lightSource.Kd * nl), 0.0f, 1.0f);
+
+                    int R = (int)Clamp(obj.color.R * (_lightSource.Ka + D), 0, 255);
+                    int G = (int)Clamp(obj.color.G * (_lightSource.Ka + D), 0, 255);
+                    int B = (int)Clamp(obj.color.B * (_lightSource.Ka + D), 0, 255);
+
+                    colors.Add(Color.FromArgb(R, G, B));
+                    points.Add(vertexes[fi.VertexIndex - 1]);
+                }
+=======
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
                 foreach (FaceIndices fi in face.FaceIndices)
                 {
                     Point3D l = _light.ViewLocation - vertexes[fi.VertexIndex - 1]; // Light to point
@@ -268,8 +348,12 @@ namespace Lab6_9
                     points.Add(vertexes[fi.VertexIndex - 1]);
                 }
 
+<<<<<<< HEAD
                 if (isRaster) Rasterization(points, _ZBuffer, pictureBox, _bm, colors, _g);
 
+=======
+>>>>>>> 1b197d7630428a94d2bf0bd4a8f4373872fe1339
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
                 if (isDelEdges)
                     for (int i = 0; i < face.FaceIndices.Count; i++)
                     {
@@ -282,15 +366,32 @@ namespace Lab6_9
                             p2.Y);
                     }
 
+<<<<<<< HEAD
+=======
+                if (isRaster)
+                {
+<<<<<<< HEAD
+                    Rasterization(points, _ZBuffer, pictureBox, _bm, colors, minZ, maxZ, _g);
+
+                    //Guro.Rasterization(points, _ZBuffer, pictureBox, _bm, _lightSource);
+
+=======
+                    //Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ);
+                    Guro.Rasterization(points, _ZBuffer, pictureBox, _bm, _lightSource);
+                    
+                }
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
                 if (isTexturing)
                 {
                     Rasterization_Linear_Texture(points, textureCoords, texture, _bm, pictureBox, _ZBuffer);
+>>>>>>> 1b197d7630428a94d2bf0bd4a8f4373872fe1339
                 }
             }
             //_g.DrawRectangle(new Pen(Color.Yellow, 5), _light.ViewLocation.X, -_light.ViewLocation.Y, 5, 5);
 
         }
 
+<<<<<<< HEAD
         public void CalculateVertexNormals(ref Object3D obj)
         {
             obj.Normals.Clear();
@@ -303,6 +404,23 @@ namespace Lab6_9
                     {
                         Point3D v1 = obj.Vertices[f.FaceIndices[1].VertexIndex - 1] - obj.Vertices[f.FaceIndices[0].VertexIndex - 1];
                         Point3D v2 = obj.Vertices[f.FaceIndices[2].VertexIndex - 1] - obj.Vertices[f.FaceIndices[0].VertexIndex - 1];
+=======
+        int Interpolation(float x0, float y0, float x1, float y1, float x)
+        {
+            return (int)Math.Round(y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0));
+        }
+
+        float Interpolation1(float x0, float y0, float x1, float y1, float x)
+        {
+            return y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0);
+        }
+
+        float Clamp(float x, float min, float max)
+        {
+            return Math.Min(Math.Max(x, min), max);
+        }
+
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
 
                         Point3D normal = new Point3D(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
                         normal.Normalize();
@@ -825,45 +943,73 @@ namespace Lab6_9
 
         private void LightXMove_B_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             _light.Location.X++;
+=======
+            _lightSource.ViewLocation.X++;
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
 
             Redraw();
         }
 
         private void LightNXMove_B_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             _light.Location.X--;
+=======
+            _lightSource.ViewLocation.X--;
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
 
             Redraw();
         }
 
         private void LightZMove_B_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             _light.Location.Z++;
+=======
+            _lightSource.ViewLocation.Z++;
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
             Redraw();
         }
 
         private void LightNYMove_B_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             _light.Location.Y--;
+=======
+            _lightSource.ViewLocation.Y--;
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
             Redraw();
         }
 
         private void LightYMove_B_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             _light.Location.Y++;
+=======
+            _lightSource.ViewLocation.Y++;
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
             Redraw();
         }
 
         private void LightNZMove_B_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             _light.Location.Z--;
+=======
+            _lightSource.ViewLocation.Z--;
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
             Redraw();
         }
 
         private void LightSetZero_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             _light.Location = new Point3D(0, 0, 0);
+=======
+            _lightSource.ViewLocation = new Point3D(0, 0, 0);
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
             Redraw();
         }
 

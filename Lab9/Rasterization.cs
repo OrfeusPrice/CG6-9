@@ -41,6 +41,7 @@ namespace Lab6_9
             return (int)Math.Round(y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0));
         }
 
+<<<<<<< HEAD
         public static float Interpolation1(float x0, float y0, float x1, float y1, float x)
         {
             return y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0);
@@ -52,6 +53,9 @@ namespace Lab6_9
         }
 
         public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, List<Color> colors,  Graphics g)
+=======
+        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, List<Color> colors, float minZ, float maxZ, Graphics g)
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
         {
             points = points.Select(p => new Point3D((float)Math.Round(p.X), (float)Math.Round(p.Y), p.Z, p.W)).ToList();
 
@@ -114,9 +118,13 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
+<<<<<<< HEAD
                         //if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
                         //    pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
                             g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
+=======
+                        g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
                     }
                 }
                 x1 += inc13;
@@ -158,14 +166,19 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
+<<<<<<< HEAD
                         //if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
                         //    pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
                             g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
+=======
+                        g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
+>>>>>>> 5665729d936bafe3a3fd04e99ec0266ef9969461
                     }
                 }
                 x1 += _inc13;
                 x2 += inc23;
             }
+
 
         }
     }
