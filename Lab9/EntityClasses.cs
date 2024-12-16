@@ -3,7 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using static Lab6_9.Form1;
 using static Lab6_9.GeometryAndMatrix;
 using System.Drawing;
@@ -39,37 +38,24 @@ namespace Lab6_9
         public static float operator *(Point3D a, Point3D b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
     }
 
-    public class LightSource
+    public class Light
     {
-        public Point3D Position { get; set; }
-        public Color Color { get; set; }
+        public Point3D Location { get; set; }
+        public Point3D ViewLocation { get; set; }
+        public float AmbientIntensity { get; set; }
+        public float DiffuseIntensity { get; set; }
+        public float SpecularIntensity { get; set; }
 
-        public Point3D Direction { get; set; }
-        public float Intensity { get; set; }
-
-        public LightSource(Point3D position, Color color, float intensity)
+        public Color Color;
+        public Light()
         {
-            Position = position;
-            Color = color;
-            Direction = new Point3D(5, 10, 10);
-            Intensity = intensity;
-        }
+            Location = new Point3D(150, 0, 0);
+            ViewLocation = new Point3D(1000, 0, 0);
+            AmbientIntensity = 0.01f;
+            DiffuseIntensity = 0.03f;
+            SpecularIntensity = 0.04f;
+            Color = Color.LightYellow;
 
-        public Color CalculateLighting(Point3D normal, Point3D vertex)
-        {
-            // Направление на источник света
-            Point3D lightDir = Position - vertex;
-            lightDir = lightDir / (float)Math.Sqrt(lightDir.X * lightDir.X + lightDir.Y * lightDir.Y + lightDir.Z * lightDir.Z);
-
-            // Интенсивность диффузного освещения
-            float diff = Math.Max(0, normal * lightDir);
-
-            // Цвет объекта с учетом освещенности
-            float r = diff * Color.R / 255.0f;
-            float g = diff * Color.G / 255.0f;
-            float b = diff * Color.B / 255.0f;
-
-            return Color.FromArgb((int)(r * 255), (int)(g * 255), (int)(b * 255));
         }
     }
 
@@ -135,8 +121,7 @@ namespace Lab6_9
         public List<Point3D> Normals;
         public List<Coordinates> TextureCoordinates;
         public List<Coordinates> ParameterSpaceVertices;
-        public Color color1;
-        public Color color2;
+        public Color color;
         public string name;
 
         public Object3D()
@@ -146,8 +131,7 @@ namespace Lab6_9
             Normals = new List<Point3D>();
             TextureCoordinates = new List<Coordinates>();
             ParameterSpaceVertices = new List<Coordinates>();
-            color1 = Color.FromArgb(35, 35, 35);
-            color2 = Color.FromArgb(220, 220, 220);
+            color = Color.FromArgb(35, 35, 35);
         }
 
         public override string ToString()

@@ -52,22 +52,22 @@ namespace Lab6_9
         }
 
         // Функция для расчета цвета по модели Ламберта с использованием нормали
-        public static Color CalculateLambertColor(Point3D vertex, LightSource lightSource, Point3D normal)
+        public static Color CalculateLambertColor(Point3D vertex, Light lightSource, Point3D normal)
         {
-            lightSource.Direction = lightSource.Direction.Normalize();
+            lightSource.ViewLocation = lightSource.ViewLocation.Normalize();
 
             // Вычисление угла между нормалью и направлением на источник света
-            float dotProduct = normal.X * -lightSource.Direction.X +
-                               normal.Y * -lightSource.Direction.Y +
-                               normal.Z * -lightSource.Direction.Z;
+            float dotProduct = normal.X * -lightSource.ViewLocation.X +
+                               normal.Y * -lightSource.ViewLocation.Y +
+                               normal.Z * -lightSource.ViewLocation.Z;
 
             // Ограничиваем результат в диапазоне [0, 1] (чтобы избежать отрицательных значений)
             float intensity = Math.Max(0, dotProduct);  // Интенсивность диффузного отражения
 
             // Моделируем диффузное отражение
-            int R = (int)(lightSource.Color.R * lightSource.Intensity * intensity);
-            int G = (int)(lightSource.Color.G * lightSource.Intensity * intensity);
-            int B = (int)(lightSource.Color.B * lightSource.Intensity * intensity);
+            int R = (int)(lightSource.Color.R * lightSource.DiffuseIntensity * intensity);
+            int G = (int)(lightSource.Color.G * lightSource.DiffuseIntensity * intensity);
+            int B = (int)(lightSource.Color.B * lightSource.DiffuseIntensity * intensity);
 
             // Ограничиваем значения для цвета (в пределах 0-255)
             R = Math.Min(255, Math.Max(0, R));
@@ -78,7 +78,7 @@ namespace Lab6_9
         }
 
         // Метод растеризации с шейдингом Гуро
-        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, LightSource lightSource)
+        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, Light lightSource)
         {
             points = points.Select(p => new Point3D((float)Math.Round(p.X), (float)Math.Round(p.Y), p.Z, p.W)).ToList();
             points.Sort((a, b) => a.Y == b.Y ? 0 : (a.Y < b.Y ? -1 : 1));

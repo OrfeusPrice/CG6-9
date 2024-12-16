@@ -41,7 +41,7 @@ namespace Lab6_9
         int move;
 
         float[,] _ZBuffer;
-        LightSource _lightSource;
+        Light _light;
 
         List<Point3D> _points;
         Object3D _obj;
@@ -71,7 +71,7 @@ namespace Lab6_9
             _tCount = 0;
             InitMChanges();
 
-            isDelEdges = true;
+            isDelEdges = false;
             isRaster = true;
 
             angle = 1;
@@ -81,17 +81,17 @@ namespace Lab6_9
             _camera.Rotation = new Point3D(0, 0, 0);
 
             _ZBuffer = new float[pictureBox.Width, pictureBox.Height];
-            _lightSource = new LightSource(new Point3D(0, 0, -10), Color.LightSkyBlue, 0.02f);
+            _light = new Light();
 
             _countOfObjs = 0;
 
             //Hexahedron(ref _obj, 100);
+
             //_obj = LoadObj("cube.obj");
             //_points = new List<Point3D>();
             //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             //GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
-            //_obj.color1 = Color.Red;
-            //_obj.color2 = Color.Blue;
+            //_obj.color = Color.Blue;
             //_obj.name = "obj" + _countOfObjs++.ToString();
             //_objects.Add(_obj);
             //Triangulate(ref _obj);
@@ -112,8 +112,7 @@ namespace Lab6_9
             //_points = new List<Point3D>();
             //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             //GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
-            //_obj.color1 = Color.Yellow;
-            //_obj.color2 = Color.Green;
+            //_obj.color = Color.Yellow;
             //_obj.name = "obj" + _countOfObjs++.ToString();
             //_objects.Add(_obj);
             //Triangulate(ref _obj);
@@ -124,9 +123,8 @@ namespace Lab6_9
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             GeometryAndMatrix.Scale(ref _obj, 120, 120, 120);
             _obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, 180)).ToList();
-            _obj.color1 = Color.Coral;
-            _obj.color2 = Color.LightGoldenrodYellow;
             _obj.name = "obj" + _countOfObjs++.ToString();
+            _obj.color = Color.Red;
             _objects.Add(_obj);
             Triangulate(ref _obj);
             OBJS_CB.Items.Add(_obj.name);
@@ -173,8 +171,8 @@ namespace Lab6_9
             string filename = "cat.jpg";
             Bitmap texture = new Bitmap(filename);
 
+            List<Point3D> normals = obj.Normals;
             List<Coordinates> textureCoords = new List<Coordinates>();
-
             List<Point3D> vertexes = obj.Vertices;
 
             Point3D center = new Point3D(0, 0, 0);
@@ -188,7 +186,11 @@ namespace Lab6_9
                 _isNewObj = false;
             }
 
+
             vertexes = vertexes.Select(p => _camera.View(p, center)).ToList();
+            //_light.ViewLocation = _camera.View(_light.Location, _light.Location);
+            normals = normals.Select(p => _camera.View(p, p)).ToList();
+
 
             int len = 100;
             List<Point3D> Ox = new List<Point3D>() { new Point3D(0, 0, 0), new Point3D(len, 0, 0) };
@@ -220,23 +222,15 @@ namespace Lab6_9
 
             switch (_camera.Projection)
             {
-                case Projection.Perspective: vertexes = vertexes.Select(p => Perspective(p)).ToList(); break;
-                case Projection.Axonometric: vertexes = vertexes.Select(p => Axonometric(p)).ToList(); break;
-                case Projection.Parallel: vertexes = vertexes.Select(p => Parallel(p)).ToList(); break;
+                case Projection.Perspective: vertexes = vertexes.Select(p => Perspective(p)).ToList(); _light.ViewLocation = Perspective(_light.Location); break;
+                case Projection.Axonometric: vertexes = vertexes.Select(p => Axonometric(p)).ToList(); _light.ViewLocation = Axonometric(_light.Location); break;
+                case Projection.Parallel: vertexes = vertexes.Select(p => Parallel(p)).ToList(); _light.ViewLocation = Parallel(_light.Location); break;
                 default: break;
             }
 
             foreach (Point3D p in vertexes)
             {
                 //_g.DrawRectangle(new Pen(Color.Red), p.X - 1, p.Y - 1, 2, 2);
-            }
-
-            float maxZ = float.MinValue;
-            float minZ = float.MaxValue;
-            foreach (Point3D v in vertexes)
-            {
-                if (v.Z < minZ) minZ = v.Z;
-                if (v.Z > maxZ) maxZ = v.Z;
             }
 
 
@@ -246,17 +240,35 @@ namespace Lab6_9
                 Point3D v2 = vertexes[face.FaceIndices[2].VertexIndex - 1] - vertexes[face.FaceIndices[0].VertexIndex - 1];
 
                 Point3D normal = new Point3D(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
-                float l = (float)Math.Sqrt(Math.Pow(normal.X, 2) + Math.Pow(normal.Y, 2) + Math.Pow(normal.Z, 2));
-                normal /= l;
+                normal.Normalize();
 
                 if (normal * _camera.ViewVector < 0) continue;
 
-                List<Point3D> points = face.FaceIndices.Select(i => vertexes[i.VertexIndex - 1]).ToList();
+                List<Point3D> points = new List<Point3D>();
 
+                // GURO
+                colors = new List<Color>();
                 foreach (FaceIndices fi in face.FaceIndices)
                 {
-                    textureCoords.Add(obj.TextureCoordinates[fi.TextureCoordinateIndex - 1]);
+                    Point3D l = _light.ViewLocation - vertexes[fi.VertexIndex - 1]; // Light to point
+                    l.Normalize();
+
+                    Point3D n = normals[fi.NormalIndex - 1];
+                    n.Normalize();
+
+                    float nl = n * l;
+
+                    float D = Clamp(Math.Max(0.0f, _light.DiffuseIntensity * nl), 0.0f, 1.0f);
+
+                    int R = (int)Clamp(obj.color.R * (_light.AmbientIntensity + D), 0, 255);
+                    int G = (int)Clamp(obj.color.G * (_light.AmbientIntensity + D), 0, 255);
+                    int B = (int)Clamp(obj.color.B * (_light.AmbientIntensity + D), 0, 255);
+
+                    colors.Add(Color.FromArgb(R, G, B));
+                    points.Add(vertexes[fi.VertexIndex - 1]);
                 }
+
+                if (isRaster) Rasterization(points, _ZBuffer, pictureBox, _bm, colors, _g);
 
                 if (isDelEdges)
                     for (int i = 0; i < face.FaceIndices.Count; i++)
@@ -269,20 +281,71 @@ namespace Lab6_9
                             p2.X,
                             p2.Y);
                     }
-                if (isRaster)
-                {
-                    //Rasterization(points, _ZBuffer, pictureBox, _bm, obj.color1, obj.color2, minZ, maxZ);
-                    Guro.Rasterization(points, _ZBuffer, pictureBox, _bm, _lightSource);
-                    
-                }
+
                 if (isTexturing)
                 {
                     Rasterization_Linear_Texture(points, textureCoords, texture, _bm, pictureBox, _ZBuffer);
                 }
             }
+            //_g.DrawRectangle(new Pen(Color.Yellow, 5), _light.ViewLocation.X, -_light.ViewLocation.Y, 5, 5);
+
         }
 
+        public void CalculateVertexNormals(ref Object3D obj)
+        {
+            obj.Normals.Clear();
+            for (int i = 1; i <= obj.Vertices.Count; i++)
+            {
+                List<Point3D> normals = new List<Point3D>();
+                foreach (Face f in obj.Faces)
+                {
+                    if (f.FaceIndices.Where(x => x.VertexIndex == i).Count() != 0)
+                    {
+                        Point3D v1 = obj.Vertices[f.FaceIndices[1].VertexIndex - 1] - obj.Vertices[f.FaceIndices[0].VertexIndex - 1];
+                        Point3D v2 = obj.Vertices[f.FaceIndices[2].VertexIndex - 1] - obj.Vertices[f.FaceIndices[0].VertexIndex - 1];
 
+                        Point3D normal = new Point3D(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
+                        normal.Normalize();
+
+                        normals.Add(normal);
+                    }
+                }
+
+                Point3D vertexNormal = new Point3D(0, 0, 0);
+                foreach (Point3D n in normals) vertexNormal += n;
+                vertexNormal /= normals.Count();
+
+                obj.Normals.Add(vertexNormal);
+            }
+        }
+
+        public void CalculateVertexNormals(ref Object3D obj, List<Point3D> vertices)
+        {
+            obj.Normals.Clear();
+            for (int i = 1; i <= vertices.Count; i++)
+            {
+                List<Point3D> normals = new List<Point3D>();
+                foreach (Face f in obj.Faces)
+                {
+                    if (f.FaceIndices.Where(x => x.VertexIndex == i).Count() != 0)
+                    {
+                        Point3D v1 = vertices[f.FaceIndices[1].VertexIndex - 1] - vertices[f.FaceIndices[0].VertexIndex - 1];
+                        Point3D v2 = vertices[f.FaceIndices[2].VertexIndex - 1] - vertices[f.FaceIndices[0].VertexIndex - 1];
+
+                        Point3D normal = new Point3D(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
+                        normal.Normalize();
+
+                        normals.Add(normal);
+                    }
+                }
+
+                Point3D vertexNormal = new Point3D(0, 0, 0);
+                foreach (Point3D n in normals) vertexNormal += n;
+                vertexNormal /= normals.Count();
+
+                obj.Normals.Add(vertexNormal);
+            }
+        }
 
         public Point3D Perspective(Point3D p)
         {
@@ -480,8 +543,7 @@ namespace Lab6_9
             _obj = new Object3D();
             _obj = LoadObj(LoadTB.Text + ".obj");
             _obj.name = LoadTB.Text;
-            _obj.color2 = Color.Red;
-            _obj.color1 = Color.Blue;
+            _obj.color = Color.Red;
             Triangulate(ref _obj);
             _objects.Add(_obj);
             OBJS_CB.Items.Add(_obj.name);
@@ -763,45 +825,45 @@ namespace Lab6_9
 
         private void LightXMove_B_Click(object sender, EventArgs e)
         {
-            _lightSource.Direction.X++;
+            _light.Location.X++;
 
             Redraw();
         }
 
         private void LightNXMove_B_Click(object sender, EventArgs e)
         {
-            _lightSource.Direction.X--;
+            _light.Location.X--;
 
             Redraw();
         }
 
         private void LightZMove_B_Click(object sender, EventArgs e)
         {
-            _lightSource.Direction.Z++;
+            _light.Location.Z++;
             Redraw();
         }
 
         private void LightNYMove_B_Click(object sender, EventArgs e)
         {
-            _lightSource.Direction.Y--;
+            _light.Location.Y--;
             Redraw();
         }
 
         private void LightYMove_B_Click(object sender, EventArgs e)
         {
-            _lightSource.Direction.Y++;
+            _light.Location.Y++;
             Redraw();
         }
 
         private void LightNZMove_B_Click(object sender, EventArgs e)
         {
-            _lightSource.Direction.Z--;
+            _light.Location.Z--;
             Redraw();
         }
 
         private void LightSetZero_Click(object sender, EventArgs e)
         {
-            _lightSource.Direction = new Point3D(0, 0, 0);
+            _light.Location = new Point3D(0, 0, 0);
             Redraw();
         }
 
