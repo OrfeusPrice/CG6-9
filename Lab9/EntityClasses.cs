@@ -41,35 +41,19 @@ namespace Lab6_9
 
     public class LightSource
     {
-        public Point3D Position { get; set; }
-        public Color Color { get; set; }
+        public Point3D Location { get; set; }
+        public Point3D ViewLocation { get; set; }
+        public float Ka { get; set; }
+        public float Kd { get; set; }
+        public float Ks { get; set; }
 
-        public Point3D Direction { get; set; }
-        public float Intensity { get; set; }
-
-        public LightSource(Point3D position, Color color, float intensity)
+        public LightSource()
         {
-            Position = position;
-            Color = color;
-            Direction = new Point3D(5, 10, 10);
-            Intensity = intensity;
-        }
-
-        public Color CalculateLighting(Point3D normal, Point3D vertex)
-        {
-            // Направление на источник света
-            Point3D lightDir = Position - vertex;
-            lightDir = lightDir / (float)Math.Sqrt(lightDir.X * lightDir.X + lightDir.Y * lightDir.Y + lightDir.Z * lightDir.Z);
-
-            // Интенсивность диффузного освещения
-            float diff = Math.Max(0, normal * lightDir);
-
-            // Цвет объекта с учетом освещенности
-            float r = diff * Color.R / 255.0f;
-            float g = diff * Color.G / 255.0f;
-            float b = diff * Color.B / 255.0f;
-
-            return Color.FromArgb((int)(r * 255), (int)(g * 255), (int)(b * 255));
+            Location = new Point3D(0, 0, 0);
+            ViewLocation = new Point3D(0, 0, 0);
+            Ka = 0.15f;
+            Kd = 0.8f;
+            Ks = 0.4f;
         }
     }
 
@@ -135,8 +119,7 @@ namespace Lab6_9
         public List<Point3D> Normals;
         public List<Coordinates> TextureCoordinates;
         public List<Coordinates> ParameterSpaceVertices;
-        public Color color1;
-        public Color color2;
+        public Color color;
         public string name;
 
         public Object3D()
@@ -146,8 +129,7 @@ namespace Lab6_9
             Normals = new List<Point3D>();
             TextureCoordinates = new List<Coordinates>();
             ParameterSpaceVertices = new List<Coordinates>();
-            color1 = Color.FromArgb(35, 35, 35);
-            color2 = Color.FromArgb(220, 220, 220);
+            color = Color.FromArgb(35, 35, 35);
         }
 
         public override string ToString()

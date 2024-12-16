@@ -41,14 +41,16 @@ namespace Lab6_9
             return (int)Math.Round(y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0));
         }
 
-        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, Color color1, Color color2, float minZ, float maxZ)
+        public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, List<Color> colors, float minZ, float maxZ, Graphics g)
         {
             points = points.Select(p => new Point3D((float)Math.Round(p.X), (float)Math.Round(p.Y), p.Z, p.W)).ToList();
-            points.Sort((a, b) => a.Y == b.Y ? 0 : (a.Y < b.Y ? -1 : 1));
 
-            List<Color> colors = points.Select(p => Color.FromArgb(Interpolation(minZ, color1.R, maxZ, color2.R, p.Z),
-                                                                    Interpolation(minZ, color1.G, maxZ, color2.G, p.Z),
-                                                                    Interpolation(minZ, color1.B, maxZ, color2.B, p.Z))).ToList();
+            List<(Point3D, Color)> temp = (new List<int> { 0, 1, 2 }).Select(i => (points[i], colors[i])).ToList();
+
+            temp.Sort((a, b) => a.Item1.Y == b.Item1.Y ? 0 : (a.Item1.Y < b.Item1.Y ? -1 : 1));
+
+            points = temp.Select(x => x.Item1).ToList();
+            colors = temp.Select(x => x.Item2).ToList();
 
             float inc12, inc13, inc23;
 
@@ -102,20 +104,19 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
-                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
-                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
+                        g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
                     }
                 }
                 x1 += inc13;
                 x2 += inc12;
             }
+
             if (points[0].Y == points[1].Y)
             {
                 x1 = Math.Min(points[0].X, points[1].X);
                 x2 = Math.Max(points[0].X, points[1].X);
             }
+
             if (_inc13 < inc23)
                 (_inc13, inc23) = (inc23, _inc13);
 
@@ -145,15 +146,13 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        //_g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
-                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
-                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
-                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, Color.FromArgb(R, G, B));
+                        g.DrawRectangle(new Pen(Color.FromArgb(R, G, B)), j, i, 1, 1);
                     }
                 }
                 x1 += _inc13;
                 x2 += inc23;
             }
+
 
         }
     }
