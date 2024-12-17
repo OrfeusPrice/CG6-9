@@ -124,21 +124,21 @@ namespace Lab6_9
             //Triangulate(ref _obj);
             //OBJS_CB.Items.Add(_obj.name);
 
-            //_obj = LoadObj("sphere.obj");
-            //_points = new List<Point3D>();
-            //_obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
-            //GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
-            //_obj.color = Color.Yellow;
-            //_obj.name = "obj" + _countOfObjs++.ToString();
-            //_objects.Add(_obj);
-            //Triangulate(ref _obj);
-            //OBJS_CB.Items.Add(_obj.name);
+            _obj = LoadObj("sphere.obj");
+            _points = new List<Point3D>();
+            _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
+            GeometryAndMatrix.Scale(ref _obj, 60, 60, 60);
+            _obj.color = Color.Yellow;
+            _obj.name = "obj" + _countOfObjs++.ToString();
+            _objects.Add(_obj);
+            Triangulate(ref _obj);
+            OBJS_CB.Items.Add(_obj.name);
 
             _obj = LoadObj("teapot.obj");
             _points = new List<Point3D>();
             _obj.Vertices = _obj.Vertices.Select(p => TranslatePoint(p, 0, 0, 0)).ToList();
             GeometryAndMatrix.Scale(ref _obj, 120, 120, 120);
-            _obj.Vertices = _obj.Vertices.Select(p => XRotatePoint(p, 180)).ToList();
+            XRotate(ref _obj, 180);
             _obj.name = "obj" + _countOfObjs++.ToString();
             _obj.color = Color.Red;
             _objects.Add(_obj);
@@ -549,45 +549,45 @@ namespace Lab6_9
 
         private void pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            if (MouseButtons.Right == e.Button)
-            {
-                _points.Clear();
-                _g.Clear(Color.White);
-                _obj = new Object3D();
-                if (_camera.Projection == Projection.Perspective)
-                {
-                    _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
-                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
-                }
-                else
-                {
-                    _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
-                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
-                    _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
-                }
-                pictureBox.Refresh();
-            }
-            else
-            {
-                _points.Add(new Point3D(e.X - pictureBox.Width / 2, -e.Y + pictureBox.Height / 2, 0));
-                _g.Clear(Color.White);
-                foreach (Point3D p in _points)
-                {
-                    _g.FillEllipse(Brushes.Red, p.X - 2, p.Y - 2, 4, 4);
-                }
-                if (_camera.Projection == Projection.Perspective)
-                {
-                    _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
-                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
-                }
-                else
-                {
-                    _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
-                    _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
-                    _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
-                }
-                pictureBox.Refresh();
-            }
+            //if (MouseButtons.Right == e.Button)
+            //{
+            //    _points.Clear();
+            //    _g.Clear(Color.White);
+            //    _obj = new Object3D();
+            //    if (_camera.Projection == Projection.Perspective)
+            //    {
+            //        _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
+            //        _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
+            //    }
+            //    else
+            //    {
+            //        _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
+            //        _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
+            //        _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
+            //    }
+            //    pictureBox.Refresh();
+            //}
+            //else
+            //{
+            //    _points.Add(new Point3D(e.X - pictureBox.Width / 2, -e.Y + pictureBox.Height / 2, 0));
+            //    _g.Clear(Color.White);
+            //    foreach (Point3D p in _points)
+            //    {
+            //        _g.FillEllipse(Brushes.Red, p.X - 2, p.Y - 2, 4, 4);
+            //    }
+            //    if (_camera.Projection == Projection.Perspective)
+            //    {
+            //        _g.DrawLine(new Pen(Color.Blue, 2), 1000, 0, 0, 0); //X
+            //        _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); //Y
+            //    }
+            //    else
+            //    {
+            //        _g.DrawLine(new Pen(Color.Green, 2), 0, 0, 500, -300); // Z
+            //        _g.DrawLine(new Pen(Color.Red, 2), 0, 1000, 0, 0); // Y
+            //        _g.DrawLine(new Pen(Color.Blue, 2), 0, 0, 500, 300); //X
+            //    }
+            //    pictureBox.Refresh();
+            //}
         }
 
         private void FuncCreate_Click(object sender, EventArgs e)
