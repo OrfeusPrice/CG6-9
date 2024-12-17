@@ -768,7 +768,13 @@ namespace Lab6_9
         {
             isRasterGuro = !isRasterGuro;
 
-            if (isRasterGuro) Zbuffer_B.BackColor = Color.LightGreen;
+            if (isRasterGuro) {
+                Zbuffer_B.BackColor = Color.LightGreen; 
+                Fong_B.BackColor = Color.Red;
+                isRasterFong = false;
+                texturing_btn.BackColor = Color.Red;
+                isTexturing = false;
+            }
             else Zbuffer_B.BackColor = Color.Red;
 
             Redraw();
@@ -863,7 +869,14 @@ namespace Lab6_9
         {
             isRasterFong = !isRasterFong;
 
-            if (isRasterFong) Fong_B.BackColor = Color.LightGreen;
+            if (isRasterFong)
+            {
+                Fong_B.BackColor = Color.LightGreen;
+                Zbuffer_B.BackColor = Color.Red;
+                isRasterGuro = false;
+                texturing_btn.BackColor = Color.Red;
+                isTexturing = false;
+            }
             else Fong_B.BackColor = Color.Red;
 
             Redraw();
