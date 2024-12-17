@@ -188,7 +188,6 @@ namespace Lab6_9
             Bitmap texture = new Bitmap(filename);
 
             List<Point3D> normals = obj.Normals;
-            List<Coordinates> textureCoords = new List<Coordinates>();
             List<Point3D> vertexes = obj.Vertices;
 
             Point3D center = new Point3D(0, 0, 0);
@@ -316,6 +315,14 @@ namespace Lab6_9
 
                 if (isTexturing)
                 {
+                    points = new List<Point3D>();
+                    List<Coordinates> textureCoords = new List<Coordinates>();
+                    foreach (FaceIndices fi in face.FaceIndices)
+                    {
+                        points.Add(vertexes[fi.VertexIndex - 1]);
+                        textureCoords.Add(obj.TextureCoordinates[fi.TextureCoordinateIndex - 1]);
+                    }
+
                     Rasterization_Linear_Texture(points, textureCoords, texture, _bm, pictureBox, _ZBuffer);
                 }
             }
@@ -859,7 +866,14 @@ namespace Lab6_9
         {
             isTexturing = !isTexturing;
 
-            if (isTexturing) texturing_btn.BackColor = Color.LightGreen;
+            if (isTexturing)
+            {
+                texturing_btn.BackColor = Color.LightGreen;
+                Zbuffer_B.BackColor = Color.Red;
+                isRasterGuro = false;
+                Fong_B.BackColor = Color.Red;
+                isRasterFong = false;
+            }
             else texturing_btn.BackColor = Color.Red;
 
             Redraw();
