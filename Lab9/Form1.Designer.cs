@@ -177,6 +177,7 @@
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.Fong_B = new System.Windows.Forms.Button();
             this.texturing_btn = new System.Windows.Forms.Button();
             this.Zbuffer_B = new System.Windows.Forms.Button();
             this.Edges_B = new System.Windows.Forms.Button();
@@ -1256,7 +1257,7 @@
             "x ^ 3 + y ^ 3",
             "sin(x) * cos(y)"});
             this.FuncComboBox.Location = new System.Drawing.Point(88, 7);
-            this.FuncComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.FuncComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.FuncComboBox.Name = "FuncComboBox";
             this.FuncComboBox.Size = new System.Drawing.Size(160, 24);
             this.FuncComboBox.TabIndex = 0;
@@ -1860,6 +1861,7 @@
             // groupBox5
             // 
             this.groupBox5.BackColor = System.Drawing.Color.Honeydew;
+            this.groupBox5.Controls.Add(this.Fong_B);
             this.groupBox5.Controls.Add(this.texturing_btn);
             this.groupBox5.Controls.Add(this.Zbuffer_B);
             this.groupBox5.Controls.Add(this.Edges_B);
@@ -1867,32 +1869,44 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox5.Size = new System.Drawing.Size(168, 191);
+            this.groupBox5.Size = new System.Drawing.Size(168, 230);
             this.groupBox5.TabIndex = 57;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Отображение";
             // 
+            // Fong_B
+            // 
+            this.Fong_B.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.Fong_B.Location = new System.Drawing.Point(5, 119);
+            this.Fong_B.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Fong_B.Name = "Fong_B";
+            this.Fong_B.Size = new System.Drawing.Size(156, 45);
+            this.Fong_B.TabIndex = 4;
+            this.Fong_B.Text = "Фонг";
+            this.Fong_B.UseVisualStyleBackColor = false;
+            this.Fong_B.Click += new System.EventHandler(this.Fong_B_Click);
+            // 
             // texturing_btn
             // 
             this.texturing_btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.texturing_btn.Location = new System.Drawing.Point(7, 133);
+            this.texturing_btn.Location = new System.Drawing.Point(5, 168);
             this.texturing_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.texturing_btn.Name = "texturing_btn";
-            this.texturing_btn.Size = new System.Drawing.Size(156, 50);
+            this.texturing_btn.Size = new System.Drawing.Size(156, 45);
             this.texturing_btn.TabIndex = 3;
             this.texturing_btn.Text = "Текстура";
             this.texturing_btn.UseVisualStyleBackColor = false;
-            this.texturing_btn.Click += new System.EventHandler(this.button8_Click);
+            this.texturing_btn.Click += new System.EventHandler(this.Texturing_B_Click);
             // 
             // Zbuffer_B
             // 
             this.Zbuffer_B.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.Zbuffer_B.Location = new System.Drawing.Point(5, 78);
+            this.Zbuffer_B.Location = new System.Drawing.Point(5, 70);
             this.Zbuffer_B.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Zbuffer_B.Name = "Zbuffer_B";
-            this.Zbuffer_B.Size = new System.Drawing.Size(156, 50);
+            this.Zbuffer_B.Size = new System.Drawing.Size(156, 45);
             this.Zbuffer_B.TabIndex = 2;
-            this.Zbuffer_B.Text = "Z-буффер";
+            this.Zbuffer_B.Text = "Гуро";
             this.Zbuffer_B.UseVisualStyleBackColor = false;
             this.Zbuffer_B.Click += new System.EventHandler(this.Zbuffer_B_Click);
             // 
@@ -1902,7 +1916,7 @@
             this.Edges_B.Location = new System.Drawing.Point(5, 21);
             this.Edges_B.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Edges_B.Name = "Edges_B";
-            this.Edges_B.Size = new System.Drawing.Size(156, 50);
+            this.Edges_B.Size = new System.Drawing.Size(156, 45);
             this.Edges_B.TabIndex = 1;
             this.Edges_B.Text = "Грани";
             this.Edges_B.UseVisualStyleBackColor = false;
@@ -2252,6 +2266,7 @@
         private System.Windows.Forms.Button LightYMove_B;
         private System.Windows.Forms.Button LightNZMove_B;
         private System.Windows.Forms.Button LightSetZero;
+        private System.Windows.Forms.Button Fong_B;
     }
 }
 

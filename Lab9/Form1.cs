@@ -75,6 +75,8 @@ namespace Lab6_9
 
             isDelEdges = false;
             isRasterGuro = true;
+            isRasterFong = false;
+            isTexturing = false;
 
             angle = 1;
             move = 1;
@@ -84,6 +86,18 @@ namespace Lab6_9
 
             _ZBuffer = new float[pictureBox.Width, pictureBox.Height];
             _light = new Light();
+
+            if (isDelEdges) Edges_B.BackColor = Color.LightGreen;
+            else Edges_B.BackColor = Color.Red;
+
+            if (isRasterFong) Fong_B.BackColor = Color.LightGreen;
+            else Fong_B.BackColor = Color.Red;
+
+            if (isTexturing) texturing_btn.BackColor = Color.LightGreen;
+            else texturing_btn.BackColor = Color.Red;
+
+            if (isRasterGuro) Zbuffer_B.BackColor = Color.LightGreen;
+            else Zbuffer_B.BackColor = Color.Red;
 
             _countOfObjs = 0;
 
@@ -250,7 +264,7 @@ namespace Lab6_9
 
                 // GURO
 
-                if (!isRasterGuro)
+                if (isRasterGuro)
                 {
                     colors = new List<Color>();
                     foreach (FaceIndices fi in face.FaceIndices)
@@ -276,7 +290,7 @@ namespace Lab6_9
                     Rasterization(points, _ZBuffer, pictureBox, _bm, colors, _g);
                 }
 
-                if (!isRasterFong)
+                if (isRasterFong)
                 {
                     toonShadingColorSteps = 10;
                     List<Point3D> normals1 = new List<Point3D>();
@@ -744,12 +758,18 @@ namespace Lab6_9
         {
             isDelEdges = !isDelEdges;
 
+            if (isDelEdges) Edges_B.BackColor = Color.LightGreen;
+            else Edges_B.BackColor = Color.Red;
+
             Redraw();
         }
 
         private void Zbuffer_B_Click(object sender, EventArgs e)
         {
             isRasterGuro = !isRasterGuro;
+
+            if (isRasterGuro) Zbuffer_B.BackColor = Color.LightGreen;
+            else Zbuffer_B.BackColor = Color.Red;
 
             Redraw();
         }
@@ -829,9 +849,22 @@ namespace Lab6_9
             Redraw();
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void Texturing_B_Click(object sender, EventArgs e)
         {
             isTexturing = !isTexturing;
+
+            if (isTexturing) texturing_btn.BackColor = Color.LightGreen;
+            else texturing_btn.BackColor = Color.Red;
+
+            Redraw();
+        }
+
+        private void Fong_B_Click(object sender, EventArgs e)
+        {
+            isRasterFong = !isRasterFong;
+
+            if (isRasterFong) Fong_B.BackColor = Color.LightGreen;
+            else Fong_B.BackColor = Color.Red;
 
             Redraw();
         }
