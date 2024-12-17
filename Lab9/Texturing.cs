@@ -112,7 +112,9 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, (texture.GetPixel((int)((texture.Width) * U), texture.Height - (int)((texture.Height) * V))));
+                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
+                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
+                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, (texture.GetPixel((int)((texture.Width) * U % texture.Width), texture.Height - (int)((texture.Height) * V))));
                     }
                 }
                 x1 += inc13;
@@ -148,7 +150,9 @@ namespace Lab6_9
                     if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
                     {
                         ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
-                        bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, (texture.GetPixel((int)((texture.Width) * U), texture.Height - (int)((texture.Height) * V))));
+                        if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
+                            pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
+                            bm.SetPixel(pictureBox.Width / 2 + j, pictureBox.Height - pictureBox.Height / 2 + i, (texture.GetPixel((int)((texture.Width) * U % texture.Width), texture.Height - (int)((texture.Height) * V))));
                     }
                 }
                 x1 += _inc13;
