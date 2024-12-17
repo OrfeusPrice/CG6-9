@@ -54,7 +54,7 @@ namespace Lab6_9
         // Функция для расчета цвета по модели Ламберта с использованием нормали
         public static Color CalculateLambertColor(Point3D vertex, Light lightSource, Point3D normal)
         {
-            lightSource.ViewLocation = lightSource.ViewLocation.Normalize();
+            lightSource.ViewLocation.Normalize();
 
             // Вычисление угла между нормалью и направлением на источник света
             float dotProduct = normal.X * -lightSource.ViewLocation.X +

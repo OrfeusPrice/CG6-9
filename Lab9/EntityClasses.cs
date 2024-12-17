@@ -23,12 +23,10 @@ namespace Lab6_9
             W = w;
         }
 
-        public Point3D Normalize()
+        public void Normalize()
         {
-            float length = (float)Math.Sqrt(X * X + Y * Y + Z * Z);
-            if (length == 0) return this;  // Если длина вектора 0, возвращаем сам вектор
-
-            return new Point3D(X / length, Y / length, Z / length, W);
+            Point3D normalized = this / (float)Math.Sqrt(Math.Pow(this.X, 2) + Math.Pow(this.Y, 2) + Math.Pow(this.Z, 2));
+            X = normalized.X; Y = normalized.Y; Z = normalized.Z;
         }
 
         public static Point3D operator +(Point3D a, Point3D b) => new Point3D(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
@@ -51,9 +49,9 @@ namespace Lab6_9
         {
             Location = new Point3D(150, 0, 0);
             ViewLocation = new Point3D(1000, 0, 0);
-            AmbientIntensity = 0.01f;
-            DiffuseIntensity = 0.03f;
-            SpecularIntensity = 0.04f;
+            AmbientIntensity = 0.15f;
+            DiffuseIntensity = 0.45f;
+            SpecularIntensity = 0.4f;
             Color = Color.LightYellow;
 
         }
@@ -172,8 +170,8 @@ namespace Lab6_9
 
         public Point3D View(Point3D p, Point3D center)
         {
-            p = XRotatePoint(p, Rotation.X);
-            p = YRotatePoint(p, Rotation.Y);
+            p = XRotatePoint(p, -Rotation.X);
+            p = YRotatePoint(p, -Rotation.Y);
             p = ZRotatePoint(p, -Rotation.Z);
 
             Point3D temp = Location;

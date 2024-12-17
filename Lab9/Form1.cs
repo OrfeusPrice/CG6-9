@@ -188,7 +188,7 @@ namespace Lab6_9
 
 
             vertexes = vertexes.Select(p => _camera.View(p, center)).ToList();
-            //_light.ViewLocation = _camera.View(_light.Location, _light.Location);
+            _light.ViewLocation = _camera.View(_light.Location, _light.Location);
             normals = normals.Select(p => _camera.View(p, p)).ToList();
 
 
@@ -287,64 +287,8 @@ namespace Lab6_9
                     Rasterization_Linear_Texture(points, textureCoords, texture, _bm, pictureBox, _ZBuffer);
                 }
             }
-            //_g.DrawRectangle(new Pen(Color.Yellow, 5), _light.ViewLocation.X, -_light.ViewLocation.Y, 5, 5);
+            _g.DrawRectangle(new Pen(Color.Yellow, 5), _light.ViewLocation.X, -_light.ViewLocation.Y, 5, 5);
 
-        }
-
-        public void CalculateVertexNormals(ref Object3D obj)
-        {
-            obj.Normals.Clear();
-            for (int i = 1; i <= obj.Vertices.Count; i++)
-            {
-                List<Point3D> normals = new List<Point3D>();
-                foreach (Face f in obj.Faces)
-                {
-                    if (f.FaceIndices.Where(x => x.VertexIndex == i).Count() != 0)
-                    {
-                        Point3D v1 = obj.Vertices[f.FaceIndices[1].VertexIndex - 1] - obj.Vertices[f.FaceIndices[0].VertexIndex - 1];
-                        Point3D v2 = obj.Vertices[f.FaceIndices[2].VertexIndex - 1] - obj.Vertices[f.FaceIndices[0].VertexIndex - 1];
-
-                        Point3D normal = new Point3D(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
-                        normal.Normalize();
-
-                        normals.Add(normal);
-                    }
-                }
-
-                Point3D vertexNormal = new Point3D(0, 0, 0);
-                foreach (Point3D n in normals) vertexNormal += n;
-                vertexNormal /= normals.Count();
-
-                obj.Normals.Add(vertexNormal);
-            }
-        }
-
-        public void CalculateVertexNormals(ref Object3D obj, List<Point3D> vertices)
-        {
-            obj.Normals.Clear();
-            for (int i = 1; i <= vertices.Count; i++)
-            {
-                List<Point3D> normals = new List<Point3D>();
-                foreach (Face f in obj.Faces)
-                {
-                    if (f.FaceIndices.Where(x => x.VertexIndex == i).Count() != 0)
-                    {
-                        Point3D v1 = vertices[f.FaceIndices[1].VertexIndex - 1] - vertices[f.FaceIndices[0].VertexIndex - 1];
-                        Point3D v2 = vertices[f.FaceIndices[2].VertexIndex - 1] - vertices[f.FaceIndices[0].VertexIndex - 1];
-
-                        Point3D normal = new Point3D(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
-                        normal.Normalize();
-
-                        normals.Add(normal);
-                    }
-                }
-
-                Point3D vertexNormal = new Point3D(0, 0, 0);
-                foreach (Point3D n in normals) vertexNormal += n;
-                vertexNormal /= normals.Count();
-
-                obj.Normals.Add(vertexNormal);
-            }
         }
 
         public Point3D Perspective(Point3D p)

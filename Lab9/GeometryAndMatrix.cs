@@ -43,6 +43,8 @@ namespace Lab6_9
             };
 
             obj.Vertices = obj.Vertices.Select(p => MultiplyMatrix(RotateMatrix, p)).ToList();
+            obj.Normals = obj.Normals.Select(p => MultiplyMatrix(RotateMatrix, p)).ToList();
+
         }
 
         public static void XRotate(ref Object3D obj, float angle)
@@ -55,6 +57,8 @@ namespace Lab6_9
             obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
             obj.Vertices = obj.Vertices.Select(p => XRotatePoint(p, angle)).ToList();
             obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
+            obj.Normals = obj.Normals.Select(p => XRotatePoint(p, angle)).ToList();
+
         }
 
         public static void YRotate(ref Object3D obj, float angle)
@@ -67,6 +71,7 @@ namespace Lab6_9
             obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
             obj.Vertices = obj.Vertices.Select(p => YRotatePoint(p, angle)).ToList();
             obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
+            obj.Normals = obj.Normals.Select(p => XRotatePoint(p, angle)).ToList();
         }
 
         public static void ZRotate(ref Object3D obj, float angle)
@@ -79,6 +84,7 @@ namespace Lab6_9
             obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, -center.X, -center.Y, -center.Z)).ToList();
             obj.Vertices = obj.Vertices.Select(p => ZRotatePoint(p, angle)).ToList();
             obj.Vertices = obj.Vertices.Select(p => TranslatePoint(p, center.X, center.Y, center.Z)).ToList();
+            obj.Normals = obj.Normals.Select(p => XRotatePoint(p, angle)).ToList();
         }
 
         public static Point3D XYMirrorPoint(Point3D p)
