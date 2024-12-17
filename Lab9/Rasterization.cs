@@ -41,7 +41,7 @@ namespace Lab6_9
             return (int)Math.Round(y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0));
         }
 
-        public static float Interpolation1(float x0, float y0, float x1, float y1, float x)
+        public static float InterpolationFloat(float x0, float y0, float x1, float y1, float x)
         {
             return y0 + (float)(y1 - y0) * (x - x0) / (x1 - x0);
         }
@@ -209,22 +209,22 @@ namespace Lab6_9
 
             for (int i = (int)(points[0].Y); i < (int)(points[1].Y); i++)
             {
-                float nLeftX = Interpolation1(points[0].Y, normals[0].X, points[left].Y, normals[left].X, i);
-                float nLeftY = Interpolation1(points[0].Y, normals[0].Y, points[left].Y, normals[left].Y, i);
-                float nLeftZ = Interpolation1(points[0].Y, normals[0].Z, points[left].Y, normals[left].Z, i);
+                float nLeftX = InterpolationFloat(points[0].Y, normals[0].X, points[left].Y, normals[left].X, i);
+                float nLeftY = InterpolationFloat(points[0].Y, normals[0].Y, points[left].Y, normals[left].Y, i);
+                float nLeftZ = InterpolationFloat(points[0].Y, normals[0].Z, points[left].Y, normals[left].Z, i);
 
-                float nRightX = Interpolation1(points[0].Y, normals[0].X, points[right].Y, normals[right].X, i);
-                float nRightY = Interpolation1(points[0].Y, normals[0].Y, points[right].Y, normals[right].Y, i);
-                float nRightZ = Interpolation1(points[0].Y, normals[0].Z, points[right].Y, normals[right].Z, i);
+                float nRightX = InterpolationFloat(points[0].Y, normals[0].X, points[right].Y, normals[right].X, i);
+                float nRightY = InterpolationFloat(points[0].Y, normals[0].Y, points[right].Y, normals[right].Y, i);
+                float nRightZ = InterpolationFloat(points[0].Y, normals[0].Z, points[right].Y, normals[right].Z, i);
 
                 int zLeft = Interpolation(points[0].Y, points[0].Z, points[left].Y, points[left].Z, i);
                 int zRight = Interpolation(points[0].Y, points[0].Z, points[right].Y, points[right].Z, i);
 
                 for (int j = (int)x1; j < (int)x2; j++)
                 {
-                    float X = Interpolation1((int)x1, nLeftX, (int)x2, nRightX, j);
-                    float Y = Interpolation1((int)x1, nLeftY, (int)x2, nRightY, j);
-                    float Z = Interpolation1((int)x1, nLeftZ, (int)x2, nRightZ, j);
+                    float X = InterpolationFloat((int)x1, nLeftX, (int)x2, nRightX, j);
+                    float Y = InterpolationFloat((int)x1, nLeftY, (int)x2, nRightY, j);
+                    float Z = InterpolationFloat((int)x1, nLeftZ, (int)x2, nRightZ, j);
 
                     int z = Interpolation((int)x1, zLeft, (int)x2, zRight, j);
                     if (pictureBox.Width / 2 + j > pictureBox.Width - 1 || pictureBox.Width / 2 + j < 0 || pictureBox.Height / 2 + i > pictureBox.Height - 1 || pictureBox.Height / 2 + i < 0) continue;
@@ -285,22 +285,22 @@ namespace Lab6_9
 
             for (int i = (int)(points[1].Y); i < (int)(points[2].Y); i++)
             {
-                float nLeftX = Interpolation1(points[2].Y, normals[2].X, points[left].Y, normals[left].X, i);
-                float nLeftY = Interpolation1(points[2].Y, normals[2].Y, points[left].Y, normals[left].Y, i);
-                float nLeftZ = Interpolation1(points[2].Y, normals[2].Z, points[left].Y, normals[left].Z, i);
+                float nLeftX = InterpolationFloat(points[2].Y, normals[2].X, points[left].Y, normals[left].X, i);
+                float nLeftY = InterpolationFloat(points[2].Y, normals[2].Y, points[left].Y, normals[left].Y, i);
+                float nLeftZ = InterpolationFloat(points[2].Y, normals[2].Z, points[left].Y, normals[left].Z, i);
 
-                float nRightX = Interpolation1(points[2].Y, normals[2].X, points[right].Y, normals[right].X, i);
-                float nRightY = Interpolation1(points[2].Y, normals[2].Y, points[right].Y, normals[right].Y, i);
-                float nRightZ = Interpolation1(points[2].Y, normals[2].Z, points[right].Y, normals[right].Z, i);
+                float nRightX = InterpolationFloat(points[2].Y, normals[2].X, points[right].Y, normals[right].X, i);
+                float nRightY = InterpolationFloat(points[2].Y, normals[2].Y, points[right].Y, normals[right].Y, i);
+                float nRightZ = InterpolationFloat(points[2].Y, normals[2].Z, points[right].Y, normals[right].Z, i);
 
                 int zLeft = Interpolation(points[2].Y, points[2].Z, points[left].Y, points[left].Z, i);
                 int zRight = Interpolation(points[2].Y, points[2].Z, points[right].Y, points[right].Z, i);
 
                 for (int j = (int)x1; j < (int)x2; j++)
                 {
-                    float X = Interpolation1((int)x1, nLeftX, (int)x2, nRightX, j);
-                    float Y = Interpolation1((int)x1, nLeftY, (int)x2, nRightY, j);
-                    float Z = Interpolation1((int)x1, nLeftZ, (int)x2, nRightZ, j);
+                    float X = InterpolationFloat((int)x1, nLeftX, (int)x2, nRightX, j);
+                    float Y = InterpolationFloat((int)x1, nLeftY, (int)x2, nRightY, j);
+                    float Z = InterpolationFloat((int)x1, nLeftZ, (int)x2, nRightZ, j);
 
                     int z = Interpolation((int)x1, zLeft, (int)x2, zRight, j);
                     if (pictureBox.Width / 2 + j > pictureBox.Width - 1 || pictureBox.Width / 2 + j < 0 || pictureBox.Height / 2 + i > pictureBox.Height - 1 || pictureBox.Height / 2 + i < 0) continue;
@@ -349,5 +349,128 @@ namespace Lab6_9
             }
 
         }
+
+
+
+
+
+
+
+        //public static void Rasterization(List<Point3D> points, float[,] ZBuffer, PictureBox pictureBox, Bitmap bm, List<Color> colors, Graphics g)
+        //{
+        //    points = points.Select(p => new Point3D((float)Math.Round(p.X), (float)Math.Round(p.Y), p.Z, p.W)).ToList();
+
+        //    List<(Point3D, Color)> temp = (new List<int> { 0, 1, 2 }).Select(i => (points[i], colors[i])).ToList();
+        //    temp.Sort((a, b) => a.Item1.Y == b.Item1.Y ? 0 : (a.Item1.Y < b.Item1.Y ? -1 : 1));
+        //    points = temp.Select(x => x.Item1).ToList();
+        //    colors = temp.Select(x => x.Item2).ToList();
+
+        //    float inc12, inc13, inc23;
+
+        //    if (points[0].Y == points[1].Y)
+        //        inc12 = 0;
+        //    else
+        //        inc12 = (float)(points[1].X - points[0].X) / (points[1].Y - points[0].Y);
+
+        //    if (points[0].Y == points[2].Y)
+        //        inc13 = 0;
+        //    else
+        //        inc13 = (float)(points[2].X - points[0].X) / (points[2].Y - points[0].Y);
+
+        //    if (points[1].Y == points[2].Y)
+        //        inc23 = 0;
+        //    else
+        //        inc23 = (float)(points[2].X - points[1].X) / (points[2].Y - points[1].Y);
+
+        //    float x1 = points[0].X;
+        //    float x2 = x1;
+
+        //    float _inc13 = inc13;
+
+        //    if (inc13 > inc12)
+        //        (inc13, inc12) = (inc12, inc13);
+
+        //    int left, right;
+        //    (left, right) = points[1].X < Interpolation(points[0].Y, points[0].X, points[2].Y, points[2].X, points[1].Y) ? (1, 2) : (2, 1);
+
+        //    for (int i = (int)(points[0].Y); i < (int)(points[1].Y); i++)
+        //    {
+        //        int zLeft = Interpolation(points[0].Y, points[0].Z, points[left].Y, points[left].Z, i);
+        //        int zRight = Interpolation(points[0].Y, points[0].Z, points[right].Y, points[right].Z, i);
+
+        //        Color colorLeft = BilinearInterpolationColor(points[0].X, points[0].Y, colors[0], points[left].X, points[left].Y, colors[left], i, x1);
+        //        Color colorRight = BilinearInterpolationColor(points[0].X, points[0].Y, colors[0], points[right].X, points[right].Y, colors[right], i, x2);
+
+        //        for (int j = (int)x1; j < (int)x2; j++)
+        //        {
+        //            int z = Interpolation((int)x1, zLeft, (int)x2, zRight, j);
+
+        //            if (pictureBox.Width / 2 + j > pictureBox.Width - 1 || pictureBox.Width / 2 + j < 0 || pictureBox.Height / 2 + i > pictureBox.Height - 1 || pictureBox.Height / 2 + i < 0)
+        //                continue;
+
+        //            if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
+        //            {
+        //                ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
+
+        //                if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
+        //                    pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
+        //                    g.DrawRectangle(new Pen(Color.FromArgb(colorLeft.R, colorLeft.G, colorLeft.B)), j, i, 1, 1);
+        //            }
+        //        }
+
+        //        x1 += inc13;
+        //        x2 += inc12;
+        //    }
+
+        //    if (points[0].Y == points[1].Y)
+        //    {
+        //        x1 = Math.Min(points[0].X, points[1].X);
+        //        x2 = Math.Max(points[0].X, points[1].X);
+        //    }
+
+        //    if (_inc13 < inc23)
+        //        (_inc13, inc23) = (inc23, _inc13);
+
+        //    (left, right) = Interpolation(points[0].Y, points[0].X, points[2].Y, points[2].X, points[1].Y) < points[1].X ? (0, 1) : (1, 0);
+
+        //    for (int i = (int)(points[1].Y); i < (int)(points[2].Y); i++)
+        //    {
+        //        int zLeft = Interpolation(points[2].Y, points[2].Z, points[left].Y, points[left].Z, i);
+        //        int zRight = Interpolation(points[2].Y, points[2].Z, points[right].Y, points[right].Z, i);
+
+        //        Color colorLeft = BilinearInterpolationColor(points[2].X, points[2].Y, colors[2], points[left].X, points[left].Y, colors[left], i, x1);
+        //        Color colorRight = BilinearInterpolationColor(points[2].X, points[2].Y, colors[2], points[right].X, points[right].Y, colors[right], i, x2);
+
+        //        for (int j = (int)x1; j < (int)x2; j++)
+        //        {
+        //            int z = Interpolation((int)x1, zLeft, (int)x2, zRight, j);
+
+        //            if (pictureBox.Width / 2 + j > pictureBox.Width - 1 || pictureBox.Width / 2 + j < 0 || pictureBox.Height / 2 + i > pictureBox.Height - 1 || pictureBox.Height / 2 + i < 0)
+        //                continue;
+
+        //            if (ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] > z)
+        //            {
+        //                ZBuffer[pictureBox.Width / 2 + j, pictureBox.Height / 2 + i] = z;
+
+        //                if (pictureBox.Width / 2 + j < bm.Width && pictureBox.Height - pictureBox.Height / 2 + i < bm.Height &&
+        //                    pictureBox.Width / 2 + j > 0 && pictureBox.Height - pictureBox.Height / 2 + i > 0)
+        //                    g.DrawRectangle(new Pen(Color.FromArgb(colorLeft.R, colorLeft.G, colorLeft.B)), j, i, 1, 1);
+        //            }
+        //        }
+
+        //        x1 += _inc13;
+        //        x2 += inc23;
+        //    }
+        //}
+
+        //private static Color BilinearInterpolationColor(float x1, float y1, Color c1, float x2, float y2, Color c2, float y, float x)
+        //{
+        //    int r = (int)(c1.R + ((x - x1) * (c2.R - c1.R) / (x2 - x1)));
+        //    int g = (int)(c1.G + ((x - x1) * (c2.G - c1.G) / (x2 - x1)));
+        //    int b = (int)(c1.B + ((x - x1) * (c2.B - c1.B) / (x2 - x1)));
+
+        //    return Color.FromArgb((int)Clamp(r,0,255), (int)Clamp(g, 0, 255), (int)Clamp(b, 0, 255));
+        //}
+
     }
 }

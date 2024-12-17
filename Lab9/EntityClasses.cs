@@ -49,8 +49,8 @@ namespace Lab6_9
         {
             Location = new Point3D(150, 0, 0);
             ViewLocation = new Point3D(1000, 0, 0);
-            AmbientIntensity = 0.15f;
-            DiffuseIntensity = 0.45f;
+            AmbientIntensity = 0.25f;
+            DiffuseIntensity = 0.65f;
             SpecularIntensity = 0.4f;
             Color = Color.LightYellow;
 

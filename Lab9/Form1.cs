@@ -326,7 +326,7 @@ namespace Lab6_9
                     Rasterization_Linear_Texture(points, textureCoords, texture, _bm, pictureBox, _ZBuffer);
                 }
             }
-            _g.DrawRectangle(new Pen(Color.Yellow, 5), _light.ViewLocation.X, -_light.ViewLocation.Y, 5, 5);
+            //_g.DrawRectangle(new Pen(Color.Yellow, 5), _light.ViewLocation.X, _light.ViewLocation.Y, 1, 1);
 
         }
 
