@@ -42,6 +42,7 @@ namespace Lab6_9
 
         float[,] _ZBuffer;
         Light _light;
+        int toonShadingColorSteps;
 
         List<Point3D> _points;
         Object3D _obj;
@@ -53,7 +54,8 @@ namespace Lab6_9
         public static int _tCount;
 
         public bool isDelEdges;
-        public bool isRaster;
+        public bool isRasterGuro;
+        public bool isRasterFong;
         public bool isTexturing;
 
         public Form1()
@@ -72,7 +74,7 @@ namespace Lab6_9
             InitMChanges();
 
             isDelEdges = false;
-            isRaster = true;
+            isRasterGuro = true;
 
             angle = 1;
             move = 1;
@@ -247,28 +249,44 @@ namespace Lab6_9
                 List<Point3D> points = new List<Point3D>();
 
                 // GURO
-                colors = new List<Color>();
-                foreach (FaceIndices fi in face.FaceIndices)
+
+                if (!isRasterGuro)
                 {
-                    Point3D l = _light.ViewLocation - vertexes[fi.VertexIndex - 1]; // Light to point
-                    l.Normalize();
+                    colors = new List<Color>();
+                    foreach (FaceIndices fi in face.FaceIndices)
+                    {
+                        Point3D l = _light.ViewLocation - vertexes[fi.VertexIndex - 1]; // Light to point
+                        l.Normalize();
 
-                    Point3D n = normals[fi.NormalIndex - 1];
-                    n.Normalize();
+                        Point3D n = normals[fi.NormalIndex - 1];
+                        n.Normalize();
 
-                    float nl = n * l;
+                        float nl = n * l;
 
-                    float D = Clamp(Math.Max(0.0f, _light.DiffuseIntensity * nl), 0.0f, 1.0f);
+                        float D = Clamp(Math.Max(0.0f, _light.DiffuseIntensity * nl), 0.0f, 1.0f);
 
-                    int R = (int)Clamp(obj.color.R * (_light.AmbientIntensity + D), 0, 255);
-                    int G = (int)Clamp(obj.color.G * (_light.AmbientIntensity + D), 0, 255);
-                    int B = (int)Clamp(obj.color.B * (_light.AmbientIntensity + D), 0, 255);
+                        int R = (int)Clamp(obj.color.R * (_light.AmbientIntensity + D), 0, 255);
+                        int G = (int)Clamp(obj.color.G * (_light.AmbientIntensity + D), 0, 255);
+                        int B = (int)Clamp(obj.color.B * (_light.AmbientIntensity + D), 0, 255);
 
-                    colors.Add(Color.FromArgb(R, G, B));
-                    points.Add(vertexes[fi.VertexIndex - 1]);
+                        colors.Add(Color.FromArgb(R, G, B));
+                        points.Add(vertexes[fi.VertexIndex - 1]);
+                    }
+
+                    Rasterization(points, _ZBuffer, pictureBox, _bm, colors, _g);
                 }
 
-                if (isRaster) Rasterization(points, _ZBuffer, pictureBox, _bm, colors, _g);
+                if (!isRasterFong)
+                {
+                    toonShadingColorSteps = 10;
+                    List<Point3D> normals1 = new List<Point3D>();
+                    foreach (FaceIndices fi in face.FaceIndices)
+                    {
+                        points.Add(vertexes[fi.VertexIndex - 1]);
+                        normals1.Add(normals[fi.NormalIndex - 1]);
+                    }
+                    RasterizationFong(points, normals1, _ZBuffer, pictureBox, _bm, _g, obj.color, _light, toonShadingColorSteps);
+                }
 
                 if (isDelEdges)
                     for (int i = 0; i < face.FaceIndices.Count; i++)
@@ -731,7 +749,7 @@ namespace Lab6_9
 
         private void Zbuffer_B_Click(object sender, EventArgs e)
         {
-            isRaster = !isRaster;
+            isRasterGuro = !isRasterGuro;
 
             Redraw();
         }
